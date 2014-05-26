@@ -268,7 +268,7 @@ if( $nv_Request->get_int( 'save', 'post' ) == 1 )
 	{
 		$error = $lang_module['error_product_unit'];
 	}
-	elseif( $rowcontent['product_price'] <= 0 AND $rowcontent['showprice'] )
+	elseif( $rowcontent['product_price'] <= 0 and $rowcontent['showprice'] )
 	{
 		$error = $lang_module['error_product_price'];
 	}
