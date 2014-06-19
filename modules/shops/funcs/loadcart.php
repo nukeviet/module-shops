@@ -29,6 +29,8 @@ $lang_tmp['cart_product_total'] = $lang_module['cart_product_total'];
 $lang_tmp['cart_check_out'] = $lang_module['cart_check_out'];
 $lang_tmp['history_title'] = $lang_module['history_title'];
 $lang_tmp['active_order_dis'] = $lang_module['active_order_dis'];
+$lang_tmp['welcome'] = $lang_module['welcome'];
+$lang_tmp['title_products'] = $lang_module['title_products'];
 
 $xtpl = new XTemplate( "block.cart.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file );
 $xtpl->assign( 'LANG', $lang_tmp );
@@ -50,6 +52,14 @@ if( $pro_config['active_price'] == '1' ) $xtpl->parse( 'main.enable.price' );
 
 if( $pro_config['active_order'] == '1' )
 {
+	if ( defined( 'NV_IS_USER' ) )
+	{
+		$xtpl->assign( 'username', ! empty( $user_info['full_name'] ) ? $user_info['full_name'] : $user_info['username'] );
+	}
+	else
+	{
+		$xtpl->assign( 'username', 'Guest' );
+	}   
 	$xtpl->parse( 'main.enable' );
 }
 else
