@@ -1,4 +1,47 @@
 <!-- BEGIN: main -->
+<script>
+	equalheight = function(container) {
+
+		var currentTallest = 0,
+		    currentRowStart = 0,
+		    rowDivs = new Array(),
+		    $el,
+		    topPosition = 0;
+		$(container).each(function() {
+
+			$el = $(this);
+			$($el).height('auto')
+			topPostion = $el.position().top;
+
+			if (currentRowStart != topPostion) {
+				for ( currentDiv = 0; currentDiv < rowDivs.length; currentDiv++) {
+					rowDivs[currentDiv].height(currentTallest);
+				}
+				rowDivs.length = 0;
+				// empty the array
+				currentRowStart = topPostion;
+				currentTallest = $el.height();
+				rowDivs.push($el);
+			} else {
+				rowDivs.push($el);
+				currentTallest = (currentTallest < $el.height()) ? ($el.height()) : (currentTallest);
+			}
+			for ( currentDiv = 0; currentDiv < rowDivs.length; currentDiv++) {
+				rowDivs[currentDiv].height(currentTallest);
+			}
+		});
+	}
+
+	$(window).load(function() {
+		equalheight('.equalheight-shop .equalheight-shop-1');
+	});
+
+	$(window).resize(function() {
+		equalheight('.equalheight-shop .equalheight-shop-1');
+	});
+
+</script>
+
 <div id="products">
 	<!-- BEGIN: catalogs -->
 	<div class="panel panel-default">
@@ -7,8 +50,8 @@
 		</div>
 		<div class="panel-body">
 			<!-- BEGIN: items -->
-            <div class="col-sm-6 col-md-{num}">
-                <div class="thumbnail">
+            <div class="col-sm-6 col-md-{num} equalheight-shop">
+                <div class="thumbnail equalheight-shop-1">
                     <div style="height: {height}px">
                         <a href="{LINK}" title="{TITLE}"><img src="{IMG_SRC}" alt="{TITLE}" data-content="{hometext}" data-rel="tooltip" class="img-thumbnail" style="max-height:{height}px;max-width:{width}px;"></a>
                     </div>
