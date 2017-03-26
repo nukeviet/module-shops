@@ -1271,6 +1271,23 @@ function detail_product($data_content, $data_unit, $data_others, $array_other_vi
     $xtpl->assign('LINK_PRINT', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=print_pro&id=' . $data_content['id']);
 
     if (!empty($data_content)) {
+        if (!empty($data_content['otherimage'])) {
+			$otherimage = explode('|', $data_content['otherimage']);
+			foreach ($otherimage as $otherimage_i) {
+				if (!empty($otherimage_i) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $otherimage_i)) {
+					$thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $otherimage_i;
+					$otherimage_i = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $otherimage_i;
+
+					$xtpl->assign('IMG_SRC_OTHER', $otherimage_i);
+					$xtpl->assign('IMG_THUMB', $thumb);
+					if (!empty($otherimage_i) and file_exists(NV_ROOTDIR . $otherimage_i)) {
+						$xtpl->assign('IMG_SRC_OTHER_INFO', nv_is_image(NV_ROOTDIR . $otherimage_i));
+					}
+				$xtpl->parse('main.othersimg.loop');
+				}
+			}
+			$xtpl->parse('main.othersimg');
+		}
         $xtpl->assign('proid', $data_content['id']);
         $xtpl->assign('CAT_TITLE', $global_array_shops_cat[$data_content['listcatid']]['title']);
         $xtpl->assign('SRC_PRO_FULL', $global_config['site_url'] . $data_content['homeimgthumb']);
