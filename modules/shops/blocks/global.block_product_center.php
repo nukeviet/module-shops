@@ -25,8 +25,8 @@ if (! nv_function_exists('nv_global_product_center')) {
     {
         global $nv_Cache, $db_config, $site_mods;
 
-        $html = "<tr>";
-        $html .= "	<td>" . $lang_block['blockid'] . "</td>";
+        $html = "<div class=\"form-group\">";
+        $html .= "	<label class=\"control-label col-sm-6\">" . $lang_block['blockid'] . "</label>";
         $html .= "	<td><select name=\"config_blockid\" class=\"form-control w200\">\n";
 
         $sql = "SELECT bid, " . NV_LANG_DATA . "_title," . NV_LANG_DATA . "_alias FROM " . $db_config['prefix'] . "_" . $site_mods[$module]['module_data'] . "_block_cat ORDER BY weight ASC";
@@ -37,23 +37,23 @@ if (! nv_function_exists('nv_global_product_center')) {
             $html .= "<option value=\"" . $l['bid'] . "\" " . $sel . ">" . $l[NV_LANG_DATA . '_title'] . "</option>\n";
         }
 
-        $html .= "	</select></td>\n";
+        $html .= "	</select></div>\n";
         $html .= '<script type="text/javascript">';
         $html .= '	$("select[name=config_blockid]").change(function() {';
         $html .= '		$("input[name=title]").val($("select[name=config_blockid] option:selected").text());';
         $html .= '	});';
         $html .= '</script>';
-        $html .= "</tr>";
+        $html .= "</div>";
 
-        $html .= "<tr>";
-        $html .= "	<td>" . $lang_block['numget'] . "</td>";
-        $html .= "	<td><input class=\"form-control w100\" type=\"text\" name=\"config_numget\" size=\"5\" value=\"" . $data_block['numget'] . "\"/></td>";
-        $html .= "</tr>";
+        $html .= "<div class=\"form-group\">";
+        $html .= "	<label class=\"control-label col-sm-6\">" . $lang_block['numget'] . "</label>";
+        $html .= "	<div class=\"col-sm-18\"><input class=\"form-control w100\" type=\"text\" name=\"config_numget\" size=\"5\" value=\"" . $data_block['numget'] . "\"/></div>";
+        $html .= "</div>";
 
-        $html .= "<tr>";
-        $html .= "	<td>" . $lang_block['numrow'] . "</td>";
-        $html .= "	<td><input class=\"form-control w100\" type=\"text\" name=\"config_numrow\" size=\"5\" value=\"" . $data_block['numrow'] . "\"/></td>";
-        $html .= "</tr>";
+        $html .= "<div class=\"form-group\">";
+        $html .= "	<label class=\"control-label col-sm-6\">" . $lang_block['numrow'] . "</label>";
+        $html .= "	<div class=\"col-sm-18\"><input class=\"form-control w100\" type=\"text\" name=\"config_numrow\" size=\"5\" value=\"" . $data_block['numrow'] . "\"/></div>";
+        $html .= "</div>";
 
         return $html;
     }
@@ -111,16 +111,16 @@ if (! nv_function_exists('nv_global_product_center')) {
         $i = 1;
         $j = 1;
         $page_i = '';
-        if (file_exists(NV_ROOTDIR . "/themes/" . $global_config['site_theme'] . "/modules/" . $mod_file . "/block.product_center.tpl")) {
-            $block_theme = $global_config['site_theme'];
+        if (file_exists(NV_ROOTDIR . "/themes/" . $global_config['module_theme'] . "/modules/" . $mod_file . "/block.product_center.tpl")) {
+            $block_theme = $global_config['module_theme'];
         } else {
             $block_theme = 'default';
         }
 
         if ($module != $module_name) {
             // Css
-            if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['site_theme'] . '/css/' . $mod_file . '.css')) {
-                $block_css = $global_config['site_theme'];
+            if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/css/' . $mod_file . '.css')) {
+                $block_css = $global_config['module_theme'];
             } else {
                 $block_css = 'default';
             }
@@ -194,7 +194,7 @@ if (! nv_function_exists('nv_global_product_center')) {
         } else {
             $orderby = 't1.product_price DESC, t1.id DESC';
         }
-        
+
         $db->sqlreset()
             ->select('t1.id, t1.listcatid, t1.' . NV_LANG_DATA . '_title AS title, t1.' . NV_LANG_DATA . '_alias AS alias, t1.homeimgfile, t1.homeimgthumb , t1.homeimgalt, t1.showprice, t1.discount_id')
             ->from($db_config['prefix'] . '_' . $mod_data . '_rows t1')
@@ -222,7 +222,7 @@ if (! nv_function_exists('nv_global_product_center')) {
             } else {
                 //no image
 
-                $src_img = NV_BASE_SITEURL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
+                $src_img = NV_BASE_SITEURL . 'themes/' . $block_theme . '/images/shops/no-image.jpg';
             }
 
             $xtpl->assign('LINK', $link);
