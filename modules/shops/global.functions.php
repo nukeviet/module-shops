@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2017 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
@@ -36,7 +36,6 @@ if (empty($pro_config['format_order_id'])) {
 if (empty($pro_config['timecheckstatus'])) {
     $pro_config['timecheckstatus'] = 0;
 } // Thoi gian xu ly archive
-
 
 // Tu dong xoa don hang sau tgian khong duoc xac nhan
 if (!empty($pro_config['order_day']) and $pro_config['order_nexttime'] < NV_CURRENTTIME) {
@@ -93,7 +92,6 @@ function nv_set_status_module()
     // status_1 = "Xuat ban";
     // status_2 = "Hen gio dang";
     // status_3= "Het han";
-
 
     // Dang cac san pham cho kich hoat theo thoi gian
     $result = $db->query('SELECT id FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE status =2 AND publtime < ' . NV_CURRENTTIME . ' ORDER BY publtime ASC');
@@ -232,7 +230,7 @@ function nv_archive_content_module($id)
 function nv_link_edit_page($id)
 {
     global $lang_global, $module_name;
-    $link = "<a href=\"" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=content&amp;id=" . $id . "\" title=\"" . $lang_global['edit'] . "\"><em class=\"fa fa-edit fa-lg\">&nbsp;</em></a>";
+    $link = "<a class=\"btn btn-default btn-xs\" href=\"" . NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=content&amp;id=" . $id . "\" title=\"" . $lang_global['edit'] . "\"><em class=\"fa fa-edit\">&nbsp;</em></a>";
     return $link;
 }
 
@@ -245,7 +243,7 @@ function nv_link_edit_page($id)
 function nv_link_delete_page($id)
 {
     global $lang_global, $module_name;
-    $link = "<a href=\"javascript:void(0);\" onclick=\"nv_del_content(" . $id . ", '" . md5($id . session_id()) . "','" . NV_BASE_ADMINURL . "')\" title=\"" . $lang_global['delete'] . "\"><em class=\"fa fa-trash-o fa-lg\">&nbsp;</em></a>";
+    $link = "<a class=\"btn btn-default btn-xs\" href=\"javascript:void(0);\" onclick=\"nv_del_content(" . $id . ", '" . md5($id . session_id()) . "','" . NV_BASE_ADMINURL . "')\" title=\"" . $lang_global['delete'] . "\"><em class=\"fa fa-trash-o\">&nbsp;</em></a>";
     return $link;
 }
 
@@ -298,7 +296,6 @@ function nv_list_lang()
 // Cong so luong trong kho $type = "+"
 // $listid : danh sach cac id product
 // $listnum : danh sach so luong tuong ung
-
 
 /**
  * product_number_order()
@@ -530,6 +527,13 @@ function GetGroupID($pro_id, $group_by_parent = 0)
     return $data;
 }
 
+/**
+ * UpdatePoint()
+ *
+ * @param mixed $data_content
+ * @param bool $add
+ * @return void
+ */
 function UpdatePoint($data_content, $add = true)
 {
     global $db, $db_config, $module_data;
@@ -559,34 +563,48 @@ function UpdatePoint($data_content, $add = true)
 
 function nv_listmail_notify()
 {
-	global $db, $global_config, $pro_config, $db_config, $module_data;
+    global $db, $global_config, $pro_config, $db_config, $module_data;
 
     $array_mail = array();
     if (!empty($pro_config['groups_notify'])) {
-    	$arr_groups_notify = explode(',',$pro_config['groups_notify']);
-    	if(in_array(3, $arr_groups_notify)) {
-    		$lis_adminid = $db->query('SELECT admins FROM '. $db_config['prefix'] .'_'.$global_config['site_lang'].'_modules WHERE module_data= '.$db->quote($module_data))->fetchColumn();
-    		if(!empty($lis_adminid)) {
-    			$result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN (' . $lis_adminid .')');
-    			while (list($email) = $result->fetch(3)) {
-    				$array_mail[] = $email;
-    			}
-    		}
-    		if(sizeof($arr_groups_notify) > 1) {
-    			$result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN ( SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN ( ' . $pro_config['groups_notify'] . ' ) and group_id != 3 )');
-    			while (list($email) = $result->fetch(3)) {
-    				$array_mail[] = $email;
-    			}
-    		}
-    	}
-    	else {
-    		$result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN ( SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN ( ' . $pro_config['groups_notify'] . ' ) )');
-    		while (list($email) = $result->fetch(3)) {
-    			$array_mail[] = $email;
-    		}
-    	}
+        $arr_groups_notify = explode(',', $pro_config['groups_notify']);
+        if (in_array(3, $arr_groups_notify)) {
+            $lis_adminid = $db->query('SELECT admins FROM ' . $db_config['prefix'] . '_' . $global_config['site_lang'] . '_modules WHERE module_data= ' . $db->quote($module_data))
+                ->fetchColumn();
+            if (!empty($lis_adminid)) {
+                $result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN (' . $lis_adminid . ')');
+                while (list ($email) = $result->fetch(3)) {
+                    $array_mail[] = $email;
+                }
+            }
+            if (sizeof($arr_groups_notify) > 1) {
+                $result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN ( SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN ( ' . $pro_config['groups_notify'] . ' ) and group_id != 3 )');
+                while (list ($email) = $result->fetch(3)) {
+                    $array_mail[] = $email;
+                }
+            }
+        } else {
+            $result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN ( SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN ( ' . $pro_config['groups_notify'] . ' ) )');
+            while (list ($email) = $result->fetch(3)) {
+                $array_mail[] = $email;
+            }
+        }
     }
     $array_mail = array_unique($array_mail);
 
     return $array_mail;
+}
+
+/**
+ * isAllowedUpdateOrder()
+ *
+ * @param mixed $status
+ * @return
+ */
+function isAllowedUpdateOrder($status)
+{
+    if ($status > 0 and $status != 4) {
+        return true;
+    }
+    return false;
 }

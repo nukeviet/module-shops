@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2017 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
@@ -89,12 +89,12 @@ if ($timeout == 0 or NV_CURRENTTIME - $timeout > $difftimeout) {
     $rating = $nv_Request->get_int('rating', 'get,post', 0);
     $comment = $nv_Request->get_textarea('comment', '');
     $fcode = $nv_Request->get_string('fcode', 'get,post', '');
-
+   
     if (empty($sender)) {
         $contents = "NO_" . $lang_module['rate_empty_sender'];
     } elseif (empty($rating)) {
         $contents = "NO_" . $lang_module['rate_empty_rating'];
-    } elseif ($pro_config['review_captcha'] and ! nv_capcha_txt($fcode)) {
+    } elseif ($pro_config['review_captcha'] and !nv_capcha_txt($fcode)) {
         $contents = "NO_" . $lang_module['rate_empty_captcha'];
     } else {
         $userid = !empty($user_info) ? $user_info['userid'] : 0;

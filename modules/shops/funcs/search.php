@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2017 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
@@ -76,7 +76,7 @@ if (strlen($key) >= NV_MIN_SEARCH_LENGTH) {
     } else {
         $orderby = 'product_price DESC, t1.id DESC';
     }
-    
+
     if ($catid != 0) {
         if ($global_array_shops_cat[$catid]['numsubcat'] == 0) {
             $where .= 'AND listcatid=' . $catid;

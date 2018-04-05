@@ -2,7 +2,7 @@
 
 /**
  * @Project NUKEVIET 4.x
- * @Author VINADES.,JSC (contact@vinades.vn)
+ * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2017 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
@@ -55,7 +55,7 @@ if ($groupid > 0) {
         $viewgroup = $nv_Request->get_title('new_vid', 'post');
         $array_viewgroup = ($numsubgroup > 0) ? $array_viewcat_full : $array_viewcat_nosub;
         if (! array_key_exists($viewgroup, $array_viewgroup)) {
-            $viewgroup = 'viewcat_page_list';
+            $viewgroup = 'viewlist';
         }
         $stmt = $db->prepare('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_group SET viewgroup= :viewgroup WHERE groupid=' . $groupid);
         $stmt->bindParam(':viewgroup', $viewgroup, PDO::PARAM_STR);
