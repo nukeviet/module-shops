@@ -25,6 +25,10 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
     if (empty($data)) {
         nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
     }
+    
+    // Thong tin van chuyen
+    $result = $db->query( 'SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_orders_shipping WHERE order_id = ' . $order_id );
+    $data_shipping = $result->fetch();
 
     // Thong tin chi tiet mat hang trong don hang
     $listid = $listnum = $listprice = $listgroup = array();
@@ -33,7 +37,6 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
         $listid[] = $row['proid'];
         $listnum[] = $row['num'];
         $listprice[] = $row['price'];
-        $listgroup[] = $row['group_id'];
     }
 
     $data_pro = array();
@@ -53,31 +56,44 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
         $arrayid[] = $proid;
         ++$i;
     }
-
-    if (! empty($arrayid)) {
+    
+    if (!empty($arrayid)) {
         $templistid = implode(',', $arrayid);
-
-        $sql = 'SELECT t1.id, t1.listcatid, t1.publtime, t1.' . NV_LANG_DATA . '_title, t1.' . NV_LANG_DATA . '_alias, t1.' . NV_LANG_DATA . '_hometext, t2.' . NV_LANG_DATA . '_title, t1.money_unit FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows as t1 LEFT JOIN ' . $db_config['prefix'] . '_' . $module_data . '_units as t2 ON t1.product_unit = t2.id WHERE t1.id IN (' . $templistid . ') AND t1.status =1';
+        
+        $sql = 'SELECT t1.id, t1.listcatid, t1.publtime, t1.' . NV_LANG_DATA . '_title, t1.' . NV_LANG_DATA . '_alias, t1.' . NV_LANG_DATA . '_hometext, t2.' . NV_LANG_DATA . '_title, t1.money_unit, t1.discount_id , t3.listgroupid FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows AS t1, ' . $db_config['prefix'] . '_' . $module_data . '_units AS t2, ' . $db_config['prefix'] . '_' . $module_data . '_orders_id AS t3  WHERE t1.product_unit = t2.id AND t1.id = t3.proid AND t1.id IN (' . $templistid . ') AND t3.order_id=' . $order_id . ' AND t1.status =1';
+        
         $result = $db->query($sql);
-
-        while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $unit, $money_unit) = $result->fetch(3)) {
+        $xa = 0;
+        while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $unit, $money_unit, $discount_id, $listgroupid) = $result->fetch(3)) {
+            
+            $price = nv_get_price($id, $pro_config['money_unit'], $temppro[$id]['num'], true);
+            
+            if(!empty($listgroupid)){
+                $_listgroupid = explode(',', $listgroupid);
+            }else{
+                $_listgroupid = '';
+            }
+            
             $data_pro[] = array(
                 'id' => $id,
                 'publtime' => $publtime,
                 'title' => $title,
                 'alias' => $alias,
                 'hometext' => $hometext,
-                'product_price' => $temppro[$id]['price'],
+                'product_price' => $price['sale'],
                 'product_unit' => $unit,
                 'money_unit' => $money_unit,
+                'discount_id' => $discount_id,
+                'product_group' => $_listgroupid,
                 'link_pro' => $link . $global_array_shops_cat[$listcatid]['alias'] . '/' . $alias . $global_config['rewrite_exturl'],
-                'product_number' => $temppro[$id]['num']
+                'product_number' => $listnum[$xa]
             );
+            $xa++;
         }
     }
 
     $page_title = $data['order_code'];
-    $contents = call_user_func('print_pay', $data, $data_pro);
+    $contents = call_user_func('print_pay', $data, $data_pro, $data_shipping);
 
     include NV_ROOTDIR . '/includes/header.php';
     echo nv_site_theme($contents, false);

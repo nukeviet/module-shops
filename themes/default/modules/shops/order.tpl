@@ -133,7 +133,7 @@
 					<div class="panel-body">
 						<p><strong>{LANG.shipping_info}</strong></p>
 						<ul class="order_shipping_info">
-							<li><em class="fa fa-circle-o">&nbsp;</em><strong>{LANG.shipping_info_weight}:</strong> {DATA.weight_total}{weight_unit}</li>
+							<li><em class="fa fa-circle-o">&nbsp;</em><strong>{LANG.shipping_info_weight}:</strong> {DATA.weight_t}{weight_unit}</li>
 							<li><em class="fa fa-circle-o">&nbsp;</em><strong>{LANG.shipping_shops}:</strong> <span id="shipping_shops">&nbsp;</span></li>
 							<li><em class="fa fa-circle-o">&nbsp;</em><strong>{LANG.shipping_services}:</strong> <span id="shipping_services">&nbsp;</span></li>
 							<li><em class="fa fa-circle-o">&nbsp;</em><strong>{LANG.shipping_price}:</strong> <span id="shipping_price">&nbsp;</span></li>
@@ -324,6 +324,12 @@
 		var text = ' - ';
 		if( $(this).val().length > 0 ) text = text + $(this).val(); else text = '';
 		$('#order_ship_phone').html( text );
+	});
+	
+	$('input[name="ship_address_extend"]').on("keyup", function () {
+		var text = ' - ';
+		if( $(this).val().length > 0 ) text = $(this).val() + text; else text = '';
+		$('#order_address_extend').html( text );
 	});
 
 	function nv_get_price()

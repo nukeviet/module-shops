@@ -353,9 +353,6 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
             if (!empty($data_content['homeimgfile'])) {
                 $xtpl->parse('main.imagemodal');
             }
-        } else {
-            $xtpl->parse('main.popup');
-            $xtpl->parse('main.popupid');
         }
 
         if (!empty($pro_config['show_product_code']) and !empty($data_content['product_code'])) {
@@ -1033,9 +1030,9 @@ function payment($data_content, $data_pro, $data_shipping, $payment_supported, $
  * @param mixed $data_pro
  * @return
  */
-function print_pay($data_content, $data_pro)
+function print_pay($data_content, $data_pro, $data_shipping)
 {
-    global $module_info, $lang_module, $module_file, $pro_config, $money_config, $global_array_group;
+    global $module_info, $lang_module, $module_file, $pro_config, $money_config, $global_array_group, $array_location, $pro_config;
 
     $xtpl = new XTemplate('print.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
@@ -1054,6 +1051,22 @@ function print_pay($data_content, $data_pro)
             }
         }
     }
+    
+    // Thong tin van chuyen
+    if ($pro_config['use_shipping']) {
+        if ($data_shipping) {
+            $data_shipping['ship_price'] = nv_number_format($data_shipping['ship_price'], nv_get_decimals($data_shipping['ship_price_unit']));
+            $data_shipping['ship_location_title'] = $array_location[$data_shipping['ship_location_id']]['title'];
+            while ($array_location[$data_shipping['ship_location_id']]['parentid'] > 0) {
+                $items = $array_location[$array_location[$data_shipping['ship_location_id']]['parentid']];
+                $data_shipping['ship_location_title'] .= ', ' . $items['title'];
+                $array_location[$data_shipping['ship_location_id']]['parentid'] = $items['parentid'];
+            }
+            $data_shipping['ship_shops_title'] = $array_location[$data_shipping['ship_shops_id']]['title'];
+            $xtpl->assign('DATA_SHIPPING', $data_shipping);
+            $xtpl->parse('main.data_shipping');
+        }
+    }
 
     $i = 0;
     foreach ($data_pro as $pdata) {
@@ -1064,6 +1077,17 @@ function print_pay($data_content, $data_pro)
         $xtpl->assign('product_unit', $pdata['product_unit']);
         $xtpl->assign('link_pro', $pdata['link_pro']);
         $xtpl->assign('pro_no', $i + 1);
+        
+        // Nhóm thuộc tính sản phẩm khách hàng
+        if (!empty($pdata['product_group'])) {
+            foreach ($pdata['product_group'] as $groupid) {
+                $items = $global_array_group[$groupid];
+                $items['parent_title'] = $global_array_group[$items['parentid']]['title'];
+                $xtpl->assign('group', $items);
+                $xtpl->parse('main.loop.display_group.group');
+            }
+            $xtpl->parse('main.loop.display_group');
+        }
 
         foreach ($array_group_main as $group_main_id) {
             $array_sub_group = GetGroupID($pdata['id']);
@@ -1610,7 +1634,7 @@ function nv_download_content($data_content)
  */
 function nv_template_viewgrid($array_data, $page = '')
 {
-    global $module_info, $lang_module, $lang_global, $module_name, $module_data, $module_file, $module_upload, $pro_config, $op, $compareid, $global_array_shops_cat;
+    global $module_info, $lang_module, $lang_global, $module_name, $module_data, $module_file, $module_upload, $pro_config, $op, $compareid;
 
     $xtpl = new XTemplate('viewgird.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);

@@ -28,10 +28,13 @@ body {
 					<td>{LANG.order_phone}</td>
 					<td>: {DATA.order_phone}</td>
 				</tr>
+                <!-- BEGIN: data_shipping -->
 				<tr>
 					<td valign="top">{LANG.order_address}</td>
-					<td valign="top">: {DATA.order_address}</td>
+					<td valign="top">: {DATA_SHIPPING.ship_address_extend}, 
+                        {DATA_SHIPPING.ship_location_title}</td>
 				</tr>
+                <!-- END: data_shipping -->
 				<tr>
 					<td>{LANG.order_date}</td>
 					<td>: {dateup} {LANG.order_moment} {moment}</td>
@@ -70,7 +73,12 @@ body {
 		<!-- BEGIN: loop -->
 		<tr {bg}>
 			<td align="center"> {pro_no} </td>
-			<td>{product_name}</td>
+			<td><h3>{product_name}</h3><!-- BEGIN: display_group -->
+                    <p>
+                        <!-- BEGIN: group -->
+                        <span class="show"><span class="text-muted">{group.parent_title}: {group.title}</span></span>
+                        <!-- END: group -->
+                    </p><!-- END: display_group --></td>
 			<!-- BEGIN: sub_group -->
 			<td>{SUB_GROUP}</td>
 			<!-- END: sub_group -->
