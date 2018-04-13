@@ -19,12 +19,12 @@ $global_array_shops_cat = $nv_Cache->db($sql, 'catid', $module_name);
 $sql = 'SELECT groupid, parentid, lev, ' . NV_LANG_DATA . '_title AS title, ' . NV_LANG_DATA . '_alias AS alias, viewgroup, numsubgroup, subgroupid, ' . NV_LANG_DATA . '_description AS description, inhome, indetail, in_order, ' . NV_LANG_DATA . '_keywords AS keywords, numpro, image, is_require FROM ' . $db_config['prefix'] . '_' . $module_data . '_group ORDER BY sort ASC';
 $global_array_group = $nv_Cache->db($sql, 'groupid', $module_name);
 
+$sql = 'SELECT code, currency, symbol, exchange, round, number_format FROM ' . $db_config['prefix'] . '_' . $module_data . '_money_' . NV_LANG_DATA;
 $cache_file = NV_LANG_DATA . '_' . md5($sql) . '_' . NV_CACHE_PREFIX . '.cache';
 if (($cache = $nv_Cache->getItem($module_name, $cache_file)) != false) {
     $money_config = unserialize($cache);
 } else {
     $money_config = array();
-    $sql = 'SELECT code, currency, symbol, exchange, round, number_format FROM ' . $db_config['prefix'] . '_' . $module_data . '_money_' . NV_LANG_DATA;
     $result = $db->query($sql);
     while ($row = $result->fetch()) {
         $money_config[$row['code']] = array(
