@@ -155,8 +155,7 @@ if (! nv_function_exists('nv_global_product_center')) {
             unset($list, $row);
             $pro_config = $module_config[$module];
 
-            // Lay ty gia ngoai te
-            $sql = 'SELECT code, currency, exchange, round, number_format FROM ' . $db_config['prefix'] . '_' . $mod_data . '_money_' . NV_LANG_DATA;
+            $sql = 'SELECT code, currency, symbol, exchange, round, number_format FROM ' . $db_config['prefix'] . '_' . $mod_data . '_money_' . NV_LANG_DATA;
             $cache_file = NV_LANG_DATA . '_' . md5($sql) . '_' . NV_CACHE_PREFIX . '.cache';
             if (($cache = $nv_Cache->getItem($module, $cache_file)) != false) {
                 $money_config = unserialize($cache);
@@ -167,6 +166,7 @@ if (! nv_function_exists('nv_global_product_center')) {
                     $money_config[$row['code']] = array(
                         'code' => $row['code'],
                         'currency' => $row['currency'],
+                        'symbol' => $row['symbol'],
                         'exchange' => $row['exchange'],
                         'round' => $row['round'],
                         'number_format' => $row['number_format'],

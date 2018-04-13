@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
@@ -20,13 +19,12 @@ $global_array_shops_cat = $nv_Cache->db($sql, 'catid', $module_name);
 $sql = 'SELECT groupid, parentid, lev, ' . NV_LANG_DATA . '_title AS title, ' . NV_LANG_DATA . '_alias AS alias, viewgroup, numsubgroup, subgroupid, ' . NV_LANG_DATA . '_description AS description, inhome, indetail, in_order, ' . NV_LANG_DATA . '_keywords AS keywords, numpro, image, is_require FROM ' . $db_config['prefix'] . '_' . $module_data . '_group ORDER BY sort ASC';
 $global_array_group = $nv_Cache->db($sql, 'groupid', $module_name);
 
-// Lay ty gia ngoai te
-$sql = 'SELECT code, currency,symbol, exchange, round, number_format FROM ' . $db_config['prefix'] . '_' . $module_data . '_money_' . NV_LANG_DATA;
 $cache_file = NV_LANG_DATA . '_' . md5($sql) . '_' . NV_CACHE_PREFIX . '.cache';
 if (($cache = $nv_Cache->getItem($module_name, $cache_file)) != false) {
     $money_config = unserialize($cache);
 } else {
     $money_config = array();
+    $sql = 'SELECT code, currency, symbol, exchange, round, number_format FROM ' . $db_config['prefix'] . '_' . $module_data . '_money_' . NV_LANG_DATA;
     $result = $db->query($sql);
     while ($row = $result->fetch()) {
         $money_config[$row['code']] = array(
@@ -176,13 +174,13 @@ function nv_get_price($pro_id, $currency_convert, $number = 1, $per_pro = false,
     $return['price'] = $price; // Giá sản phẩm chưa format
     $return['price_format'] = nv_number_format($price, $decimals); // Giá sản phẩm đã format
 
-    $return['discount'] = $discount;// Số tiền giảm giá sản phẩm chưa format
+    $return['discount'] = $discount; // Số tiền giảm giá sản phẩm chưa format
     $return['discount_format'] = nv_number_format($discount, $decimals); // Số tiền giảm giá sản phẩm đã format
-    $return['discount_percent'] = $discount_unit == '%' ? $discount_percent : nv_number_format($discount_percent, $decimals);// Giảm giá theo phần trăm
-    $return['discount_unit'] = $discount_unit;// Đơn vị giảm giá
+    $return['discount_percent'] = $discount_unit == '%' ? $discount_percent : nv_number_format($discount_percent, $decimals); // Giảm giá theo phần trăm
+    $return['discount_unit'] = $discount_unit; // Đơn vị giảm giá
 
-    $return['sale'] = $price - $discount;// Giá bán thực tế của sản phẩm
-    $return['sale_format'] = nv_number_format($return['sale'], $decimals);// Giá bán thực tế của sản phẩm đã format
+    $return['sale'] = $price - $discount; // Giá bán thực tế của sản phẩm
+    $return['sale_format'] = nv_number_format($return['sale'], $decimals); // Giá bán thực tế của sản phẩm đã format
     $return['unit'] = $money_config[$currency_convert]['symbol'];
 
     return $return;
@@ -216,7 +214,6 @@ function nv_currency_conversion($price, $currency_curent, $currency_convert)
  * @param integer $decimals
  * @return
  */
-
 function nv_number_format($number, $decimals = 0)
 {
     global $money_config, $pro_config;
@@ -233,7 +230,6 @@ function nv_number_format($number, $decimals = 0)
  * @param mixed $currency_convert
  * @return
  */
-
 function nv_get_decimals($currency_convert)
 {
     global $money_config;
@@ -305,12 +301,12 @@ function nv_shipping_price($weight, $weight_unit, $location_id, $shops_id, $carr
 
     $sql = 'SELECT config_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_shops_carrier WHERE shops_id = ' . $shops_id . ' AND carrier_id = ' . $carrier_id;
     $result = $db->query($sql);
-    list($config_id) = $result->fetch(3);
+    list ($config_id) = $result->fetch(3);
 
     if ($config_id) {
         $sql = 'SELECT iid FROM ' . $db_config['prefix'] . '_' . $module_data . '_carrier_config_location WHERE cid = ' . $config_id . ' AND lid = ' . $location_id;
         $result = $db->query($sql);
-        list($iid) = $result->fetch(3);
+        list ($iid) = $result->fetch(3);
 
         if ($iid) {
             // Weight config

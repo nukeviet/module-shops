@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_MAINFILE')) die('Stop!!!');
 
 if (!nv_function_exists('nv_global_bxproduct_center')) {
@@ -158,7 +157,6 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
 
             return $price;
         }
-
     }
 
     /**
@@ -231,8 +229,7 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
             unset($list, $row);
             $pro_config = $module_config[$module];
 
-            // Lay ty gia ngoai te
-            $sql = 'SELECT code, currency, exchange, round, number_format FROM ' . $db_config['prefix'] . '_' . $mod_data . '_money_' . NV_LANG_DATA;
+            $sql = 'SELECT code, currency, symbol, exchange, round, number_format FROM ' . $db_config['prefix'] . '_' . $mod_data . '_money_' . NV_LANG_DATA;
             $cache_file = NV_LANG_DATA . '_' . md5($sql) . '_' . NV_CACHE_PREFIX . '.cache';
             if (($cache = $nv_Cache->getItem($module, $cache_file)) != false) {
                 $money_config = unserialize($cache);
@@ -243,6 +240,7 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
                     $money_config[$row['code']] = array(
                         'code' => $row['code'],
                         'currency' => $row['currency'],
+                        'symbol' => $row['symbol'],
                         'exchange' => $row['exchange'],
                         'round' => $row['round'],
                         'number_format' => $row['number_format'],
@@ -291,16 +289,16 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
             $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$row['listcatid']]['alias'] . '/' . $row['alias'] . $global_config['rewrite_exturl'];
 
             if ($row['homeimgthumb'] == 1) //image thumb
-{
+            {
                 $src_img = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
             } elseif ($row['homeimgthumb'] == 2) //image file
-{
+            {
                 $src_img = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
             } elseif ($row['homeimgthumb'] == 3) //image url
-{
+            {
                 $src_img = $row['homeimgfile'];
             } else //no image
-{
+            {
                 $src_img = NV_BASE_SITEURL . 'themes/' . $block_theme . '/images/shops/no-image.jpg';
             }
 
@@ -334,7 +332,6 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
         $xtpl->parse('main');
         return $xtpl->text('main');
     }
-
 }
 
 if (defined('NV_SYSTEM')) {
