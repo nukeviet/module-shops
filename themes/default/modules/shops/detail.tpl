@@ -251,15 +251,6 @@
 	});
 </script>
 <!-- END: allowed_print_js -->
-<!-- BEGIN: imagemodal -->
-<script type="text/javascript" data-show="after">
-	$('.open_modal').click(function(e){
-		e.preventDefault();
- 		$('#idmodals .modal-body').html( '<img src="' + $(this).data('src') + '" alt="" class="img-responsive" />' );
- 		$('#idmodals').modal('show');
-	});
-</script>
-<!-- END: imagemodal -->
 <!-- BEGIN: order_number_limit -->
 <script type="text/javascript" data-show="after">
 	$('#pnum').attr( 'max', '{PRODUCT_NUMBER}' );
@@ -273,6 +264,7 @@
 <!-- END: order_number_limit -->
 <script type="text/javascript">
 	var detail_error_group = '{LANG.detail_error_group}';
+	check_quantity($('.groupid'));
 	function check_quantity( _this ){
 		$('input[name="'+_this.attr('name')+'"]').parent().css('border-color', '#ccc');
 		if( _this.is(':checked') )

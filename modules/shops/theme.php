@@ -348,10 +348,6 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
 
             $xtpl->parse('main.product_detail');
             $xtpl->parse('main.social_icon');
-
-            if (!empty($data_content['homeimgfile'])) {
-                $xtpl->parse('main.imagemodal');
-            }
         }
 
         if (!empty($pro_config['show_product_code']) and !empty($data_content['product_code'])) {
