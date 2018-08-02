@@ -443,6 +443,8 @@ if ($pro_config['active_warehouse']) {
 }
 
 while (list ($catid_i, $title_i) = each($array_list_action)) {
+
+foreach ($array_list_action as $catid_i => $title_i) {
     $xtpl->assign('ACTION', array(
         'key' => $catid_i,
         'title' => $title_i
