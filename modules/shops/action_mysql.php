@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_IS_FILE_MODULES')) {
     die('Stop!!!');
 }
@@ -337,6 +336,7 @@ $sql_create_module[] = "CREATE TABLE IF NOT EXISTS " . $db_config['prefix'] . "_
  hitslm mediumint(8) unsigned NOT NULL DEFAULT '0',
  num_sell mediumint(8) NOT NULL DEFAULT '0',
  showprice tinyint(2) NOT NULL DEFAULT '0',
+ weight int(11) unsigned NOT NULL default '0',
  PRIMARY KEY (id),
  KEY listcatid (listcatid),
  KEY user_id (user_id),
@@ -757,6 +757,7 @@ $data['template_active'] = '0';
 $data['download_active'] = '0';
 $data['download_groups'] = '6';
 $data['sortdefault'] = 0;
+$data['order_by'] = 0;
 
 foreach ($data as $config_name => $config_value) {
     $sql_create_module[] = "INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES ('" . $lang . "', " . $db->quote($module_name) . ", " . $db->quote($config_name) . ", " . $db->quote($config_value) . ")";

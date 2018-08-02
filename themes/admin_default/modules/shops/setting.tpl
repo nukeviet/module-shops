@@ -225,6 +225,14 @@
                     <td><strong>{LANG.setting_order_day}</strong><span class="help-block">{LANG.setting_order_day_note}</span></td>
                     <td><input type="text" name="order_day" class="form-control" value="{DATA.order_day}" />&nbsp;<span class="text-middle">{LANG.setting_order_num_day}</span></td>
                 </tr>
+                <tr>
+                    <th>{LANG.order_by}</th>
+                    <td><select class="form-control" name="order_by">
+                            <!-- BEGIN: order_by -->
+                            <option value="{ORDER_BY.key}"{ORDER_BY.selected}>{ORDER_BY.title}</option>
+                            <!-- END: order_by -->
+                    </select></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -308,7 +316,6 @@
         <input class="btn btn-primary" type="submit" value="{LANG.save}" name="Submit1" /><input type="hidden" value="1" name="savesetting">
     </div>
 </form>
-
 <script type="text/javascript">
     $('#download_active').change(function() {
         $('#download_groups').toggle();

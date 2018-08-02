@@ -101,7 +101,7 @@ if (empty($contents)) {
     $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
     $orderby = '';
     if ($sorts == 0) {
-        $orderby = 'id DESC ';
+        $orderby = nv_build_order('t1');
     } elseif ($sorts == 1) {
         $orderby = 'product_price ASC, id DESC ';
     } else {

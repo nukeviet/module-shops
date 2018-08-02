@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
@@ -56,6 +55,7 @@ if (!empty($page_title) and $page_title == strip_punctuation($page_title)) {
 
         $db->select('t1.id, t1.listcatid, t1.publtime, t1.' . NV_LANG_DATA . '_title, t1.' . NV_LANG_DATA . '_alias, t1.' . NV_LANG_DATA . '_hometext, t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_code, t1.product_number, t1.product_price, t1.money_unit, t1.discount_id, t1.showprice, t2.newday, ' . NV_LANG_DATA . '_gift_content, gift_from, gift_to')
             ->join('INNER JOIN ' . $db_config['prefix'] . '_' . $module_data . '_catalogs t2 ON t2.catid = t1.listcatid')
+            ->order(nv_build_order('t1'))
             ->limit($per_page)
             ->offset(($page - 1) * $per_page);
 

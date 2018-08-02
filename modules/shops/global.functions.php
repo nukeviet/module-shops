@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
@@ -412,7 +411,6 @@ function GetCatidInParent($catid, $check_inhome = 0)
  * @param mixed $cateid
  * @return
  */
-
 function GetParentCatFilter($cateid)
 {
     global $db, $db_config, $global_array_shops_cat, $module_name, $module_data;

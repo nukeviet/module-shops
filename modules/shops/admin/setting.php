@@ -83,6 +83,7 @@ if ($savesetting == 1) {
     $data['tags_alias'] = $nv_Request->get_int('tags_alias', 'post', 0);
     $data['auto_tags'] = $nv_Request->get_int('auto_tags', 'post', 0);
     $data['tags_remind'] = $nv_Request->get_int('tags_remind', 'post', 0);
+    $data['order_by'] = $nv_Request->get_int('order_by', 'post', 0);
 
     $data['point_active'] = $nv_Request->get_int('point_active', 'post', 0);
     $data['point_conversion'] = $nv_Request->get_string('point_conversion', 'post', 0);
@@ -321,6 +322,15 @@ foreach ($array_sortdefault as $index => $value) {
         'selected' => $sl
     ));
     $xtpl->parse('main.sortdefault');
+}
+
+for ($i = 0; $i < 2; $i++) {
+    $xtpl->assign('ORDER_BY', array(
+        'key' => $i,
+        'title' => $lang_module['order_by_' . $i],
+        'selected' => $i == $module_config[$module_name]['order_by'] ? ' selected="selected"' : ''
+    ));
+    $xtpl->parse('main.order_by');
 }
 
 $xtpl->parse('main');

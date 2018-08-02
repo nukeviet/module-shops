@@ -7,15 +7,13 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
-if (! defined('NV_IS_MOD_SHOPS')) {
+if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
 
-if (! defined('NV_IS_USER')) {
+if (!defined('NV_IS_USER')) {
     $redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cart";
     nv_redirect_location(NV_BASE_SITEURL . "index.php?" . NV_NAME_VARIABLE . "=users&" . NV_OP_VARIABLE . "=login&nv_redirect=" . nv_redirect_encrypt($redirect));
-
 }
 
 $data_content = array();
@@ -25,7 +23,7 @@ $result = $db->query($sql);
 
 $link_module = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name;
 
-while (list($order_id, $order_code, $order_note, $user_id, $unit_total, $order_total, $order_time, $transaction_status, $transaction_id, $transaction_count) = $result->fetch(3)) {
+while (list ($order_id, $order_code, $order_note, $user_id, $unit_total, $order_total, $order_time, $transaction_status, $transaction_id, $transaction_count) = $result->fetch(3)) {
     $checkss = md5($order_id . $global_config['sitekey'] . session_id());
     $data_content[] = array(
         "checkss" => $checkss,

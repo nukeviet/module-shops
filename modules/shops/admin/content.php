@@ -461,7 +461,10 @@ if ($nv_Request->get_int('save', 'post') == 1) {
                 $rowcontent['status'] = 2;
             }
 
-            $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_rows (id, listcatid, user_id, addtime, edittime, status, publtime, exptime, archive, product_code, product_number, product_price, price_config, money_unit, product_unit, product_weight, weight_unit, discount_id, homeimgfile, homeimgthumb, homeimgalt,otherimage,imgposition, copyright, inhome, allowed_comm, allowed_rating, ratingdetail, allowed_send, allowed_print, allowed_save, hitstotal, hitscm, hitslm, showprice " . $listfield . ")
+            $_weight = $db->query('SELECT max(weight) FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows')->fetchColumn();
+            $_weight = intval($_weight) + 1;
+
+            $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_rows (id, listcatid, user_id, addtime, edittime, status, publtime, exptime, archive, product_code, product_number, product_price, price_config, money_unit, product_unit, product_weight, weight_unit, discount_id, homeimgfile, homeimgthumb, homeimgalt,otherimage,imgposition, copyright, inhome, allowed_comm, allowed_rating, ratingdetail, allowed_send, allowed_print, allowed_save, hitstotal, hitscm, hitslm, showprice, weight " . $listfield . ")
 				 VALUES ( NULL ,
 				 :listcatid,
 				 " . intval($rowcontent['user_id']) . ",
@@ -496,7 +499,8 @@ if ($nv_Request->get_int('save', 'post') == 1) {
 				 " . intval($rowcontent['hitstotal']) . ",
 				 " . intval($rowcontent['hitscm']) . ",
 				 " . intval($rowcontent['hitslm']) . ",
-				 " . intval($rowcontent['showprice']) . "
+				 " . intval($rowcontent['showprice']) . ",
+				 " . intval($_weight) . "
 				" . $listvalue . "
 			)";
 

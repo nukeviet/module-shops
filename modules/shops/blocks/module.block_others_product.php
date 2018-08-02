@@ -27,6 +27,8 @@ if (! function_exists('nv_others_product')) {
         if ($op == 'detail') {
             global $site_mods, $module_name, $lang_module, $module_info, $module_file, $global_array_shops_cat, $db, $module_data, $db_config, $id, $catid, $pro_config, $global_config;
 
+            $orderby = ($pro_config['order_by'] ? ' weight' : ' publtime') . ' DESC';
+
             $xtpl = new XTemplate('block.others_product.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
             $xtpl->assign('LANG', $lang_module);
             $xtpl->assign('THEME_TEM', NV_BASE_SITEURL . 'themes/' . $module_info['template']);
@@ -36,7 +38,7 @@ if (! function_exists('nv_others_product')) {
                 ->select('id, listcatid, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias ,addtime, homeimgfile, homeimgthumb, product_price, money_unit, discount_id, showprice')
                 ->from($db_config['prefix'] . '_' . $module_data . '_rows')
                 ->where('status =1 AND listcatid = ' . $catid . ' AND id < ' . $id)
-                ->order('id DESC')
+                ->order($orderby)
                 ->limit(20);
 
             $result = $db->query($db->sql());

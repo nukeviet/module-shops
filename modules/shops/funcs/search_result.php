@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
-if (! defined('NV_IS_MOD_SHOPS')) {
+if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
 
@@ -31,7 +30,7 @@ $typemoney = $nv_Request->get_string('typemoney', 'get', '');
 $cataid = $nv_Request->get_int('cata', 'get', 0);
 $groupid = $nv_Request->get_string('filter', 'get', '');
 $group_price = $nv_Request->get_string('group_price', 'get', '');
-if (! empty($group_price)) {
+if (!empty($group_price)) {
     $url .= '&group_price=' . $group_price;
     $group_price = nv_base64_decode($group_price);
     $group_price = unserialize($group_price);
@@ -56,12 +55,12 @@ $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '
 $compare_id = unserialize($compare_id);
 
 if ($price1_temp == '') {
-    $price1 = - 1;
+    $price1 = -1;
 } else {
     $price1 = floatval($price1_temp);
 }
 if ($price2_temp == '') {
-    $price2 = - 1;
+    $price2 = -1;
 } else {
     $price2 = floatval($price2_temp);
 }
@@ -95,10 +94,10 @@ while ($row = $result->fetch()) {
     $xtpl->parse('form.typemoney');
 }
 
-if ($price1 == - 1) {
+if ($price1 == -1) {
     $price1_temp = "";
 }
-if ($price2 == - 1) {
+if ($price2 == -1) {
     $price2_temp = "";
 }
 
@@ -113,7 +112,7 @@ if ($pro_config['active_price']) {
 $xtpl->parse('form');
 $contents = $xtpl->text('form');
 
-if (! empty($groupid)) {
+if (!empty($groupid)) {
     $url .= '&filter=' . $groupid;
     $groupid = nv_base64_decode($groupid);
     $groupid = unserialize($groupid);
@@ -131,9 +130,9 @@ if (! empty($groupid)) {
         if ($a > 0) {
             $arr_sql = array();
             for ($i = 0; $i < $a; $i++) {
-                $arr_sql[]= ' pro_id IN (SELECT pro_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items WHERE group_id=' . $listid[$i] . ')';
+                $arr_sql[] = ' pro_id IN (SELECT pro_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items WHERE group_id=' . $listid[$i] . ')';
             }
-            $_sql .= ' ('. implode(' OR ', $arr_sql) . ')';
+            $_sql .= ' (' . implode(' OR ', $arr_sql) . ')';
         }
         if ($j < count($arr_id)) {
             $_sql .= ' AND ';
@@ -151,19 +150,19 @@ if ($keyword != "") {
 
 if (($price1 >= 0 and $price2 > 0)) {
     $search .= " AND product_price BETWEEN " . $price1 . " AND " . $price2 . " ";
-} elseif ($price2 == - 1 and $price1 >= 0) {
+} elseif ($price2 == -1 and $price1 >= 0) {
     $search .= " AND product_price >= " . $price1 . " ";
-} elseif ($price1 == - 1 and $price2 > 0) {
+} elseif ($price1 == -1 and $price2 > 0) {
     $search .= " AND product_price < " . $price2 . " ";
 }
 
-if (! empty($typemoney)) {
+if (!empty($typemoney)) {
     $search .= " AND money_unit = " . $db->quote($typemoney);
 }
 $sql_i = ", if(t1.money_unit ='" . $pro_config['money_unit'] . "', t1.product_price , t1.product_price * t2.exchange ) AS product_saleproduct ";
 $order_by = " product_saleproduct DESC ";
 
-if (! empty($typemoney)) {
+if (!empty($typemoney)) {
     $search .= " AND money_unit = " . $db->quote($typemoney);
 }
 if ($cataid != 0) {
@@ -184,7 +183,7 @@ if (empty($search)) {
 
 $show_price = "";
 if ($pro_config['active_price']) {
-    if (! empty($price1_temp) or ! empty($price2_temp)) {
+    if (!empty($price1_temp) or !empty($price2_temp)) {
         $show_price = "AND showprice=1";
     }
 }
@@ -194,14 +193,17 @@ $table_exchange = " LEFT JOIN " . $db_config['prefix'] . "_" . $module_data . "_
 $table_exchange1 = " INNER JOIN " . $db_config['prefix'] . "_" . $module_data . "_catalogs t3 ON t3.catid = t1.listcatid";
 
 // Fetch Limit
-$db->sqlreset()->select('DISTINCT COUNT(*)')->from($table_search . " " . $table_exchange . " " . $table_exchange1)->where("t1.status =1 " . $search . " " . $show_price);
+$db->sqlreset()
+    ->select('DISTINCT COUNT(*)')
+    ->from($table_search . " " . $table_exchange . " " . $table_exchange1)
+    ->where("t1.status =1 " . $search . " " . $show_price);
 $sth = $db->prepare($db->sql());
 $sth->execute();
 
 $num_items = $sth->fetchColumn();
 
 $db->select("DISTINCT t1.id, t1.listcatid, t1.publtime, t1." . NV_LANG_DATA . "_title, t1." . NV_LANG_DATA . "_alias, t1." . NV_LANG_DATA . "_hometext, t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_number, t1.product_price, t1.discount_id, t1.money_unit, t1.showprice, t1." . NV_LANG_DATA . "_gift_content, t1.gift_from, t1.gift_to, t3.newday, t2.exchange " . $sql_i)
-    ->order($order_by)
+->order(nv_build_order('t1'))
     ->limit($per_page)
     ->offset(($page - 1) * $per_page);
 $result = $db->query($db->sql());
@@ -211,7 +213,7 @@ $html_pages = nv_generate_page($base_url, $num_items, $per_page, $page);
 
 $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 
-while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_number, $product_price, $discount_id, $money_unit, $showprice, $gift_content, $gift_from, $gift_to, $newday) = $result->fetch(3)) {
+while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_number, $product_price, $discount_id, $money_unit, $showprice, $gift_content, $gift_from, $gift_to, $newday) = $result->fetch(3)) {
     if ($homeimgthumb == 1) {
         //image thumb
 

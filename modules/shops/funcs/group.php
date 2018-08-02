@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
@@ -65,7 +64,7 @@ $num_items = $db->query($db->sql())
     ->fetchColumn();
 
 $db->select('id, listcatid, publtime, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_hometext, homeimgalt, homeimgfile, homeimgthumb, product_code, product_number, product_price, money_unit, discount_id, showprice, ' . NV_LANG_DATA . '_gift_content, gift_from, gift_to')
-    ->order('id DESC')
+    ->order(nv_build_order())
     ->limit($per_page)
     ->offset(($page - 1) * $per_page);
 

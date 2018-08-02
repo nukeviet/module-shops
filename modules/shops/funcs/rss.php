@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
-if (! defined('NV_IS_MOD_SHOPS')) {
+if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
 
@@ -17,7 +16,7 @@ $items = array();
 
 $channel['title'] = $module_info['custom_title'];
 $channel['link'] = NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
-$channel['description'] = ! empty($module_info['description']) ? $module_info['description'] : $global_config['site_description'];
+$channel['description'] = !empty($module_info['description']) ? $module_info['description'] : $global_config['site_description'];
 
 $catid = 0;
 if (isset($array_op[1])) {
@@ -30,21 +29,31 @@ if (isset($array_op[1])) {
         }
     }
 }
-if (! empty($catid)) {
+if (!empty($catid)) {
     $channel['title'] = $module_info['custom_title'] . ' - ' . $global_array_shops_cat[$catid]['title'];
     $channel['link'] = NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $alias_cat_url;
     $channel['description'] = $global_array_shops_cat[$catid]['description'];
 
-    $db->sqlreset()->select('id, listcatid, publtime, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_hometext, homeimgfile')->from($db_config['prefix'] . '_' . $module_data . '_rows')->where('listcatid= ' . $catid . ' AND status =1')->order('publtime DESC')->limit(30);
+    $db->sqlreset()
+        ->select('id, listcatid, publtime, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_hometext, homeimgfile')
+        ->from($db_config['prefix'] . '_' . $module_data . '_rows')
+        ->where('listcatid= ' . $catid . ' AND status =1')
+        ->order('publtime DESC')
+        ->limit(30);
     $sql = $db->sql();
 } else {
-    $db->sqlreset()->select('id, listcatid, publtime, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_hometext, homeimgfile, homeimgthumb')->from($db_config['prefix'] . '_' . $module_data . '_rows')->where('status =1')->order('publtime DESC')->limit(30);
+    $db->sqlreset()
+        ->select('id, listcatid, publtime, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_hometext, homeimgfile, homeimgthumb')
+        ->from($db_config['prefix'] . '_' . $module_data . '_rows')
+        ->where('status =1')
+        ->order(nv_build_order())
+        ->limit(30);
     $sql = $db->sql();
 }
 
 if ($module_info['rss']) {
     $result = $db->query($sql);
-    while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgfile, $homeimgthumb) = $result->fetch(3)) {
+    while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgfile, $homeimgthumb) = $result->fetch(3)) {
         $catalias = $global_array_shops_cat[$listcatid]['alias'];
 
         if ($homeimgthumb == 1) {
@@ -65,7 +74,7 @@ if ($module_info['rss']) {
             $rimages = '';
         }
 
-        $rimages = (! empty($rimages)) ? '<img src="' . $rimages . '" width="100" align="left" border="0">' : '';
+        $rimages = (!empty($rimages)) ? '<img src="' . $rimages . '" width="100" align="left" border="0">' : '';
 
         $items[] = array(
             'title' => $title,

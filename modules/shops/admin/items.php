@@ -7,9 +7,53 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_IS_FILE_ADMIN')) {
     die('Stop!!!');
+}
+
+if ($nv_Request->isset_request('order_by', 'post')) {
+    $_weight_new = $nv_Request->get_int('order_by_new', 'post', 0);
+    $_id = $nv_Request->get_int('order_by_id', 'post', 0);
+    if ($_id > 0 and $_weight_new > 0) {
+        $sql = 'SELECT weight, listcatid FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE id=' . $_id;
+        $_row1 = $db->query($sql)->fetch();
+        if (!empty($_row1)) {
+            $_weight1 = min($_weight_new, $_row1['weight']);
+            $_weight2 = max($_weight_new, $_row1['weight']);
+            if ($_weight_new > $_row1['weight']) {
+                // Kiểm tra không cho set weight lơn hơn maxweight
+                $maxweight = $db->query('SELECT max(weight) FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows')->fetchColumn();
+                if ($_weight_new > $maxweight) {
+                    $_weight_new = $maxweight;
+                }
+            }
+
+            $sql = 'SELECT id, listcatid FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE weight BETWEEN ' . $_weight1 . '  AND ' . $_weight2 . ' AND id!=' . $_id . ' ORDER BY weight ASC, publtime ASC';
+            $result = $db->query($sql);
+            $weight = $_weight1;
+            while ($_row2 = $result->fetch()) {
+                if ($weight == $_weight_new) {
+                    ++$weight;
+                }
+                $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_rows SET weight=' . $weight . ' WHERE id=' . $_row2['id']);
+                $_array_catid = explode(',', $_row2['listcatid']);
+                foreach ($_array_catid as $_catid) {
+                    try {
+                        $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_' . intval($_catid) . ' SET weight=' . $weight . ' WHERE id=' . $_row2['id']);
+                    } catch (PDOException $e) {}
+                }
+                ++$weight;
+            }
+            $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_rows SET weight=' . $_weight_new . ' WHERE id=' . $_id);
+            $_array_catid = explode(',', $_row1['listcatid']);
+            foreach ($_array_catid as $_catid) {
+                try {
+                    $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_' . intval($_catid) . ' SET weight=' . $_weight_new . ' WHERE id=' . $_id);
+                } catch (PDOException $e) {}
+            }
+            $nv_Cache->delMod($module_name);
+        }
+    }
 }
 
 $page_title = $lang_module['content_list'];
@@ -48,11 +92,15 @@ $qhtml = nv_htmlspecialchars($q);
 $ordername = $nv_Request->get_string('ordername', 'get', 'publtime');
 $order = $nv_Request->get_string('order', 'get') == 'asc' ? 'asc' : 'desc';
 
-$listcatid = $nv_Request -> get_int('listcatid', 'get');
+if ($pro_config['order_by']) {
+    $ordername = 'weight';
+}
+
+$listcatid = $nv_Request->get_int('listcatid', 'get');
 $where = '';
-if (! empty($listcatid)) {
-    if (isset($global_array_shops_cat[ $listcatid ])) {
-        $subcatid = $global_array_shops_cat[ $listcatid ]['subcatid'];
+if (!empty($listcatid)) {
+    if (isset($global_array_shops_cat[$listcatid])) {
+        $subcatid = $global_array_shops_cat[$listcatid]['subcatid'];
         $where = 'listcatid=' . $listcatid;
         if ($subcatid != 0) {
             $where .= ' or listcatid IN (' . $subcatid . ')';
@@ -102,8 +150,8 @@ if ($checkss == md5(session_id())) {
     } elseif ($stype == 'admin_id' and !empty($q)) {
         $sql = "SELECT userid FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN (SELECT admin_id FROM " . NV_AUTHORS_GLOBALTABLE . ") AND username LIKE '%" . $db->dblikeescape($q) . "%' OR first_name LIKE '%" . $db->dblikeescape($q) . "%' OR last_name LIKE '%" . $db->dblikeescape($q) . "%'";
         $result = $db->query($sql);
-        $array_admin_id = array( );
-        while (list($admin_id) = $result->fetch(3)) {
+        $array_admin_id = array();
+        while (list ($admin_id) = $result->fetch(3)) {
             $array_admin_id[] = $admin_id;
         }
         $from .= " WHERE admin_id IN (0," . implode(",", $array_admin_id) . ",0)";
@@ -111,12 +159,12 @@ if ($checkss == md5(session_id())) {
         $sql = "SELECT userid FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN (SELECT admin_id FROM " . NV_AUTHORS_GLOBALTABLE . ") AND username LIKE '%" . $db->dblikeescape($q) . "%' OR first_name LIKE '%" . $db->dblikeescape($q) . "%'OR last_name LIKE '%" . $db->dblikeescape($q) . "%'";
         $result = $db->query($sql);
 
-        $array_admin_id = array( );
-        while (list($admin_id) = $result->fetch(3)) {
+        $array_admin_id = array();
+        while (list ($admin_id) = $result->fetch(3)) {
             $array_admin_id[] = $admin_id;
         }
 
-        $arr_from = array( );
+        $arr_from = array();
         $arr_from[] = "(product_code LIKE '%" . $db->dblikeescape($qhtml) . "%')";
         foreach ($array_in_rows as $val) {
             $arr_from[] = "(" . NV_LANG_DATA . "_" . $val . " LIKE '%" . $db->dblikeescape($qhtml) . "%')";
@@ -139,7 +187,7 @@ if ($checkss == md5(session_id())) {
         if ($global_array_shops_cat[$catid]['numsubcat'] == 0) {
             $from .= ' listcatid=' . $catid;
         } else {
-            $array_cat = array( );
+            $array_cat = array();
             $array_cat = GetCatidInParent($catid);
             $from .= ' listcatid IN (' . implode(',', $array_cat) . ')';
         }
@@ -177,7 +225,7 @@ if ($checkss == md5(session_id())) {
         $from .= ' publtime <= ' . $to . '';
     }
 }
-if (! empty($where)) {
+if (!empty($where)) {
     $from .= ' WHERE ' . $where;
 }
 
@@ -295,13 +343,18 @@ $xtpl->assign('BASE_URL_NUM_SELL', $base_url_num_sell);
 
 $base_url = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&per_page=' . $per_page . '&catid=' . $catid . '&amp;stype=' . $stype . '&q=' . $q . '&checkss=' . $checkss . '&ordername=' . $ordername . '&order=' . $order;
 $ord_sql = ($ordername == 'title' ? NV_LANG_DATA . '_title' : $ordername) . ' ' . $order;
-$db->sqlreset()->select('id, listcatid, user_id, homeimgfile, homeimgthumb, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, hitstotal, status, edittime, publtime, exptime, product_number, product_price, money_unit, product_unit, num_sell, username')->from($from)->order($ord_sql)->limit($per_page)->offset(($page - 1) * $per_page);
+$db->sqlreset()
+    ->select('id, listcatid, user_id, homeimgfile, homeimgthumb, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, hitstotal, status, edittime, publtime, exptime, product_number, product_price, money_unit, product_unit, num_sell, username, weight')
+    ->from($from)
+    ->order($ord_sql)
+    ->limit($per_page)
+    ->offset(($page - 1) * $per_page);
 $result = $db->query($db->sql());
 
 $theme = $site_mods[$module_name]['theme'] ? $site_mods[$module_name]['theme'] : $global_config['site_theme'];
 $a = 0;
 
-while (list($id, $listcatid, $admin_id, $homeimgfile, $homeimgthumb, $title, $alias, $hitstotal, $status, $edittime, $publtime, $exptime, $product_number, $product_price, $money_unit, $product_unit, $num_sell, $username) = $result->fetch(3)) {
+while (list ($id, $listcatid, $admin_id, $homeimgfile, $homeimgthumb, $title, $alias, $hitstotal, $status, $edittime, $publtime, $exptime, $product_number, $product_price, $money_unit, $product_unit, $num_sell, $username, $weight) = $result->fetch(3)) {
     $publtime = nv_date('H:i d/m/y', $publtime);
     $edittime = nv_date('H:i d/m/y', $edittime);
     $title = nv_clean60($title);
@@ -354,7 +407,8 @@ while (list($id, $listcatid, $admin_id, $homeimgfile, $homeimgthumb, $title, $al
         'imghome' => $imghome,
         'imghome_info' => nv_is_image(NV_ROOTDIR . '/' . $imghome),
         'link_edit' => nv_link_edit_page($id),
-        'link_delete' => nv_link_delete_page($id)
+        'link_delete' => nv_link_delete_page($id),
+        'weight' => $weight
     ));
 
     if ($num_sell > 0) {
@@ -366,6 +420,10 @@ while (list($id, $listcatid, $admin_id, $homeimgfile, $homeimgthumb, $title, $al
     // Hien thi nhap kho
     if ($pro_config['active_warehouse']) {
         $xtpl->parse('main.loop.warehouse_icon');
+    }
+
+    if ($pro_config['order_by']) {
+        $xtpl->parse('main.loop.sort');
     }
 
     $xtpl->parse('main.loop');
@@ -384,7 +442,7 @@ if ($pro_config['active_warehouse']) {
     $array_list_action['warehouse'] = $lang_module['warehouse'];
 }
 
-while (list($catid_i, $title_i) = each($array_list_action)) {
+while (list ($catid_i, $title_i) = each($array_list_action)) {
     $xtpl->assign('ACTION', array(
         'key' => $catid_i,
         'title' => $title_i

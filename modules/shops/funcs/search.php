@@ -7,8 +7,7 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
-if (! defined('NV_IS_MOD_SHOPS')) {
+if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
 
@@ -70,7 +69,7 @@ if (strlen($key) >= NV_MIN_SEARCH_LENGTH) {
     $where = "AND ( product_code LIKE '%" . $dbkey . "%' OR " . NV_LANG_DATA . "_title LIKE '%" . $dbkey . "%' OR " . NV_LANG_DATA . "_bodytext LIKE '%" . $dbkey . "%' ) ";
 
     if ($pro_config['sortdefault'] == 0) {
-        $orderby = 'id DESC';
+        $orderby = nv_build_order('t1');
     } elseif ($pro_config['sortdefault'] == 1) {
         $orderby = 'product_price ASC, t1.id DESC';
     } else {
@@ -98,18 +97,25 @@ if (strlen($key) >= NV_MIN_SEARCH_LENGTH) {
     $table_search = $db_config['prefix'] . '_' . $module_data . '_rows';
 
     // Fetch Limit
-    $db->sqlreset()->select('COUNT(*)')->from($table_search)->where('status =1 ' . $where);
+    $db->sqlreset()
+        ->select('COUNT(*)')
+        ->from($table_search)
+        ->where('status =1 ' . $where);
 
-    $numRecord = $db->query($db->sql())->fetchColumn();
+    $numRecord = $db->query($db->sql())
+        ->fetchColumn();
 
-    $db->select('id, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, listcatid, ' . NV_LANG_DATA . '_hometext, publtime, homeimgfile, homeimgthumb')->order($orderby)->limit($per_pages)->offset(($page - 1) * $per_page);
+    $db->select('id, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, listcatid, ' . NV_LANG_DATA . '_hometext, publtime, homeimgfile, homeimgthumb')
+        ->order($orderby)
+        ->limit($per_pages)
+        ->offset(($page - 1) * $per_page);
 
     $result = $db->query($db->sql());
 
     $array_content = array();
     $url_link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=';
 
-    while (list($id, $title, $alias, $listcatid, $hometext, $publtime, $homeimgfile, $homeimgthumb) = $result->fetch(3)) {
+    while (list ($id, $title, $alias, $listcatid, $hometext, $publtime, $homeimgfile, $homeimgthumb) = $result->fetch(3)) {
         if ($homeimgthumb == 1) {
             //image thumb
 
@@ -135,7 +141,7 @@ if (strlen($key) >= NV_MIN_SEARCH_LENGTH) {
             'listcatid' => $listcatid,
             'hometext' => $hometext,
             'publtime' => $publtime,
-            'homeimgthumb' => $thumb,
+            'homeimgthumb' => $thumb
         );
     }
     $contents .= call_user_func('search_result_theme', $key, $numRecord, $per_pages, $pages, $array_content, $url_link, $catid);

@@ -717,3 +717,9 @@ $lang_module['ad_block_top'] = 'Block bên trên chuyên mục';
 $lang_module['ad_block_bot'] = 'Block bên dưới chuyên mục';
 
 $lang_module['error_cat_update'] = 'Tồn tại thuộc tính <strong>%s</strong> của loại sản phẩm bắt buộc chọn khi nhập nên không thể thay đổi';
+
+$lang_module['order_by'] = 'Sắp xếp sản phẩm';
+$lang_module['order_by_0'] = 'Sắp xếp theo thời gian đăng';
+$lang_module['order_by_1'] = 'Sắp xếp tùy biến, đánh số tăng dần';
+$lang_module['order_by_number'] = 'STT sắp xếp hiện tại';
+$lang_module['order_by_new'] = 'STT sắp xếp mới';

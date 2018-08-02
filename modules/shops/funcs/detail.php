@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
@@ -207,7 +206,7 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
         ->select(' id, listcatid, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, homeimgfile, homeimgthumb, addtime, publtime, product_code, product_number, product_price, price_config, money_unit, discount_id, showprice, ' . NV_LANG_DATA . '_hometext,' . NV_LANG_DATA . '_gift_content, gift_from, gift_to')
         ->from($db_config['prefix'] . '_' . $module_data . '_rows')
         ->where('id!=' . $id . ' AND listcatid = ' . $data_content['listcatid'] . ' AND status=1')
-        ->order('ID DESC')
+        ->order(nv_build_order())
         ->limit($pro_config['per_row'] * 2);
     $result = $db->query($db->sql());
 

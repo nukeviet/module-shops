@@ -54,7 +54,7 @@ if (! function_exists('nv_product_center')) {
             } else {
                 $orderby = 't1.product_price DESC, t1.id DESC';
             }
-            
+
             $db->sqlreset()
                 ->select('t1.id, t1.listcatid, t1.' . NV_LANG_DATA . '_title AS title, t1.' . NV_LANG_DATA . '_alias AS alias, t1.homeimgfile, t1.homeimgthumb , t1.homeimgalt, t1.showprice, t1.discount_id')
                 ->from($db_config['prefix'] . '_' . $module_data . '_rows t1')

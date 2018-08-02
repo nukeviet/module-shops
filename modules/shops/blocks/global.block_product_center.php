@@ -185,10 +185,9 @@ if (! nv_function_exists('nv_global_product_center')) {
         $xtpl->assign('THEME_TEM', NV_BASE_SITEURL . 'themes/' . $block_theme);
         $xtpl->assign('JS_PATH', NV_BASE_SITEURL . 'themes/default/js');
         $xtpl->assign('NUMVIEW', $num_view);
-        //$xtpl->assign( 'WIDTH', $pro_config['homewidth'] );
 
         if ($pro_config['sortdefault'] == 0) {
-            $orderby = 't1.id DESC';
+            $orderby = ($pro_config['order_by'] ? ' weight' : ' publtime') . ' DESC';
         } elseif ($pro_config['sortdefault'] == 1) {
             $orderby = 't1.product_price ASC, t1.id DESC';
         } else {

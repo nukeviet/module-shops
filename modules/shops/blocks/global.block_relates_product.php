@@ -7,7 +7,6 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
-
 if (!defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
@@ -154,7 +153,7 @@ if (!nv_function_exists('nv_relates_product')) {
             }
 
             $pro_config = $module_config[$module];
-            if (! empty($pro_config)) {
+            if (!empty($pro_config)) {
                 $temp = explode('x', $pro_config['image_size']);
                 $pro_config['homewidth'] = $temp[0];
             }
@@ -195,7 +194,7 @@ if (!nv_function_exists('nv_relates_product')) {
             ->from($db_config['prefix'] . '_' . $mod_data . '_rows t1')
             ->join('INNER JOIN ' . $db_config['prefix'] . '_' . $mod_data . '_block t2 ON t1.id = t2.id')
             ->where('t2.bid= ' . $block_config['blockid'] . ' AND t1.status =1')
-            ->order('t1.addtime DESC, t2.weight ASC')
+            ->order(nv_build_order('t1') . ', t2.weight ASC')
             ->limit($block_config['numrow']);
 
         $list = $nv_Cache->db($db->sql(), 'id', $module);

@@ -588,6 +588,15 @@ function IsNumberInt(str) {
 	return str;
 }
 
+function nv_sort_content(id, w) {
+    $("#order_by").dialog("open");
+    $("#order_by_title").text($("#id_" + id).attr("title"));
+    $("#order_by_id").val(id, w);
+    $("#order_by_number").val(w);
+    $("#order_by_new").val(w);
+    return false;
+}
+
 $.fn.clearForm = function() {
 	return this.each(function() {
 		var type = this.type, tag = this.tagName.toLowerCase();
