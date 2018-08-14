@@ -230,7 +230,7 @@ if (empty($contents)) {
             nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
         }
 
-        $contents = call_user_func('view_home_cat', $data_content, $sorts);
+        $contents = call_user_func('nv_template_view_home', $data_content, $sorts);
     } else {
         // Fetch Limit
         if ($global_array_shops_cat[$catid]['numsubcat'] == 0) {
