@@ -3,7 +3,7 @@
 	<div class="panel-body">
 		<div class="row form-review">
 			<div class="col-xs-24 col-sm-11 border border-right">
-				<form id="review_form">
+				<form id="review_form" <!-- BEGIN: recaptcha3 --> data-recaptcha3="1"<!-- END: recaptcha3 -->>
 					<div class="form-group">
 						<input type="text" class="form-control" name="sender" value="{SENDER}" placeholder="{LANG.profile_user_name}">
 					</div>
@@ -19,19 +19,21 @@
 					<div class="form-group">
 						<textarea name="comment" class="form-control" placeholder="{LANG.rate_comment}"></textarea>
 					</div>
-					<!-- BEGIN: captcha -->
-					<div class="form-group">
-						<input type="text" maxlength="6" value="" id="fcode_iavim" name="fcode" class="form-control pull-left" style="width: 40%" placeholder="{LANG.rate_captcha}" />
-						<div class="pull-left" style="margin-top: 5px">
-							&nbsp;&nbsp;<img src="{NV_BASE_SITEURL}index.php?scaptcha=captcha" width="{GFX_WIDTH}" height="{GFX_HEIGHT}" alt="{LANG.captcha}" class="captchaImg display-inline-block" />
-							&nbsp;<em class="fa fa-pointer fa-refresh fa-lg" onclick="change_captcha('#fcode_iavim');">&nbsp;</em>
-						</div>
-						<div class="clear"></div>
-					</div>
-					<!-- END: captcha -->
-					<div class="form-group">
-						<input type="submit" class="btn btn-primary" value="{LANG.rate}" />
-					</div>
+                    <!-- BEGIN: recaptcha -->
+                    <div class="form-group">
+                        <div class="nv-recaptcha-default"><div id="{RECAPTCHA_ELEMENT}" data-toggle="recaptcha" data-pnum="4" data-btnselector="[type=submit]"></div></div>
+                    </div>
+                    <!-- END: recaptcha -->
+                    <!-- BEGIN: captcha -->
+                    <div class="form-group">
+                        <div class="middle text-center clearfix">
+                            <img class="captchaImg display-inline-block" src="{SRC_CAPTCHA}" width="{GFX_WIDTH}" height="{GFX_HEIGHT}" alt="{N_CAPTCHA}" title="{N_CAPTCHA}" /><em class="fa fa-pointer fa-refresh margin-left margin-right" title="{CAPTCHA_REFRESH}" onclick="change_captcha('.bsec');"></em><input type="text" style="width:100px;" class="bsec required form-control display-inline-block" name="fcode" value="" maxlength="{GFX_MAXLENGTH}" placeholder="{GLANG.securitycode}" data-pattern="/^(.){{GFX_MAXLENGTH},{GFX_MAXLENGTH}}$/" onkeypress="validErrorHidden(this);" data-mess="{GLANG.securitycodeincorrect}" />
+                        </div>
+                    </div>
+                    <!-- END: captcha -->
+                    <div class="form-group text-center">
+                        <input type="submit" class="btn btn-primary" value="{LANG.rate}" />
+                    </div>
 				</form>
 			</div>
 			<div class="col-xs-24 col-sm-13 border">
@@ -55,26 +57,32 @@
 		};
 	});
 
-	$('#review_form').submit(function() {
+	$('#review_form').submit(function(e) {
+        //e.preventDefault();
 		var sender = $(this).find('input[name="sender"]').val();
 		var comment = $(this).find('textarea[name="comment"]').val();
-		var fcode = $(this).find('input[name="fcode"]').val();
-		if(rating !=0) {
-		    if(sender == '') {
-			    $('input[name="sender"]').focus();
-			}
-			else if(fcode == '') {
-			    $('input[name="fcode"]').focus();
-			}
-		}		
-		
+		if ($('input[name="fcode"]').length) {
+            var fcaptcha = $('input[name="fcode"]').val();
+            if(rating !=0) {
+                if(sender == '') {
+                    $('input[name="sender"]').focus();
+                }
+                else if(fcaptcha == '') {
+                    $('input[name="fcode"]').focus();
+                }
+            }
+            var datapost = 'sender=' + sender + '&rating=' + rating + '&comment=' + comment + '&fcaptcha=' + fcaptcha; 
+        } else {
+            var fcaptcha = $('#g-recaptcha-response-1').val();
+            var datapost = 'sender=' + sender + '&rating=' + rating + '&comment=' + comment + '&fcaptcha=' + fcaptcha;
+        }	
 		$.ajax({
 			type : "POST",
 			url : '{LINK_REVIEW}' + '&nocache=' + new Date().getTime(),
-			data : 'sender=' + sender + '&rating=' + rating + '&comment=' + comment + '&fcode=' + fcode,
+			data : datapost,
 			success : function(data) {
-			
-			var s = data.split('_');
+                console.log(data)
+                var s = data.split('_');
 				alert(s[1]);
 				if (s[0] == 'OK') {
 					$('#review_form input[name="sender"], #review_form input[name="fcode"], #review_form textarea').val('');

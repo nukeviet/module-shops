@@ -96,7 +96,7 @@
                 <!-- BEGIN: loop -->
                 <tr {bg}>
                     <td align="center"> {pro_no} </td>
-                    <td><a title="{product_name}" href="{link_pro}">{product_name}</a><!-- BEGIN: display_group -->
+                    <td><a title="{product_name}" href="{link_pro}" rel="dofollow">{product_name}</a><!-- BEGIN: display_group -->
                     <p>
                         <!-- BEGIN: group -->
                         <span class="show"><span class="text-muted">{group.parent_title}: <strong>{group.title}</strong></span></span>
@@ -105,7 +105,7 @@
                     <!-- BEGIN: sub_group -->
                     <td>
                         <!-- BEGIN: loop -->
-                        <a href="{SUB_GROUP.link}" title="{SUB_GROUP.title}">{SUB_GROUP.title}</a>
+                        <a href="{SUB_GROUP.link}" title="{SUB_GROUP.title}" rel="dofollow">{SUB_GROUP.title}</a>
                         <!-- END: loop -->
                     </td>
                     <!-- END: sub_group -->
@@ -216,7 +216,7 @@
             <!-- BEGIN: cancel_url -->
             <br />
             <p class="text-center">
-                <a href="{cancel_url}" title="{LANG.product_payment_cancel}">[{LANG.product_payment_cancel}]</a>
+                <a href="{cancel_url}" title="{LANG.product_payment_cancel}" rel="dofollow">[{LANG.product_payment_cancel}]</a>
             </p>
             <!-- END: cancel_url -->
         </div>

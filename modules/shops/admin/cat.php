@@ -99,7 +99,7 @@ if (!empty($savecat)) {
 
     $image = $nv_Request->get_string('image', 'post', '');
     if (is_file(NV_DOCUMENT_ROOT . $image)) {
-        $lu = strlen(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
+        $lu = strlen(NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
         $data['image'] = substr($image, $lu);
     } else {
         $data['image'] = '';
@@ -172,7 +172,6 @@ if (!empty($savecat)) {
         }
     } elseif ($data['catid'] > 0 and $data['title'] != '') {
         try {
-
             if ($data['parentid'] != $data['parentid_old']) {
                 //Khi loại sản phẩm đó đã có sản phẩm chọn thì mọi cấu hình của loại sản phẩm đó cần được giữ nguyên.
                 $count_cat_items = $db->query('SELECT COUNT(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE listcatid =' . $data['catid'])->fetchcolumn();
@@ -317,7 +316,7 @@ $lang_global['title_suggest_max'] = sprintf($lang_global['length_suggest_max'], 
 $lang_global['description_suggest_max'] = sprintf($lang_global['length_suggest_max'], 160);
 
 if (!empty($data['image']) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $data['image'])) {
-    $data['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $data['image'];
+    $data['image'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $data['image'];
     $currentpath = dirname($data['image']);
 }
 $data['description'] = nv_br2nl($data['description']);

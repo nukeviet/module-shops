@@ -26,8 +26,8 @@ function getgroup_ckhtml($subgroupid_i, $array_groupid_in_row)
             }
 
             $image = '';
-            if (!empty($data_group['image']) and file_exists(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $data_group['image'])) {
-                $image = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $data_group['image'];
+            if (!empty($data_group['image']) and file_exists(NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $data_group['image'])) {
+                $image = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $data_group['image'];
                 $image = '<img src="' . $image . '" style="margin-top: -3px; max-width: 16px; max-height: 16px" alt="' . $groupinfo_i['title'] . '" />';
             }
             $contents_temp .= '<label class="col-xs-24 col-sm-4"><input type="checkbox" name="groupids[]" value="' . $groupid_i . '"' . $ch . ' />' . $image . $data_group['title'] . '</label>';
@@ -43,7 +43,7 @@ $array_groupid_in_row = array();
 if (!empty($inrow)) {
     $inrow = nv_base64_decode($inrow);
     $array_groupid_in_row = unserialize($inrow);
-} else if (!empty($id)) {
+} elseif (!empty($id)) {
     $_result = $db->query('SELECT group_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items WHERE pro_id = ' . $id);
     while ($_row = $_result->fetch()) {
         $array_groupid_in_row[] = $_row['group_id'];
@@ -67,8 +67,9 @@ if ($cid > 0) {
     foreach ($arr_groupid as $key => $value) {
         $dataarr = array();
         foreach ($arr as $keyar => $valuearr) {
-            if ($value[$valuearr] == $valuearr)
+            if ($value[$valuearr] == $valuearr) {
                 $dataarr[$valuearr] = $valuearr;
+            }
         }
         if (!empty($dataarr)) {
             $arr_groupid[$key] = $dataarr;

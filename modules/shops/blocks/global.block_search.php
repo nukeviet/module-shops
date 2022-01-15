@@ -59,12 +59,12 @@ if (!function_exists('nv_search_product')) {
         }
 
         if ($module != $module_name) {
-            $my_head .= '<script type="text/javascript" src="' . NV_BASE_SITEURL . 'modules/' . $mod_file . '/js/user.js"></script>';
+            $my_head .= '<script type="text/javascript" src="' . NV_STATIC_URL . 'modules/' . $mod_file . '/js/user.js"></script>';
         }
 
         $xtpl = new XTemplate('block.search.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/' . $mod_file);
         $xtpl->assign('LANG', $lang_module);
-        $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+        $xtpl->assign('NV_STATIC_URL', NV_STATIC_URL);
         $xtpl->assign('MODULE_NAME', $module);
 
         $sql = 'SELECT catid, lev, ' . NV_LANG_DATA . '_title AS title FROM ' . $db_config['prefix'] . '_' . $mod_data . '_catalogs ORDER BY sort ASC';

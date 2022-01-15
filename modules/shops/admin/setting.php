@@ -165,7 +165,7 @@ foreach ($array_home_data as $index => $value) {
     $xtpl->assign('HOME_DATA', array(
         'index' => $index,
         'value' => $value,
-        'selected' => $index == $data['home_data'] ? 'selected="selected"' : ''
+        'selected' => $index == isset($data['home_data']) ? 'selected="selected"' : ''
     ));
     $xtpl->parse('main.home_data_loop');
 }

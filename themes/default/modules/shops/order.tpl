@@ -3,7 +3,7 @@
 <link href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/select2/select2.min.css" type="text/css" rel="stylesheet" />
 <div class="block clearfix">
     <div class="step_bar alert alert-success clearfix">
-        <a class="step step_disable" title="{LANG.cart_check_cart}" href="{LINK_CART}"><span>1</span>{LANG.cart_check_cart}</a> <a class="step step_current" title="{LANG.cart_order}" href="#"><span>2</span>{LANG.cart_order}</a>
+        <a class="step step_disable" title="{LANG.cart_check_cart}" href="{LINK_CART}" rel="dofollow"><span>1</span>{LANG.cart_check_cart}</a> <a class="step step_current" title="{LANG.cart_order}" href="#"><span>2</span>{LANG.cart_order}</a>
     </div>
     <p class="alert alert-info">{LANG.order_info}</p>
     <!-- BEGIN: edit_order -->
@@ -167,7 +167,7 @@
                     <!-- BEGIN: rows -->
                     <tr>
                         <td align="center">{pro_no}</td>
-                        <td><a title="{title_pro}" href="{link_pro}">{title_pro}</a> <!-- BEGIN: display_group -->
+                        <td><a title="{title_pro}" href="{link_pro}" rel="dofollow">{title_pro}</a> <!-- BEGIN: display_group -->
                             <p>
                                 <!-- BEGIN: group -->
                                 <span class="show"><span class="text-muted">{group.parent_title}: <strong>{group.title}</strong></span></span>
@@ -175,7 +175,7 @@
                             </p> <!-- END: display_group --></td>
                         <!-- BEGIN: sub_group -->
                         <td>
-                            <!-- BEGIN: loop --> <a href="{SUB_GROUP.link}" title="{SUB_GROUP.title}">{SUB_GROUP.title}</a> <!-- END: loop -->
+                            <!-- BEGIN: loop --> <a href="{SUB_GROUP.link}" title="{SUB_GROUP.title}" rel="dofollow">{SUB_GROUP.title}</a> <!-- END: loop -->
                         </td>
                         <!-- END: sub_group -->
                         <!-- BEGIN: price2 -->

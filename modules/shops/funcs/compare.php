@@ -70,7 +70,7 @@ if ($nv_Request->isset_request('compare_del', 'post') and $nv_Request->isset_req
     nv_htmlOutput('OK');
 }
 
-$compare_url_rewrite = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=compare';
+$compare_url_rewrite = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=compare';
 $compare_url_rewrite = nv_url_rewrite($compare_url_rewrite, true);
 if ($_SERVER['REQUEST_URI'] != $compare_url_rewrite and NV_MY_DOMAIN . $_SERVER['REQUEST_URI'] != $compare_url_rewrite) {
     nv_redirect_location($compare_url_rewrite);
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_URI'] != $compare_url_rewrite and NV_MY_DOMAIN . $_SERVER[
 
 $array_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
 $array_id = unserialize($array_id);
-$link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
+$link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 
 if (! empty($array_id)) {
     foreach ($array_id as $array_id_i) {
@@ -90,12 +90,12 @@ if (! empty($array_id)) {
             if ($homeimgthumb == 1) {
                 //image thumb
 
-                $homeimgthumbs = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfiles1;
-                $homeimgthumbs = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfiles1;
+                $homeimgthumbs = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfiles1;
+                $homeimgthumbs = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfiles1;
             } elseif ($homeimgthumb == 2) {
                 //image file
 
-                $homeimgthumbs = $homeimgfiles1 = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfiles1;
+                $homeimgthumbs = $homeimgfiles1 = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfiles1;
             } elseif ($homeimgthumb == 3) {
                 //image url
 
@@ -103,7 +103,7 @@ if (! empty($array_id)) {
             } else {
                 //no image
 
-                $homeimgthumbs = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                $homeimgthumbs = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
             }
 
             $data_pro[] = array(
@@ -127,7 +127,7 @@ if (! empty($array_id)) {
         }
     }
 } else {
-    nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name, true);
+    nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name, true);
 }
 
 $contents = compare($data_pro);

@@ -101,7 +101,7 @@ if ($nv_Request->isset_request('submit', 'post')) {
     if (nv_is_url($data['path'])) {
         $data['path'] = $data['path'];
     } else {
-        $lu = strlen(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/files/');
+        $lu = strlen(NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/files/');
         $data['path'] = substr($data['path'], $lu);
         $real_file = NV_ROOTDIR . '/' . NV_UPLOADS_DIR . '/' . $module_upload .'/files/'. $data['path'];
         if (file_exists($real_file) and ($filesize = filesize($real_file)) != 0) {
@@ -224,7 +224,7 @@ $xtpl->assign('GLANG', $lang_global);
 $xtpl->assign('NV_LANG_VARIABLE', NV_LANG_VARIABLE);
 $xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);
 $xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
-$xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+$xtpl->assign('NV_STATIC_URL', NV_STATIC_URL);
 $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('NV_UPLOADS_DIR', NV_UPLOADS_DIR);
@@ -237,7 +237,7 @@ $xtpl->assign('ACTION', $base_url);
 $xtpl->assign('POPUP', $popup ? 'true' : 'false');
 
 if (! empty($data['path']) and file_exists(NV_ROOTDIR . '/' . NV_UPLOADS_DIR . '/' . $module_upload .'/files/'. $data['path'])) {
-    $data['path'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/files/' . $data['path'];
+    $data['path'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/files/' . $data['path'];
 }
 $xtpl->assign('FILE_PATH', $data['path']);
 

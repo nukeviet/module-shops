@@ -112,7 +112,7 @@ if (!function_exists('nv_view_product_price')) {
 
         $xtpl = new XTemplate('block.price_view.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/' . $mod_file);
         $xtpl->assign('LANG', $lang_module);
-        $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+        $xtpl->assign('NV_STATIC_URL', NV_STATIC_URL);
         $xtpl->assign('TEMPLATE', $block_theme);
         $xtpl->assign('MODULE_FILE', $mod_file);
 
@@ -125,14 +125,14 @@ if (!function_exists('nv_view_product_price')) {
 
             if ($val < $block_config['price_end']) {
                 $title = '<span class="label label-success">' . numoney_to_strmoney($price1, $mod_file) . '</span> <span class="glyphicon glyphicon-arrow-right"></span> ' . '<span class="label label-success">' . numoney_to_strmoney($price2, $mod_file) . '</span>';
-                $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=search_result&price1=' . $price1 . '&price2=' . $price2 . $recata;
+                $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=search_result&price1=' . $price1 . '&price2=' . $price2 . $recata;
                 $arr_price = array(
                     'title' => $title,
                     'link' => $link
                 );
             } elseif ($val >= $block_config['price_end']) {
                 $title = '<span class="label label-warning">' . $lang_module['price2_over'] . ' ' . numoney_to_strmoney($val, $mod_file) . '</span>';
-                $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=search_result&price2=' . $val . $recata;
+                $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=search_result&price2=' . $val . $recata;
                 $arr_price = array(
                     'title' => $title,
                     'link' => $link

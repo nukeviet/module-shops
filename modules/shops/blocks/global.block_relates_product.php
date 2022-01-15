@@ -123,7 +123,7 @@ if (!nv_function_exists('nv_relates_product')) {
                     'parentid' => $row['parentid'],
                     'title' => $row['title'],
                     'alias' => $row['alias'],
-                    'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $row['alias'],
+                    'link' => NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $row['alias'],
                     'viewcat' => $row['viewcat'],
                     'numsubcat' => $row['numsubcat'],
                     'subcatid' => $row['subcatid'],
@@ -140,12 +140,12 @@ if (!nv_function_exists('nv_relates_product')) {
 
             // Css
             if (file_exists(NV_ROOTDIR . '/themes/' . $block_theme . '/css/' . $mod_file . '.css')) {
-                $my_head .= '<link rel="StyleSheet" href="' . NV_BASE_SITEURL . 'themes/' . $block_theme . '/css/' . $mod_file . '.css" type="text/css" />';
+                $my_head .= '<link rel="StyleSheet" href="' . NV_STATIC_URL . 'themes/' . $block_theme . '/css/' . $mod_file . '.css" type="text/css" />';
             }
 
             // js
             if (file_exists(NV_ROOTDIR . '/themes/' . $block_theme . '/js/' . $mod_file . '.js')) {
-                $my_head .= '<script src="' . NV_BASE_SITEURL . 'themes/' . $block_theme . '/js/' . $mod_file . '.js"></script>';
+                $my_head .= '<script src="' . NV_STATIC_URL . 'themes/' . $block_theme . '/js/' . $mod_file . '.js"></script>';
             }
 
             // Language
@@ -184,7 +184,7 @@ if (!nv_function_exists('nv_relates_product')) {
             }
         }
 
-        $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=';
+        $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=';
 
         $xtpl = new XTemplate('block.others_product.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/' . $mod_file);
         $xtpl->assign('LANG', $lang_module);
@@ -207,11 +207,11 @@ if (!nv_function_exists('nv_relates_product')) {
             if ($row['homeimgthumb'] == 1) {
                 // image thumb
 
-                $src_img = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
+                $src_img = NV_STATIC_URL . NV_FILES_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
             } elseif ($row['homeimgthumb'] == 2) {
                 // image file
 
-                $src_img = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
+                $src_img = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
             } elseif ($row['homeimgthumb'] == 3) {
                 // image url
 
@@ -219,7 +219,7 @@ if (!nv_function_exists('nv_relates_product')) {
             } else {
                 // no image
 
-                $src_img = NV_BASE_SITEURL . 'themes/' . $block_theme . '/images/shops/no-image.jpg';
+                $src_img = NV_STATIC_URL . 'themes/' . $block_theme . '/images/shops/no-image.jpg';
             }
 
             $xtpl->assign('id', $row['id']);

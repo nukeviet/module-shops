@@ -25,7 +25,7 @@ if (($cache = $nv_Cache->getItem($module_name, $cacheFile)) != false and filemti
     $url = array();
 
     while (list($id, $catid_i, $edittime, $alias) = $result->fetch(3)) {
-        $url[] = array( 'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid_i]['alias'] . '/' . $alias . $global_config['rewrite_exturl'], 'publtime' => $edittime );
+        $url[] = array( 'link' => NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid_i]['alias'] . '/' . $alias . $global_config['rewrite_exturl'], 'publtime' => $edittime );
     }
 
     $cache = serialize($url);

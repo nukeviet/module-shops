@@ -16,7 +16,7 @@ $channel = array();
 $items = array();
 
 $channel['title'] = $module_info['custom_title'];
-$channel['link'] = NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+$channel['link'] = NV_MY_DOMAIN . NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
 $channel['description'] = ! empty($module_info['description']) ? $module_info['description'] : $global_config['site_description'];
 
 $catid = 0;
@@ -32,7 +32,7 @@ if (isset($array_op[1])) {
 }
 if (! empty($catid)) {
     $channel['title'] = $module_info['custom_title'] . ' - ' . $global_array_shops_cat[$catid]['title'];
-    $channel['link'] = NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $alias_cat_url;
+    $channel['link'] = NV_MY_DOMAIN . NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $alias_cat_url;
     $channel['description'] = $global_array_shops_cat[$catid]['description'];
 
     $db->sqlreset()->select('id, listcatid, publtime, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_hometext, homeimgfile')->from($db_config['prefix'] . '_' . $module_data . '_rows')->where('listcatid= ' . $catid . ' AND status =1')->order('publtime DESC')->limit(30);
@@ -50,11 +50,11 @@ if ($module_info['rss']) {
         if ($homeimgthumb == 1) {
             //image thumb
 
-            $rimages = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
+            $rimages = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
         } elseif ($homeimgthumb == 2) {
             //image file
 
-            $rimages = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+            $rimages = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
         } elseif ($homeimgthumb == 3) {
             //image url
 
@@ -69,7 +69,7 @@ if ($module_info['rss']) {
 
         $items[] = array(
             'title' => $title,
-            'link' => NV_MY_DOMAIN . NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $catalias . '/' . $alias . $global_config['rewrite_exturl'],
+            'link' => NV_MY_DOMAIN . NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $catalias . '/' . $alias . $global_config['rewrite_exturl'],
             'guid' => $module_name . '_' . $id,
             'description' => $rimages . $hometext,
             'pubdate' => $publtime
@@ -77,5 +77,6 @@ if ($module_info['rss']) {
     }
 }
 
-nv_rss_generate($channel, $items);
+$atomlink = NV_STATIC_URL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=" . $module_info['alias']['rss'];
+nv_rss_generate($channel, $items, $atomlink);
 die();

@@ -119,7 +119,7 @@ $array_info[] = array(
 $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
 
 $xtpl->assign('LANG', $lang_module);
-$xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+$xtpl->assign('NV_STATIC_URL', NV_STATIC_URL);
 
 foreach ($array_info as $info) {
     $xtpl->assign('KEY', $info);

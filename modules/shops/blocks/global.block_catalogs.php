@@ -84,7 +84,7 @@ if (!function_exists('nv_pro_catalogs')) {
                     "parentid" => $row['parentid'],
                     "title" => $row['title'],
                     "alias" => $row['alias'],
-                    "link" => NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module . "&amp;" . NV_OP_VARIABLE . "=" . $row['alias'],
+                    "link" => NV_STATIC_URL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module . "&amp;" . NV_OP_VARIABLE . "=" . $row['alias'],
                     "viewcat" => $row['viewcat'],
                     "numsubcat" => $row['numsubcat'],
                     "subcatid" => $row['subcatid'],

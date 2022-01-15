@@ -8,7 +8,9 @@
  * @Createdate 04/18/2017 09:47
  */
 
-if (!defined('NV_MAINFILE')) die('Stop!!!');
+if (!defined('NV_MAINFILE')) {
+    die('Stop!!!');
+}
 
 if (!nv_function_exists('nv_global_bxproduct_center')) {
 
@@ -200,7 +202,7 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
             } else {
                 $block_css = 'default';
             }
-            $my_head .= '<link rel="stylesheet" href="' . NV_BASE_SITEURL . 'themes/' . $block_css . '/css/' . $mod_file . '.css' . '" type="text/css" />';
+            $my_head .= '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $block_css . '/css/' . $mod_file . '.css' . '" type="text/css" />';
 
             // Language
             if (file_exists(NV_ROOTDIR . '/modules/' . $mod_file . '/language/' . NV_LANG_DATA . '.php')) {
@@ -215,7 +217,7 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
                     'parentid' => $row['parentid'],
                     'title' => $row['title'],
                     'alias' => $row['alias'],
-                    'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $row['alias'],
+                    'link' => NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $row['alias'],
                     'viewcat' => $row['viewcat'],
                     'numsubcat' => $row['numsubcat'],
                     'subcatid' => $row['subcatid'],
@@ -258,8 +260,8 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
 
         $xtpl = new XTemplate('block.bxproduct_center.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/' . $mod_file);
         $xtpl->assign('LANG', $lang_module);
-        $xtpl->assign('THEME_TEM', NV_BASE_SITEURL . 'themes/' . $block_theme);
-        $xtpl->assign('LIB_PATH', NV_BASE_SITEURL . 'themes/default/');
+        $xtpl->assign('THEME_TEM', NV_STATIC_URL . 'themes/' . $block_theme);
+        $xtpl->assign('LIB_PATH', NV_STATIC_URL . 'themes/default/');
         $xtpl->assign('AUTO', $auto);
         $xtpl->assign('MODE', $mode);
         $xtpl->assign('SPEED', $speed);
@@ -288,20 +290,17 @@ if (!nv_function_exists('nv_global_bxproduct_center')) {
 
         $list = $nv_Cache->db($db->sql(), '', $module);
         foreach ($list as $row) {
-            $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$row['listcatid']]['alias'] . '/' . $row['alias'] . $global_config['rewrite_exturl'];
+            $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$row['listcatid']]['alias'] . '/' . $row['alias'] . $global_config['rewrite_exturl'];
 
-            if ($row['homeimgthumb'] == 1) //image thumb
-{
-                $src_img = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
-            } elseif ($row['homeimgthumb'] == 2) //image file
-{
-                $src_img = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
-            } elseif ($row['homeimgthumb'] == 3) //image url
-{
+            if ($row['homeimgthumb'] == 1) { //image thumb
+                $src_img = NV_STATIC_URL . NV_FILES_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
+            } elseif ($row['homeimgthumb'] == 2) { //image file
+                $src_img = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
+            } elseif ($row['homeimgthumb'] == 3) { //image url
                 $src_img = $row['homeimgfile'];
             } else //no image
-{
-                $src_img = NV_BASE_SITEURL . 'themes/' . $block_theme . '/images/shops/no-image.jpg';
+            {
+                $src_img = NV_STATIC_URL . 'themes/' . $block_theme . '/images/shops/no-image.jpg';
             }
 
             $xtpl->assign('LINK', $link);

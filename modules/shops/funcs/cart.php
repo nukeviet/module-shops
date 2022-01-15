@@ -21,7 +21,7 @@ if (isset($_SESSION[$module_data . '_coupons']['code']) and isset($_SESSION[$mod
     $coupons_code = $_SESSION[$module_data . '_coupons']['code'];
     $coupons_check = $_SESSION[$module_data . '_coupons']['check'];
 }
-$link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
+$link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 
 // Coupons
 if ($nv_Request->isset_request('coupons_check', 'post')) {
@@ -59,7 +59,7 @@ if ($nv_Request->isset_request('coupons_clear', 'post')) {
     nv_htmlOutput('');
 }
 
-$base_url_rewrite = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
+$base_url_rewrite = nv_url_rewrite(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
 if ($_SERVER['REQUEST_URI'] != $base_url_rewrite and NV_MY_DOMAIN . $_SERVER['REQUEST_URI'] != $base_url_rewrite) {
     nv_redirect_location($base_url_rewrite);
 }
@@ -71,7 +71,7 @@ if (isset($_SESSION[$module_data . '_order_info']) and !empty($_SESSION[$module_
 
     if ($result->rowCount() == 0) {
         unset($_SESSION[$module_data . '_order_info']);
-        nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
+        nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
     }
 
     if ($_SESSION[$module_data . '_order_info']['checked']) {
@@ -168,16 +168,16 @@ if (!empty($_SESSION[$module_data . '_cart'])) {
             while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_number, $product_price, $unit, $money_unit) = $result->fetch(3)) {
                 if ($homeimgthumb == 1) {
                     //image thumb
-                    $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
+                    $thumb = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
                 } elseif ($homeimgthumb == 2) {
                     //image file
-                    $thumb = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+                    $thumb = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
                 } elseif ($homeimgthumb == 3) {
                     //image url
                     $thumb = $homeimgfile;
                 } else {
                     //no image
-                    $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                    $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
                 }
 
                 $group = $_SESSION[$module_data . '_cart'][$id . '_' . $array[1]]['group'];
@@ -227,16 +227,16 @@ if (!empty($_SESSION[$module_data . '_cart'])) {
                 $_SESSION[$module_data . '_cart'][$id . '_' . $array[1]]['order'] = 1;
             }
             if (empty($array_error_product_number) and $nv_Request->isset_request('cart_order', 'post')) {
-                nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order', true);
+                nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order', true);
             }
         }
     }
 } else {
-    nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
+    nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
 }
 
 if (empty($data_content)) {
-    nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
+    nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
 }
 
 $page_title = $lang_module['cart_title'];

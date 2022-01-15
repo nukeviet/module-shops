@@ -30,7 +30,7 @@ if (! function_exists('nv_product_center')) {
 
         $xtpl = new XTemplate('block.product_center.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
         $xtpl->assign('LANG', $lang_module);
-        $xtpl->assign('THEME_TEM', NV_BASE_SITEURL . 'themes/' . $module_info['template']);
+        $xtpl->assign('THEME_TEM', NV_STATIC_URL . 'themes/' . $module_info['template']);
         $xtpl->assign('WIDTH', $pro_config['homewidth']);
         $xtpl->assign('NUMVIEW', $num_view);
 
@@ -69,16 +69,16 @@ if (! function_exists('nv_product_center')) {
         }
 
         foreach ($array as $row) {
-            $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$row['listcatid']]['alias'] . '/' . $row['alias'] . $global_config['rewrite_exturl'];
+            $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$row['listcatid']]['alias'] . '/' . $row['alias'] . $global_config['rewrite_exturl'];
 
             if ($row['homeimgthumb'] == 1) {
                 //image thumb
 
-                $src_img = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
+                $src_img = NV_STATIC_URL . NV_FILES_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
             } elseif ($row['homeimgthumb'] == 2) {
                 //image file
 
-                $src_img = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
+                $src_img = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $site_mods[$module]['module_upload'] . '/' . $row['homeimgfile'];
             } elseif ($row['homeimgthumb'] == 3) {
                 //image url
 
@@ -86,7 +86,7 @@ if (! function_exists('nv_product_center')) {
             } else {
                 //no image
 
-                $src_img = NV_BASE_SITEURL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
+                $src_img = NV_STATIC_URL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
             }
 
             $xtpl->assign('LINK', $link);

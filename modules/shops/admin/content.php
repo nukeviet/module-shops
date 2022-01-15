@@ -351,7 +351,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     $array_otherimage = [];
     foreach ($otherimage as $otherimage_i) {
         if (!nv_is_url($otherimage_i) and file_exists(NV_DOCUMENT_ROOT . $otherimage_i)) {
-            $lu = strlen(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
+            $lu = strlen(NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
             $otherimage_i = substr($otherimage_i, $lu);
         } elseif (!nv_is_url($otherimage_i)) {
             $otherimage_i = '';
@@ -500,7 +500,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     // Xu ly anh minh hoa
     $rowcontent['homeimgthumb'] = 0;
     if (!nv_is_url($rowcontent['homeimgfile']) and is_file(NV_DOCUMENT_ROOT . $rowcontent['homeimgfile'])) {
-        $lu = strlen(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
+        $lu = strlen(NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
         $rowcontent['homeimgfile'] = substr($rowcontent['homeimgfile'], $lu);
         if (file_exists(NV_ROOTDIR . '/' . NV_FILES_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'])) {
             $rowcontent['homeimgthumb'] = 1;
@@ -864,8 +864,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
                     $tid = $db->insert_id("INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_tags_" . NV_LANG_DATA . " (
                         numpro, alias, description, bodytext, image, keywords
                     ) VALUES (
-                        1, :alias, '', '', '', :keyword)", "tid", $array_insert
-                    );
+                        1, :alias, '', '', '', :keyword)", "tid", $array_insert);
                 } else {
                     if ($alias != $alias_i) {
                         if (!empty($keywords_i)) {
@@ -915,7 +914,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
 }
 
 if (!empty($rowcontent['homeimgfile']) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'])) {
-    $rowcontent['homeimgfile'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'];
+    $rowcontent['homeimgfile'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'];
     $currentpath = dirname($rowcontent['homeimgfile']);
 }
 
@@ -981,7 +980,7 @@ $items = 0;
 if (!empty($otherimage)) {
     foreach ($otherimage as $otherimage_i) {
         if (!empty($otherimage_i) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $otherimage_i)) {
-            $otherimage_i = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $otherimage_i;
+            $otherimage_i = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $otherimage_i;
         }
         $data_otherimage_i = array(
             'id' => $items,
@@ -1246,7 +1245,7 @@ if (!$pro_config['active_warehouse']) {
 // Custom fiels
 if ($pro_config['template_active'] and $rowcontent['listcatid'] and !empty($global_array_shops_cat[$rowcontent['listcatid']]['form'])) {
     $form = $global_array_shops_cat[$rowcontent['listcatid']]['form'];
-    if (nv_is_file(NV_BASE_SITEURL . NV_ASSETS_DIR . '/' . $module_upload . '/files_tpl/cat_form_' . $form . '.tpl', NV_ASSETS_DIR . '/' . $module_upload)) {
+    if (nv_is_file(NV_STATIC_URL . NV_ASSETS_DIR . '/' . $module_upload . '/files_tpl/cat_form_' . $form . '.tpl', NV_ASSETS_DIR . '/' . $module_upload)) {
         $datacustom_form = nv_show_custom_form($rowcontent['id'], $form, $custom);
         $xtpl->assign('DATACUSTOM_FORM', $datacustom_form);
     }

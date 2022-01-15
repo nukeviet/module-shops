@@ -83,7 +83,7 @@ if (!function_exists('nv_filter_product')) {
             $space = '';
 
             if (!empty($arr_group['image'])) {
-                $arr_group['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $arr_group['image'];
+                $arr_group['image'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $arr_group['image'];
             }
 
             if ($arr_group['lev'] > 0) {
@@ -178,7 +178,7 @@ if (!function_exists('nv_filter_product')) {
                     $ext .= '&group_price=' . $array_price;
                 }
             }
-            nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=search_result' . $ext);
+            nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=search_result' . $ext);
         }
 
         $xtpl->parse('main');

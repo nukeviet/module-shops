@@ -54,7 +54,7 @@ function nv_show_tags_list($q = '', $incomplete = false)
         $row['keywords'] = $row['keywords'];
         $row['numpro'] = $row['numpro'];
         $row['number'] = ++$number;
-        $row['link'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['tag'] . '/' . $row['alias'];
+        $row['link'] = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['tag'] . '/' . $row['alias'];
         $row['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;tid=' . $row['tid'] . ($incomplete === true ? '&amp;incomplete=1' : '') . '#edit';
 
         $xtpl->assign('ROW', $row);
@@ -133,7 +133,7 @@ if (!empty($savecat)) {
 
     $image = $nv_Request->get_string('image', 'post', '');
     if (is_file(NV_DOCUMENT_ROOT . $image)) {
-        $lu = strlen(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
+        $lu = strlen(NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
         $image = substr($image, $lu);
     } else {
         $image = '';
@@ -175,7 +175,9 @@ if ($tid > 0) {
 $lang_global['title_suggest_max'] = sprintf($lang_global['length_suggest_max'], 65);
 $lang_global['description_suggest_max'] = sprintf($lang_global['length_suggest_max'], 160);
 
-if (defined('NV_EDITOR')) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+if (defined('NV_EDITOR')) {
+    require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+}
 $bodytext = htmlspecialchars(nv_editor_br2nl($bodytext));
 if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
     $bodytext = nv_aleditor('bodytext', '100%', '300px', $bodytext);
@@ -200,7 +202,7 @@ $xtpl->assign('description', nv_htmlspecialchars(nv_br2nl($description)));
 $xtpl->assign('bodytext', $bodytext);
 
 if (!empty($image) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $image)) {
-    $image = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image;
+    $image = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image;
 }
 $xtpl->assign('image', $image);
 $xtpl->assign('UPLOAD_CURRENT', NV_UPLOADS_DIR . '/' . $module_upload);

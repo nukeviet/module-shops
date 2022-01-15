@@ -9,7 +9,7 @@
     		<th>&nbsp;</th>
     		<!-- BEGIN: homeimgthumb -->
     		<th class="text-center">
-    			<a href="{link_pro}"><img src="{img_pro}" style="max-width: 100px" /></a></th>
+    			<a href="{link_pro}" rel="dofollow"><img src="{img_pro}" style="max-width: 100px" /></a></th>
     		<!-- END: homeimgthumb -->
     	</thead>
 
@@ -31,7 +31,7 @@
 			<tr>
 				<td><strong>{LANG.detail_product_name}</strong></td>
 				<!-- BEGIN: title -->
-				<td><a href="{link_pro}" title="{title_pro}">{title_pro}</a></td>
+				<td><a href="{link_pro}" title="{title_pro}" rel="dofollow">{title_pro}</a></td>
 				<!-- END: title -->
 			</tr>
 			<tr>

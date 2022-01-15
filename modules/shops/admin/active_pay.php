@@ -38,7 +38,7 @@ while ($row = $result->fetch()) {
     $listgroup[] = $group;
 }
 
-$link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
+$link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 $data_pro = array();
 $i = 0;
 foreach ($listid as $id) {
@@ -113,7 +113,7 @@ if ($save == 1) {
         $email_contents_table = call_user_func('email_new_order_payment', $content, $data_content, $data_pro, true);
 
         $checkss = md5($order_id . $global_config['sitekey'] . session_id());
-        $review_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_id=' . $order_id . '&checkss=' . $checkss;
+        $review_url = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_id=' . $order_id . '&checkss=' . $checkss;
 
         $replace_data = array(
             'order_code' => $data_content['order_code'],

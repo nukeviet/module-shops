@@ -73,18 +73,18 @@ if ($get_list_product && !empty($array_product_id)) {
     while ($row = $result->fetch()) {
         if ($row['homeimgfile'] == 1) {
             //image thumb
-            $row['thumb'] = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $row['homeimgfile'];
+            $row['thumb'] = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $row['homeimgfile'];
         } elseif ($row['homeimgfile'] == 2) {
             //image file
-            $row['thumb'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['homeimgfile'];
+            $row['thumb'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $row['homeimgfile'];
         } elseif ($row['homeimgfile'] == 3) {
             //image url
             $row['thumb'] = $row['homeimgfile'];
         } else {
             //no image
-            $row['thumb'] = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+            $row['thumb'] = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
         }
-        $row['link'] = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$row['listcatid']]['alias'] . '/' . $row['alias'] . $global_config['rewrite_exturl'], true);
+        $row['link'] = nv_url_rewrite(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$row['listcatid']]['alias'] . '/' . $row['alias'] . $global_config['rewrite_exturl'], true);
         $array_products[$row['id']] = $row;
     }
 }
@@ -168,7 +168,7 @@ if (defined('NV_IS_USER')) {
 
     // Diem tich luy
     if ($pro_config['point_active']) {
-        $xtpl->assign('POINT_URL', NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=point");
+        $xtpl->assign('POINT_URL', NV_STATIC_URL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=point");
         $result = $db->query('SELECT point_total FROM ' . $db_config['prefix'] . '_' . $module_data . '_point WHERE userid = ' . $user_info['userid']);
         if ($result->rowCount()) {
             $array_data['point'] = $result->fetchColumn();

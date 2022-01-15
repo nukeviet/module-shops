@@ -58,7 +58,7 @@ if ($checkss == md5($order_id . $global_config['sitekey'] . session_id())) {
                 if ($nv_transaction_status != $transaction_data['transaction_status']) {
                     $json['status'] = 'CHANGED';
                     $json['message'] = $lang_module['update_order'];
-                    $json['link'] = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_id=' . $order_id . '&checkss=' . md5($order_id . $global_config['sitekey'] . session_id()), true);
+                    $json['link'] = nv_url_rewrite(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_id=' . $order_id . '&checkss=' . md5($order_id . $global_config['sitekey'] . session_id()), true);
 
                     // Cập nhật giao dịch
                     $check = $db->exec("UPDATE " . $db_config['prefix'] . "_" . $module_data . "_transaction SET

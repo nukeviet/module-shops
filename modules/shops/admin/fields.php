@@ -465,7 +465,7 @@ $array_choice_type = array(
 $xtpl = new XTemplate('fields.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
 $xtpl->assign('FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op);
 $xtpl->assign('LANG', $lang_module);
-$xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+$xtpl->assign('NV_STATIC_URL', NV_STATIC_URL);
 $xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
 $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
@@ -624,7 +624,7 @@ $dataform['editordisabled'] = ($dataform['field_type'] != 'editor') ? ' style="d
 $dataform['fielddisabled'] = ($fid) ? ' disabled="disabled"' : '';
 
 $xtpl->assign('CAPTIONFORM', ($fid) ? $lang_module['captionform_edit'] . ': ' . $dataform['fieldid'] : $lang_module['captionform_add']);
-if($dataform['field_type'] == 'editor') {
+if ($dataform['field_type'] == 'editor') {
     $_class = explode('@', $dataform['class']);
     $dataform['editor_width'] = $_class[0];
     $dataform['editor_height'] = $_class[1];

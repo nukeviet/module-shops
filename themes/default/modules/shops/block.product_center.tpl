@@ -35,7 +35,7 @@ $(document).ready(function() {
     <div id="product_center_{BLOCKID}" class="product_center_slide">
         <!-- BEGIN: items -->
         <div class="items">
-            <a href="{LINK}" title="{TITLE}" class="img"><img src="{SRC_IMG}" width="{WIDTH}" alt="{TITLE}" class="thumbnail" /></a>
+            <a href="{LINK}" title="{TITLE}" class="img" rel="dofollow"><img src="{SRC_IMG}" width="{WIDTH}" alt="{TITLE}" class="thumbnail" /></a>
             <!-- BEGIN: price -->
             <span class="price">
                 <!-- BEGIN: discounts -->
@@ -51,7 +51,7 @@ $(document).ready(function() {
             <!-- BEGIN: contact -->
             <span class="money">{LANG.price_contact}</span>
             <!-- END: contact -->
-            <p><a href="{LINK}" title="{TITLE}">{TITLE0}</a></p>
+            <p><a href="{LINK}" title="{TITLE}" rel="dofollow">{TITLE0}</a></p>
         </div>
         <!-- END: items -->
     </div>

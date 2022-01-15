@@ -50,7 +50,7 @@ if (!empty($savecat)) {
 
     $image = $nv_Request->get_string('image', 'post', '');
     if (is_file(NV_DOCUMENT_ROOT . $image)) {
-        $lu = strlen(NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
+        $lu = strlen(NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/');
         $data['image'] = substr($image, $lu);
     } else {
         $data['image'] = '';
@@ -136,11 +136,13 @@ if ($data['bid'] > 0) {
 }
 
 if (!empty($data['image']) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $data['image'])) {
-    $data['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $data['image'];
+    $data['image'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $data['image'];
     $currentpath = dirname($data['image']);
 }
 
-if (defined('NV_EDITOR')) require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+if (defined('NV_EDITOR')) {
+    require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
+}
 $data['bodytext'] = htmlspecialchars(nv_editor_br2nl($data['bodytext']));
 if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
     $data['bodytext'] = nv_aleditor('bodytext', '100%', '300px', $data['bodytext']);

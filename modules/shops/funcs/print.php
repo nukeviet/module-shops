@@ -20,13 +20,13 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
     $nv_BotManager->setPrivate();
 
     $table_name = $db_config['prefix'] . '_' . $module_data . '_orders';
-    $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
+    $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 
     $result = $db->query('SELECT * FROM ' . $table_name . ' WHERE order_id=' . $order_id);
     $data = $result->fetch();
 
     if (empty($data)) {
-        nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
+        nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
     }
 
     // Thong tin chi tiet mat hang trong don hang
@@ -86,5 +86,5 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
     echo nv_site_theme($contents, false);
     include NV_ROOTDIR . '/includes/footer.php';
 } else {
-    nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
+    nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
 }

@@ -30,7 +30,7 @@ $db->select('groupid, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' 
 $tmp_re = $db->query($db->sql());
 
 if ($num_items) {
-    $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $m_values['module_name'] . '&amp;' . NV_OP_VARIABLE . '=group/';
+    $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $m_values['module_name'] . '&amp;' . NV_OP_VARIABLE . '=group/';
 
     while (list($groupid, $tilterow, $alias, $description) = $tmp_re->fetch(3)) {
         $content = $description;
@@ -69,7 +69,7 @@ if ($num_items) {
     $array_cat_alias = $nv_Cache->db($sql, 'catid', $m_values['module_name']);
     $array_cat_alias[0] = array( 'alias' => 'Other' );
 
-    $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $m_values['module_name'] . '&amp;' . NV_OP_VARIABLE . '=';
+    $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $m_values['module_name'] . '&amp;' . NV_OP_VARIABLE . '=';
 
     while (list($id, $tilterow, $alias, $listcatid, $hometext, $bodytext) = $tmp_re->fetch(3)) {
         $content = $hometext . $bodytext;

@@ -70,7 +70,7 @@ $publtime = 0;
 $sql = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE ' . NV_LANG_DATA . '_alias = ' . $db->quote($alias_url) . ' AND status=1');
 $data_content = $sql->fetch();
 if (empty($data_content)) {
-    $nv_redirect = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+    $nv_redirect = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
     redict_link($lang_module['detail_do_not_view'], $lang_module['redirect_to_back_shops'], $nv_redirect);
 }
 $id = $data_content['id'];
@@ -149,7 +149,7 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
     }
 
     $catid = $data_content['listcatid'];
-    $base_url_rewrite = nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'] . '/' . $data_content[NV_LANG_DATA . '_alias'] . $global_config['rewrite_exturl'], true);
+    $base_url_rewrite = nv_url_rewrite(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'] . '/' . $data_content[NV_LANG_DATA . '_alias'] . $global_config['rewrite_exturl'], true);
 
     if ($_SERVER['REQUEST_URI'] != $base_url_rewrite and NV_MY_DOMAIN . $_SERVER['REQUEST_URI'] != $base_url_rewrite and !$popup) {
         nv_redirect_location($base_url_rewrite);
@@ -192,14 +192,14 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
     // Ảnh chính
     $homeimgfile = $data_content['homeimgfile'];
     if ($data_content['homeimgthumb'] == 1) {
-        $data_content['homeimgthumb'] = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
-        $data_content['homeimgfile'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+        $data_content['homeimgthumb'] = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
+        $data_content['homeimgfile'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
     } elseif ($data_content['homeimgthumb'] == 2) {
-        $data_content['homeimgthumb'] = $data_content['homeimgfile'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+        $data_content['homeimgthumb'] = $data_content['homeimgfile'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
     } elseif ($data_content['homeimgthumb'] == 3) {
         $data_content['homeimgthumb'] = $data_content['homeimgfile'] = $homeimgfile;
     } else {
-        $data_content['homeimgthumb'] = $data_content['homeimgfile'] = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+        $data_content['homeimgthumb'] = $data_content['homeimgfile'] = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
     }
 
     array_push($array_images, array(
@@ -233,16 +233,16 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
     while (list ($_id, $listcatid, $title, $alias, $homeimgfile, $homeimgthumb, $addtime, $publtime, $product_code, $product_number, $product_price, $price_config, $money_unit, $showprice, $hometext, $gift_content, $gift_from, $gift_to) = $result->fetch(3)) {
         if ($homeimgthumb == 1) {
             // image thumb
-            $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
+            $thumb = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
         } elseif ($homeimgthumb == 2) {
             // image file
-            $thumb = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+            $thumb = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
         } elseif ($homeimgthumb == 3) {
             // image url
             $thumb = $homeimgfile;
         } else {
             // no image
-            $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+            $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
         }
 
         $data_others[] = array(
@@ -264,8 +264,8 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
             'gift_content' => $gift_content,
             'gift_from' => $gift_from,
             'gift_to' => $gift_to,
-            'link_pro' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$data_content['listcatid']]['alias'] . '/' . $alias . $global_config['rewrite_exturl'],
-            'link_order' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=setcart&amp;id=' . $_id
+            'link_pro' => NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$data_content['listcatid']]['alias'] . '/' . $alias . $global_config['rewrite_exturl'],
+            'link_order' => NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=setcart&amp;id=' . $_id
         );
     }
 
@@ -290,16 +290,16 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
             while (list ($_id, $listcatid, $title, $alias, $homeimgfile, $homeimgthumb, $addtime, $publtime, $product_code, $product_number, $product_price, $money_unit, $showprice, $hometext, $gift_content, $gift_from, $gift_to) = $result->fetch(3)) {
                 if ($homeimgthumb == 1) {
                     // image thumb
-                    $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
+                    $thumb = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
                 } elseif ($homeimgthumb == 2) {
                     // image file
-                    $thumb = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+                    $thumb = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
                 } elseif ($homeimgthumb == 3) {
                     // image url
                     $thumb = $homeimgfile;
                 } else {
                     // no image
-                    $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                    $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
                 }
 
                 $array_other_view[] = array(
@@ -320,14 +320,14 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
                     'gift_content' => $gift_content,
                     'gift_from' => $gift_from,
                     'gift_to' => $gift_to,
-                    'link_pro' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$data_content['listcatid']]['alias'] . '/' . $alias . $global_config['rewrite_exturl'],
-                    'link_order' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=setcart&amp;id=' . $_id
+                    'link_pro' => NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$data_content['listcatid']]['alias'] . '/' . $alias . $global_config['rewrite_exturl'],
+                    'link_order' => NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=setcart&amp;id=' . $_id
                 );
             }
         }
     }
 
-    SetSessionProView($data_content['id'], $data_content[NV_LANG_DATA . '_title'], $data_content[NV_LANG_DATA . '_alias'], $data_content['addtime'], NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'] . '/' . $data_content[NV_LANG_DATA . '_alias'] . '-' . $data_content['id'], $data_content['homeimgthumb']);
+    SetSessionProView($data_content['id'], $data_content[NV_LANG_DATA . '_title'], $data_content[NV_LANG_DATA . '_alias'], $data_content['addtime'], NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'] . '/' . $data_content[NV_LANG_DATA . '_alias'] . '-' . $data_content['id'], $data_content['homeimgthumb']);
 
     // comment
     if (isset($site_mods['comment']) and isset($module_config[$module_name]['activecomm'])) {
@@ -354,11 +354,11 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
         foreach ($otherimage as $image) {
             $file = $thumb = '';
             if (file_exists(NV_ROOTDIR . '/' . NV_ASSETS_DIR . '/' . $module_upload . '/' . $image)) {
-                $thumb = NV_BASE_SITEURL . NV_ASSETS_DIR . '/' . $module_upload . '/' . $image;
+                $thumb = NV_STATIC_URL . NV_ASSETS_DIR . '/' . $module_upload . '/' . $image;
             }
 
             if (file_exists(NV_ROOTDIR . '/' . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image)) {
-                $file = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image;
+                $file = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image;
             }
 
             if (!empty($thumb) && !empty($file)) {
@@ -372,11 +372,11 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
 
     $data_content['image'] = $array_images;
     unset($array_images, $data_content['homeimgfile'], $data_content['otherimage']);
-    $data_content['full_link'] = NV_MY_DOMAIN . nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$data_content['listcatid']]['alias'] . '/' . $data_content[NV_LANG_DATA . '_alias'] . $global_config['rewrite_exturl'], true);
+    $data_content['full_link'] = NV_MY_DOMAIN . nv_url_rewrite(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$data_content['listcatid']]['alias'] . '/' . $data_content[NV_LANG_DATA . '_alias'] . $global_config['rewrite_exturl'], true);
 
     $contents = nv_template_detail($data_content, $data_unit, $data_others, $array_other_view, $content_comment, $compare_id, $popup, $idtemplates, $array_keyword);
 } else {
-    $nv_redirect = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+    $nv_redirect = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
     redict_link($lang_module['detail_no_permission'], $lang_module['redirect_to_back_shops'], $nv_redirect);
 }
 

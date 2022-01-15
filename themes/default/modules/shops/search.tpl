@@ -74,7 +74,7 @@
         <!-- END: noneresult -->
         <!-- BEGIN: result -->
         <h3>
-            <a href="{LINK}">{TITLEROW}</a>
+            <a href="{LINK}" rel="dofollow">{TITLEROW}</a>
         </h3>
         <div class="text-justify">
             <p>

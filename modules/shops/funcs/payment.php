@@ -18,13 +18,12 @@ $order_id = $nv_Request->get_int('order_id', 'get', 0);
 $checkss = $nv_Request->get_string('checkss', 'get', '');
 if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . session_id())) {
     $data_pro = [];
-    $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
+    $link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 
     // Thong tin don hang
     $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_orders WHERE order_id=' . $order_id);
     if ($result->rowCount() == 0) {
-        nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
-
+        nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
     }
     $data = $result->fetch();
 
@@ -36,7 +35,7 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
     $data['coupons'] = $result->fetch();
 
     if (empty($data)) {
-        nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
+        nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
     }
 
     // Sua don hang
@@ -57,7 +56,7 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
                 'checked' => 1
             ];
         }
-        nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
+        nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
     }
 
     // Huy sua don hang
@@ -69,7 +68,7 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
         if (isset($_SESSION[$module_data . '_order_info'])) {
             unset($_SESSION[$module_data . '_order_info']);
         }
-        nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_id=' . $data['order_id'] . '&checkss=' . $checkss);
+        nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_id=' . $data['order_id'] . '&checkss=' . $checkss);
     }
 
     if (!empty($_SESSION[$module_data . '_order_info'])) {
@@ -132,14 +131,13 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
                 ];
             }
         }
-
     }
 
     // Kiểm tra hỗ trợ thanh toán trực tuyến
     $payment_supported = '';
     $intro_pay = '';
     if (isset($site_mods['wallet']) and file_exists(NV_ROOTDIR . '/modules/wallet/wallet.class.php')) {
-        $payment_supported = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;order_id=' . $order_id . '&amp;payment=1&amp;checksum=' . md5($order_id . $global_config['sitekey']);
+        $payment_supported = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;order_id=' . $order_id . '&amp;payment=1&amp;checksum=' . md5($order_id . $global_config['sitekey']);
     }
 
     if (intval($data['transaction_status']) == -1) {
@@ -158,7 +156,7 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
 
             // Cập nhật lại đơn hàng là chưa thanh toán để chọn hình thức khác
             $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_orders SET transaction_status=0, transaction_id = 0, transaction_count = transaction_count + 1 WHERE order_id=' . $order_id);
-            nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_id=' . $order_id . '&checkss=' . $checkss);
+            nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=payment&order_id=' . $order_id . '&checkss=' . $checkss);
         }
 
         $intro_pay = sprintf($lang_module['order_by_payment']);
@@ -201,7 +199,7 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
     $data = $result->fetch();
 
     if (empty($data)) {
-        nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
+        nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
     }
 
     // Thong tin chi tiet mat hang trong don hang
@@ -227,7 +225,7 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
 
         $worderid = $nv_Request->get_title('worderid', 'get', '');
         $wchecksum = $nv_Request->get_title('wchecksum', 'get', '');
-        $link_back = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&order_id=' . $order_id . '&checkss=' . md5($order_id . $global_config['sitekey'] . session_id());
+        $link_back = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&order_id=' . $order_id . '&checkss=' . md5($order_id . $global_config['sitekey'] . session_id());
 
         // Lấy ra giao dịch
         $transaction = $db->query("SELECT * FROM " . $db_config['prefix'] . "_" . $module_data . "_transaction WHERE transaction_id=" . $worderid)->fetch();
@@ -278,7 +276,7 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
             // Cập nhật điểm tích lũy
             UpdatePoint($data);
 
-            $nv_redirect = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=history";
+            $nv_redirect = NV_STATIC_URL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=history";
             $contents = redict_link($lang_module['payment_complete'], $lang_module['back_history'], $nv_redirect);
 
             $message = $lang_module['payment_complete'];
@@ -338,17 +336,17 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
         $payment_info = $wallet->getInfoPayment($data);
 
         if ($payment_info['status'] !== 'SUCCESS') {
-            $link_back = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&order_id=' . $order_id . '&checkss=' . md5($order_id . $global_config['sitekey'] . session_id());
+            $link_back = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&order_id=' . $order_id . '&checkss=' . md5($order_id . $global_config['sitekey'] . session_id());
             redict_link($payment_info['message'], $lang_module['cart_back'], nv_url_rewrite($link_back));
         }
 
         $url = $payment_info['url'];
     } elseif ($result->rowCount() > 0) {
-        $url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&order_id=' . $order_id . '&checkss=' . md5($order_id . $global_config['sitekey'] . session_id());
+        $url = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&order_id=' . $order_id . '&checkss=' . md5($order_id . $global_config['sitekey'] . session_id());
     } else {
-        $url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA;
+        $url = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA;
     }
     nv_redirect_location($url);
 } else {
-    nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA);
+    nv_redirect_location(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA);
 }

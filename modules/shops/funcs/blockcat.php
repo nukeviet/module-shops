@@ -23,10 +23,10 @@ if (isset($array_op[1])) {
 
     list ($bid, $page_title, $alias, $image_group, $description, $bodytext, $key_words, $tag_title, $tag_description) = $stmt->fetch(3);
     if ($bid > 0) {
-        $base_url_rewrite = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['blockcat'] . '/' . $alias;
+        $base_url_rewrite = $base_url = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['blockcat'] . '/' . $alias;
 
         if (!empty($image_group) && file_exists(NV_ROOTDIR . '/' . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image_group)) {
-            $image_group = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image_group;
+            $image_group = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image_group;
             $meta_property['og:image'] = (preg_match('/^(http|https|ftp|gopher)\:\/\//', $image_group)) ? $image_group : NV_MY_DOMAIN . $image_group;
         } else {
             $image_group = '';
@@ -81,20 +81,20 @@ if (isset($array_op[1])) {
             if ($item['homeimgthumb'] == 1) {
                 //image thumb
 
-                $item['homeimgthumb'] = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $item['homeimgfile'];
+                $item['homeimgthumb'] = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $item['homeimgfile'];
             } elseif ($item['homeimgthumb'] == 2) {
                 //image file
 
-                $item['homeimgthumb'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $item['homeimgfile'];
+                $item['homeimgthumb'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $item['homeimgfile'];
             } elseif ($item['homeimgthumb'] == 3) {
                 //image url
 
                 $item['homeimgthumb'] = $item['homeimgfile'];
             } else {
-                $item['homeimgthumb'] = NV_BASE_SITEURL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
+                $item['homeimgthumb'] = NV_STATIC_URL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
             }
             $item['alt'] = !empty($item['homeimgalt']) ? $item['homeimgalt'] : $item['title'];
-            $item['link_pro'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$item['listcatid']]['alias'] . '/' . $item['alias'] . $global_config['rewrite_exturl'];
+            $item['link_pro'] = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$item['listcatid']]['alias'] . '/' . $item['alias'] . $global_config['rewrite_exturl'];
             $item['newday'] = $global_array_shops_cat[$item['listcatid']]['newday'];
             $item_array[] = $item;
         }

@@ -67,7 +67,7 @@ if ($price2_temp == '') {
 // Set data form search
 $xtpl = new XTemplate("search_all.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file);
 $xtpl->assign('LANG', $lang_module);
-$xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
+$xtpl->assign('NV_STATIC_URL', NV_STATIC_URL);
 foreach ($global_array_shops_cat as $row) {
     $xtitle_i = "";
     if ($row['lev'] > 0) {
@@ -204,20 +204,20 @@ $db->select("DISTINCT t1.id, t1.listcatid, t1.publtime, t1." . NV_LANG_DATA . "_
     ->offset(($page - 1) * $per_page);
 $result = $db->query($db->sql());
 
-$base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=search_result&keyword=' . $keyword . '&price1=' . $price1 . '&price2=' . $price2 . '&typemoney=' . $typemoney . '&cata=' . $cataid . $url;
+$base_url = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=search_result&keyword=' . $keyword . '&price1=' . $price1 . '&price2=' . $price2 . '&typemoney=' . $typemoney . '&cata=' . $cataid . $url;
 $html_pages = nv_generate_page($base_url, $num_items, $per_page, $page);
 
-$link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
+$link = NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 
 while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_from, $gift_to, $newday) = $result->fetch(3)) {
     if ($homeimgthumb == 1) {
         //image thumb
 
-        $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
+        $thumb = NV_STATIC_URL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
     } elseif ($homeimgthumb == 2) {
         //image file
 
-        $thumb = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+        $thumb = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
     } elseif ($homeimgthumb == 3) {
         //image url
 
@@ -225,7 +225,7 @@ while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, 
     } else {
         //no image
 
-        $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+        $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
     }
 
     $data_content[] = [

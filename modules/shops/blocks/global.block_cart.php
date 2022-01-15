@@ -35,7 +35,7 @@ if (! function_exists('nv_cart_info')) {
 		<div class="block clearfix">
 			<div class="block_cart clearfix" id="cart_' . $module . '"></div>
 			<script type="text/javascript">
-			$("#cart_' . $module . '").load("' . NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module . "&" . NV_OP_VARIABLE . "=loadcart&coupons_check=1&coupons_code=" . $coupons_code . '");
+			$("#cart_' . $module . '").load("' . NV_STATIC_URL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module . "&" . NV_OP_VARIABLE . "=loadcart&coupons_check=1&coupons_code=" . $coupons_code . '");
 			</script>
 		</div>
 		';

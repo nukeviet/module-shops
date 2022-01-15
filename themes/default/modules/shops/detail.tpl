@@ -17,7 +17,7 @@
         <span itemprop="price">{PRICE.sale}</span>
         <span itemprop="priceCurrency">{PRICE.unit}</span>
         <!-- END: price1 -->
-        <a itemprop="url" href="{PRO_FULL_LINK}"></a>
+        <a itemprop="url" href="{PRO_FULL_LINK}" rel="dofollow"></a>
         <span itemprop="priceValidUntil">{PRICEVALIDUNTIL}</span>
         <span itemprop="availability">{AVAILABILITY}</span>
     </div>
@@ -116,7 +116,7 @@
                         <div class="panel-body">
                             <div class="socialicon">
                                 <div class="fb-like" data-href="{SELFURL}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true">&nbsp;</div>
-                                <a href="http://twitter.com/share" class="twitter-share-button">Tweet</a>
+                                <a href="http://twitter.com/share" class="twitter-share-button" rel="dofollow">Tweet</a>
                             </div>
                         </div>
                     </div>
@@ -280,7 +280,7 @@
             <div class="keywords">
                 <em class="fa fa-tags">&nbsp;</em><strong>{LANG.keywords}: </strong>
                 <!-- BEGIN: loop -->
-                <a title="{KEYWORD}" href="{LINK_KEYWORDS}"><em>{KEYWORD}</em></a>{SLASH}
+                <a title="{KEYWORD}" href="{LINK_KEYWORDS}" rel="dofollow"><em>{KEYWORD}</em></a>{SLASH}
                 <!-- END: loop -->
             </div>
         </div>

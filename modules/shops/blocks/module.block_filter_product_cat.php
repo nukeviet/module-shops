@@ -44,10 +44,9 @@ if (!function_exists('nv_filter_product_cat')) {
             $html .= "</div>";
             $html .= "<div class=\"col-sm-18\">";
             foreach ($array_style as $key => $style) {
-                if($data_block['group_style'][$l['groupid']] != $key && $key == 'checkbox') {
+                if ($data_block['group_style'][$l['groupid']] != $key && $key == 'checkbox') {
                     $ck = 'checked="checked"';
-                }
-                else {
+                } else {
                     $ck = $data_block['group_style'][$l['groupid']] == $key ? 'checked="checked"' : '';
                 }
                 $html .= "<label><input type=\"radio\" name=\"config_group_style[" . $l['groupid'] . "]\" value=\"" . $key . "\" " . $ck . " />" . $style . "</label>&nbsp;&nbsp;&nbsp;";
@@ -101,8 +100,8 @@ if (!function_exists('nv_filter_product_cat')) {
         $xtpl->assign('LANG', $lang_module);
         $xtpl->assign('CATID', $catid);
         $xtpl->assign('REWRITE_ENABLE', $global_config['rewrite_enable'] ? 'true' : 'false');
-        $xtpl->assign('AJAX_URL', nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'], true));
-        $xtpl->assign('LINK_URL', rtrim(nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'], true), '/'));
+        $xtpl->assign('AJAX_URL', nv_url_rewrite(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'], true));
+        $xtpl->assign('LINK_URL', rtrim(nv_url_rewrite(NV_STATIC_URL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'], true), '/'));
 
         $catid = GetParentCatFilter($catid);
         $result = $db->query('SELECT groupid FROM ' . $db_config['prefix'] . '_' . $site_mods[$module]['module_data'] . '_group_cateid WHERE cateid = ' . $catid);
@@ -118,7 +117,7 @@ if (!function_exists('nv_filter_product_cat')) {
             if (!empty($subgroup)) {
                 foreach ($subgroup as $subgroup_id) {
                     if (!empty($global_array_group[$subgroup_id]['image'])) {
-                        $global_array_group[$subgroup_id]['image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $global_array_group[$subgroup_id]['image'];
+                        $global_array_group[$subgroup_id]['image'] = NV_STATIC_URL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $global_array_group[$subgroup_id]['image'];
                     }
 
                     $global_array_group[$subgroup_id]['checked'] = '';
