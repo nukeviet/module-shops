@@ -28,7 +28,7 @@
                     <a title="{LANG.history_update}" href="#" class="text-info" data-toggle="checkorder" data-checksess="{CHECK_SESS}" data-id="{CHECK_ID}"><i class="fa fa-fw fa-refresh"></i></a>
                     <!-- END: checkorder -->
                     <!-- BEGIN: remove -->
-                    <a class="del delhisorder" title="{LANG.history_remove}" href="{link_remove}"><em class="fa fa-times-circle error">&nbsp;</em></a>
+                    <a class="del delhisorder" title="{LANG.history_remove}" href="{link_remove}" rel="dofollow"><em class="fa fa-times-circle error">&nbsp;</em></a>
                     <!-- END: remove -->
                     <!-- BEGIN: no_remove -->
                     <em class="fa fa-minus-circle">&nbsp;</em>

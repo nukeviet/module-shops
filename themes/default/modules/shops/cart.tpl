@@ -1,7 +1,7 @@
 <!-- BEGIN: main -->
 <div class="step_bar alert alert-success clearfix">
 	<a class="step step_current" title="{LANG.cart_check_cart}" href="#"><span>1</span>{LANG.cart_check_cart}</a>
-	<a class="step step_disable" title="{LANG.cart_order}" href="{link_order_all}" id="cart_next"><span>2</span>{LANG.cart_order}</a>
+	<a class="step step_disable" title="{LANG.cart_order}" href="{link_order_all}" id="cart_next" rel="dofollow"><span>2</span>{LANG.cart_order}</a>
 </div>
 
 <!-- BEGIN: errortitle -->
@@ -61,7 +61,7 @@
 				<tr id="{id}_{list_group_id}">
 					<td align="center">{stt}</td>
 					<td>
-						<a title="{title_pro}" href="{link_pro}">{title_pro}</a>
+						<a title="{title_pro}" href="{link_pro}" rel="dofollow">{title_pro}</a>
 						<!-- BEGIN: display_group -->
 						<p>
 							<!-- BEGIN: group -->
@@ -74,7 +74,7 @@
 					<!-- BEGIN: sub_group -->
 	    			<td>
 	    				<!-- BEGIN: loop -->
-	    				<a href="{SUB_GROUP.link}" title="{SUB_GROUP.title}">{SUB_GROUP.title}</a>
+	    				<a href="{SUB_GROUP.link}" title="{SUB_GROUP.title}" rel="dofollow">{SUB_GROUP.title}</a>
 	    				<!-- END: loop -->
 	    			</td>
 	    			<!-- END: sub_group -->
@@ -87,7 +87,7 @@
 					<!-- BEGIN: price5 -->
 					<td class="money text-right">{PRICE_TOTAL.sale_format}</td>
 					<!-- END: price5 -->
-					<td align="center"><a class="remove_cart" title="{LANG.cart_remove_pro}" href="{link_remove}"><em style="color: red" class="fa fa-times-circle">&nbsp;</em></a></td>
+					<td align="center"><a class="remove_cart" title="{LANG.cart_remove_pro}" href="{link_remove}" rel="dofollow"><em style="color: red" class="fa fa-times-circle">&nbsp;</em></a></td>
 				</tr>
 				<!-- END: rows -->
 			</tbody>
@@ -125,7 +125,7 @@
 
 		<div class="row">
 			<div class="col-md-12 text-left" style="margin-top: 10px;">
-				<a title="{LANG.cart_back} {LANG.cart_page_product}" href="{LINK_PRODUCTS}"><em class="fa fa-arrow-circle-left">&nbsp;</em>{LANG.cart_back} <span>{LANG.cart_page_product}</span></a>
+				<a title="{LANG.cart_back} {LANG.cart_page_product}" href="{LINK_PRODUCTS}" rel="dofollow"><em class="fa fa-arrow-circle-left">&nbsp;</em>{LANG.cart_back} <span>{LANG.cart_page_product}</span></a>
 			</div>
 			<div class="col-md-12 text-right" style="margin: 10px 0 10px 0">
 				<input type="submit" name="cart_update" title="{LANG.cart_update}" value="{LANG.cart_update}" class="btn btn-primary btn-sm">

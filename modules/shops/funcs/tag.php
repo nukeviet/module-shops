@@ -80,7 +80,7 @@ if (!empty($page_title) and $page_title == strip_punctuation($page_title)) {
             } else {
                 //no image
 
-                $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
             }
 
             $data_content[] = array(

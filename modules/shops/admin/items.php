@@ -20,7 +20,6 @@ $sql = 'SELECT id, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_
 $result_unit = $db->query($sql);
 if ($result_unit->rowCount() == 0) {
     nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=prounit');
-
 } else {
     while ($row = $result_unit->fetch()) {
         $array_unit[$row['id']] = $row;
@@ -329,9 +328,9 @@ while (list($id, $listcatid, $admin_id, $homeimgfile, $homeimgthumb, $title, $al
 
         $imghome = $thumb = $homeimgfile;
     } elseif (file_exists(NV_ROOTDIR . '/themes/' . $theme . '/images/' . $module_file . '/no-image.jpg')) {
-        $imghome = $thumb = NV_BASE_SITEURL . 'themes/' . $theme . '/images/' . $module_file . '/no-image.jpg';
+        $imghome = $thumb = NV_STATIC_URL . 'themes/' . $theme . '/images/' . $module_file . '/no-image.jpg';
     } else {
-        $imghome = $thumb = NV_BASE_SITEURL . 'themes/default/images/' . $module_file . '/no-image.jpg';
+        $imghome = $thumb = NV_STATIC_URL . 'themes/default/images/' . $module_file . '/no-image.jpg';
     }
 
     $xtpl->assign('ROW', array(

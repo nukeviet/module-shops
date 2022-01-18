@@ -26,10 +26,17 @@ $compare_id = unserialize($compare_id);
 $contents = '';
 $cache_file = '';
 
-$base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+$page = 1;
+$page_url = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
 $base_url_internal = str_replace('&amp;', '&', $base_url);
 $base_url_rewrite = nv_url_rewrite($base_url_internal, true);
 $page_url_rewrite = ($page > 1) ? nv_url_rewrite($base_url_internal . '/page-' . $page, true) : $base_url_rewrite;
+
+if ($page > 1) {
+    $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
+}
+$canonicalUrl = getCanonicalUrl($page_url);
+
 $request_uri = $_SERVER['REQUEST_URI'];
 if (!($home or $request_uri == $base_url_rewrite or $request_uri == $page_url_rewrite or NV_MAIN_DOMAIN . $request_uri == $base_url_rewrite or NV_MAIN_DOMAIN . $request_uri == $page_url_rewrite)) {
     $redirect = '<meta http-equiv="Refresh" content="3;URL=' . $base_url_rewrite . '" />';
@@ -64,6 +71,9 @@ if (empty($contents)) {
         $num_items = $db->query($db->sql())
             ->fetchColumn();
 
+        // Không cho tùy ý đánh số page + xác định trang trước, trang sau
+        betweenURLs($page, ceil($num_items / $per_page), $base_url, '&amp;' . NV_OP_VARIABLE . '=page-', $prevPage, $nextPage);
+
         $db->select('id, listcatid, publtime, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_hometext, homeimgalt, homeimgfile, homeimgthumb, product_code, product_number, product_price, money_unit, showprice,' . NV_LANG_DATA . '_gift_content, gift_from, gift_to')
             ->order($orderby)
             ->limit($per_page)
@@ -87,7 +97,7 @@ if (empty($contents)) {
             } else {
                 //no image
 
-                $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
             }
 
             $data_content[] = array(
@@ -133,6 +143,9 @@ if (empty($contents)) {
 
                 $num_pro = $db->query($db->sql())
                     ->fetchColumn();
+                
+                // Không cho tùy ý đánh số page + xác định trang trước, trang sau
+                betweenURLs($page, ceil($num_pro / $per_page), $base_url, '&amp;' . NV_OP_VARIABLE . '=page-', $prevPage, $nextPage);
 
                 $db->select('id, listcatid, publtime, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias,
                 ' . NV_LANG_DATA . '_hometext, homeimgalt, homeimgfile, homeimgthumb, product_code, product_number, product_price,
@@ -159,7 +172,7 @@ if (empty($contents)) {
                     } else {
                         //no image
 
-                        $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                        $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
                     }
 
                     $data_pro[] = array(
@@ -223,6 +236,9 @@ if (empty($contents)) {
 
                 $num_pro = $db->query($db->sql())
                     ->rowCount();
+                    
+                // Không cho tùy ý đánh số page + xác định trang trước, trang sau
+                betweenURLs($page, ceil($num_pro / $per_page), $base_url, '&amp;' . NV_OP_VARIABLE . '=page-', $prevPage, $nextPage);
 
                 $db->select('DISTINCT t1.id, t1.listcatid, t1.publtime, t1.' . NV_LANG_DATA . '_title, t1.' . NV_LANG_DATA . '_alias, t1.' . NV_LANG_DATA . '_hometext, t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_code, t1.product_number, t1.product_price, t1.money_unit, t1.showprice, t1.' . NV_LANG_DATA . '_gift_content, t1.gift_from, t1.gift_to')
                     ->order('t1.id DESC')
@@ -240,7 +256,7 @@ if (empty($contents)) {
                     } elseif ($homeimgthumb == 3) {
                         $thumb = $homeimgfile;
                     } else {
-                        $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                        $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
                     }
 
                     $data_pro[] = array(

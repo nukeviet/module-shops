@@ -199,7 +199,7 @@ if (empty($contents)) {
                 } elseif ($homeimgthumb == 3) {
                     $thumb = $homeimgfile;
                 } else {
-                    $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                    $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
                 }
 
                 $data_pro[] = array(

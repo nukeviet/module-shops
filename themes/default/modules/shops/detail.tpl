@@ -1,5 +1,5 @@
 <!-- BEGIN: main -->
-<script type="text/javascript" src="{NV_BASE_SITEURL}themes/default/images/{MODULE_FILE}/jquery.ez-plus.js"></script>
+<script type="text/javascript" src="{NV_STATIC_URL}themes/default/images/{MODULE_FILE}/jquery.ez-plus.js"></script>
 <div class="product-detail <!-- BEGIN: popupid -->prodetail-popup<!-- END: popupid -->" itemtype="http://schema.org/Product" itemscope>
     <span class="d-none hidden hide" itemprop="mpn" content="{PRODUCT_CODE}"></span>
     <span class="d-none hidden hide" itemprop="sku" content="{PRODUCT_CODE}"></span>
@@ -61,8 +61,8 @@
                             <!-- END: loop1 -->
                         </div>
                     </div>
-                    <link rel="stylesheet" href="{NV_BASE_SITEURL}themes/default/images/{MODULE_FILE}/OwlCarousel2/assets/owl.carousel.min.css">
-                    <script type="text/javascript" src="{NV_BASE_SITEURL}themes/default/images/{MODULE_FILE}/OwlCarousel2/owl.carousel.min.js"></script>
+                    <link rel="stylesheet" href="{NV_STATIC_URL}themes/default/images/{MODULE_FILE}/OwlCarousel2/assets/owl.carousel.min.css">
+                    <script type="text/javascript" src="{NV_STATIC_URL}themes/default/images/{MODULE_FILE}/OwlCarousel2/owl.carousel.min.js"></script>
                     <script type="text/javascript">
                     $(document).ready(function() {
                         // Slide ảnh sản phẩm
@@ -280,7 +280,7 @@
             <div class="keywords">
                 <em class="fa fa-tags">&nbsp;</em><strong>{LANG.keywords}: </strong>
                 <!-- BEGIN: loop -->
-                <a title="{KEYWORD}" href="{LINK_KEYWORDS}"><em>{KEYWORD}</em></a>{SLASH}
+                <a title="{KEYWORD}" href="{LINK_KEYWORDS}" rel="dofollow"><em>{KEYWORD}</em></a>{SLASH}
                 <!-- END: loop -->
             </div>
         </div>

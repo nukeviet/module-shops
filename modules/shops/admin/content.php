@@ -864,8 +864,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
                     $tid = $db->insert_id("INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_tags_" . NV_LANG_DATA . " (
                         numpro, alias, description, bodytext, image, keywords
                     ) VALUES (
-                        1, :alias, '', '', '', :keyword)", "tid", $array_insert
-                    );
+                        1, :alias, '', '', '', :keyword)", "tid", $array_insert);
                 } else {
                     if ($alias != $alias_i) {
                         if (!empty($keywords_i)) {

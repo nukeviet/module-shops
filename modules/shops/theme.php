@@ -26,7 +26,7 @@ function redict_link($lang_view, $lang_back, $nv_redirect)
     $nv_redirect = nv_url_rewrite($nv_redirect, true);
     $contents = "<div class=\"alert alert-info frame\">";
     $contents .= $lang_view . "<br /><br />\n";
-    $contents .= "<img border=\"0\" src=\"" . NV_BASE_SITEURL . NV_ASSETS_DIR . "/images/load_bar.gif\"><br /><br />\n";
+    $contents .= "<img border=\"0\" src=\"" . NV_STATIC_URL . NV_ASSETS_DIR . "/images/load_bar.gif\"><br /><br />\n";
     $contents .= "<a href=\"" . $nv_redirect . "\">" . $lang_back . "</a>";
     $contents .= "</div>";
     $contents .= "<meta http-equiv=\"refresh\" content=\"2;url=" . $nv_redirect . "\" />";
@@ -1593,7 +1593,7 @@ function point_info($data_content, $generate_page)
  */
 function nv_review_content($data_content)
 {
-    global $module_info, $lang_module, $lang_global, $module_name, $module_data, $module_file, $pro_config, $op, $user_info;
+    global $module_info, $lang_module, $lang_global, $module_name, $module_data, $module_file, $pro_config, $op, $user_info, $global_config, $module_config;
 
     $xtpl = new XTemplate('review_content.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
@@ -1609,8 +1609,26 @@ function nv_review_content($data_content)
     }
     $xtpl->assign('RATE_TOTAL', $data_content['rating_total']);
     $xtpl->assign('RATE_VALUE', $data_content['rating_point']);
+    
+    $reCaptchaPass = (!empty($global_config['recaptcha_sitekey']) and !empty($global_config['recaptcha_secretkey']) and ($global_config['recaptcha_ver'] == 2 or $global_config['recaptcha_ver'] == 3));
+
     if ($pro_config['review_captcha']) {
-        $xtpl->parse('main.captcha');
+        if ($module_config[$module_name]['captcha_type'] == 'recaptcha' and $reCaptchaPass and $global_config['recaptcha_ver'] == 3) {
+            $xtpl->parse('main.recaptcha3');
+        } elseif ($module_config[$module_name]['captcha_type'] == 'recaptcha' and $reCaptchaPass and $global_config['recaptcha_ver'] == 2) {
+            $xtpl->assign('RECAPTCHA_ELEMENT', 'recaptcha' . nv_genpass(8));
+            $xtpl->assign('N_CAPTCHA', $lang_global['securitycode1']);
+            $xtpl->parse('main.recaptcha');
+        } elseif ($module_config[$module_name]['captcha_type'] == 'captcha') {
+            $xtpl->assign('N_CAPTCHA', $lang_global['securitycode']);
+            $xtpl->assign('CAPTCHA_REFRESH', $lang_global['captcharefresh']);
+            $xtpl->assign('GFX_WIDTH', NV_GFX_WIDTH);
+            $xtpl->assign('GFX_HEIGHT', NV_GFX_HEIGHT);
+            $xtpl->assign('CAPTCHA_REFR_SRC', NV_STATIC_URL . NV_ASSETS_DIR . '/images/refresh.png');
+            $xtpl->assign('SRC_CAPTCHA', NV_BASE_SITEURL . 'index.php?scaptcha=captcha&t=' . NV_CURRENTTIME);
+            $xtpl->assign('GFX_MAXLENGTH', NV_GFX_NUM);
+            $xtpl->parse('main.captcha');
+        }
     }
 
     $xtpl->parse('main');
@@ -1636,9 +1654,9 @@ function nv_download_content($data_content)
         $login = 0;
         foreach ($data_content['files'] as $files) {
             if (file_exists(NV_ROOTDIR . '/themes/' . $module_info['template'] . '/images/' . $module_file . '/icon_files/' . $files['extension'] . '.png')) {
-                $files['extension_icon'] = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/icon_files/' . $files['extension'] . '.png';
+                $files['extension_icon'] = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/icon_files/' . $files['extension'] . '.png';
             } else {
-                $files['extension_icon'] = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/icon_files/document.png';
+                $files['extension_icon'] = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/icon_files/document.png';
             }
             $xtpl->assign('FILES', $files);
 
@@ -1688,7 +1706,6 @@ function nv_template_viewgrid($array_data, $page = '')
         $xtpl->assign('WIDTH', $pro_config['homewidth']);
 
         foreach ($array_data as $data_row) {
-
             $xtpl->assign('ROW', $data_row);
 
             $newday = $data_row['publtime'] + (86400 * $data_row['newday']);
@@ -1817,7 +1834,6 @@ function nv_template_viewlist($array_data, $page)
         $xtpl->assign('WIDTH', $pro_config['homewidth']);
 
         foreach ($array_data as $data_row) {
-
             $xtpl->assign('ROW', $data_row);
 
             $newday = $data_row['publtime'] + (86400 * $data_row['newday']);

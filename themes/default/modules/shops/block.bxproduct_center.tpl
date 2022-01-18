@@ -31,7 +31,7 @@ $(document).ready(function(){
 <div class="slider_{BLOCKID}">
 	<!-- BEGIN: items -->
 	<div class="slider_{BLOCKID}_item" align="center">
-		<a href="{LINK}" title="{TITLE}"><img src="{SRC_IMG}" width="{WIDTH}" alt="{TITLE}" class="thumbnail" /></a>
+		<a href="{LINK}" title="{TITLE}" rel="dofollow"><img src="{SRC_IMG}" width="{WIDTH}" alt="{TITLE}" class="thumbnail" /></a>
 		<!-- BEGIN: price -->
 		<span class="price">
 			<!-- BEGIN: discounts -->
@@ -47,7 +47,7 @@ $(document).ready(function(){
 		<!-- BEGIN: contact -->
 		<span class="money">{LANG.price_contact}</span>
 		<!-- END: contact -->
-		<p><a href="{LINK}" title="{TITLE}">{TITLE0}</a></p>
+		<p><a href="{LINK}" title="{TITLE}" rel="dofollow">{TITLE0}</a></p>
 	</div>
 	<!-- END: items -->
 </div>

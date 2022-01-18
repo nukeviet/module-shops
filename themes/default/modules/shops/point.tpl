@@ -19,7 +19,7 @@
 		<tbody>
 			<!-- BEGIN: loop -->
 			<tr>
-				<td><a href="{HISTORY.link}" title="{HISTORY.order_code}">{HISTORY.order_code}</a></td>
+				<td><a href="{HISTORY.link}" title="{HISTORY.order_code}" rel="dofollow">{HISTORY.order_code}</a></td>
 				<td>{HISTORY.point} {LANG.point}</td>
 				<td class="text-right">{HISTORY.time}</td>
 			</tr>

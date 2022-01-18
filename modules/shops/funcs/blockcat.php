@@ -91,7 +91,7 @@ if (isset($array_op[1])) {
 
                 $item['homeimgthumb'] = $item['homeimgfile'];
             } else {
-                $item['homeimgthumb'] = NV_BASE_SITEURL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
+                $item['homeimgthumb'] = NV_STATIC_URL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
             }
             $item['alt'] = !empty($item['homeimgalt']) ? $item['homeimgalt'] : $item['title'];
             $item['link_pro'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$item['listcatid']]['alias'] . '/' . $item['alias'] . $global_config['rewrite_exturl'];

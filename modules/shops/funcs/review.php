@@ -88,15 +88,27 @@ if ($timeout == 0 or NV_CURRENTTIME - $timeout > $difftimeout) {
     $sender = $nv_Request->get_string('sender', 'get,post', '');
     $rating = $nv_Request->get_int('rating', 'get,post', 0);
     $comment = $nv_Request->get_textarea('comment', '');
-    $fcode = $nv_Request->get_string('fcode', 'get,post', '');
    
+    global $global_config, $module_config, $module_name;
+    unset($fcaptcha);
+    // Xác định có áp dụng reCaptcha hay không
+    $reCaptchaPass = (!empty($global_config['recaptcha_sitekey']) and !empty($global_config['recaptcha_secretkey']) and ($global_config['recaptcha_ver'] == 2 or $global_config['recaptcha_ver'] == 3));
+    if ($module_config[$module_name]['captcha_type'] == 'recaptcha' and $reCaptchaPass) {
+        // Xác định giá trị của captcha nhập vào nếu sử dụng reCaptcha
+        $fcaptcha = $nv_Request->get_title('fcaptcha', 'post', '');
+    } elseif ($module_config[$module_name]['captcha_type'] == 'captcha') {
+        // Xác định giá trị của captcha nhập vào nếu sử dụng captcha hình
+        $fcaptcha = $nv_Request->get_title('fcode', 'post', '');
+    }
+
     if (empty($sender)) {
         $contents = "NO_" . $lang_module['rate_empty_sender'];
     } elseif (empty($rating)) {
         $contents = "NO_" . $lang_module['rate_empty_rating'];
-    } elseif ($pro_config['review_captcha'] and !nv_capcha_txt($fcode)) {
-        $contents = "NO_" . $lang_module['rate_empty_captcha'];
-    } else {
+    } elseif ($pro_config['review_captcha'] and isset($fcaptcha) and !nv_capcha_txt($fcaptcha, $module_config[$module_name]['captcha_type'])) {
+        $mess = ($module_config[$module_name]['captcha_type'] == 'recaptcha') ? $lang_global['securitycodeincorrect1'] : $lang_global['securitycodeincorrect'];
+        $contents = "NO_" . $mess;
+    }  else {
         $userid = !empty($user_info) ? $user_info['userid'] : 0;
         $status = $pro_config['review_check'] ? 0 : 1;
         $sth = $db->prepare('INSERT INTO ' . $db_config['prefix'] . '_' . $module_data . '_review( product_id, userid, sender, content, rating, add_time, edit_time, status) VALUES( :product_id, :userid, :sender, :content, :rating, ' . NV_CURRENTTIME . ', ' . NV_CURRENTTIME . ', ' . $status . ')');
