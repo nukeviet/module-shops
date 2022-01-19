@@ -1,5 +1,5 @@
 <!-- BEGIN: main -->
-<link rel="stylesheet" type="text/css" href="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="{NV_STATIC_URL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.css">
 <form action="{BASE_URL_SITE}index.php" name="fsea" method="get" id="fsea" class="form-horizontal">
     <div class="panel panel-default">
         <div class="panel-heading">{LANG.search_title}</div>
@@ -39,8 +39,8 @@
         </div>
     </div>
 </form>
-<script type="text/javascript" data-show="after" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.js"></script>
-<script type="text/javascript" data-show="after" src="{NV_BASE_SITEURL}{NV_ASSETS_DIR}/js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
+<script type="text/javascript" data-show="after" src="{NV_STATIC_URL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.js"></script>
+<script type="text/javascript" data-show="after" src="{NV_STATIC_URL}{NV_ASSETS_DIR}/js/language/jquery.ui.datepicker-{NV_LANG_INTERFACE}.js"></script>
 <script type="text/javascript" data-show="after">
     $(document).ready(function() {
         $("#to_date,#from_date").datepicker({

@@ -177,7 +177,7 @@ if (!empty($_SESSION[$module_data . '_cart'])) {
                     $thumb = $homeimgfile;
                 } else {
                     //no image
-                    $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                    $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
                 }
 
                 $group = $_SESSION[$module_data . '_cart'][$id . '_' . $array[1]]['group'];

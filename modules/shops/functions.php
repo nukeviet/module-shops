@@ -123,7 +123,7 @@ function GetDataIn($result, $catid)
         } elseif ($homeimgthumb == 3) {
             $thumb = $homeimgfile;
         } else {
-            $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+            $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
         }
 
         $data[] = [
@@ -189,7 +189,7 @@ function GetDataInGroups($result, $array_g)
         } else {
             // no image
 
-            $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+            $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
         }
 
         $data[] = [
@@ -252,7 +252,7 @@ function GetDataInGroup($result, $groupid)
         } else {
             // no image
 
-            $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+            $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
         }
 
         $data[] = [

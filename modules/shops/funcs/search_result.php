@@ -225,7 +225,7 @@ while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, 
     } else {
         //no image
 
-        $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+        $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
     }
 
     $data_content[] = [

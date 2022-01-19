@@ -31,14 +31,8 @@ $savesetting = $nv_Request->get_int('savesetting', 'post', 0);
 $error = "";
 
 // Group custom
-$groups_list = array();
-$result = $db->query('SELECT group_id, title, idsite FROM ' . NV_GROUPS_GLOBALTABLE . ' WHERE group_id NOT IN ( 4, 5, 6 ) AND (idsite = ' . $global_config['idsite'] . ' OR (idsite =0 AND siteus = 1)) ORDER BY idsite, weight');
-while ($row = $result->fetch()) {
-    if ($row['group_id'] < 9) {
-        $row['title'] = $lang_global['level' . $row['group_id']];
-    }
-    $groups_list[$row['group_id']] = ($global_config['idsite'] > 0 and empty($row['idsite'])) ? '<strong>' . $row['title'] . '</strong>' : $row['title'];
-}
+$groups_list = nv_groups_list();
+unset($groups_list[4], $groups_list[5], $groups_list[6], $groups_list[7]);
 
 // Group default
 $groups_list_default = nv_groups_list();

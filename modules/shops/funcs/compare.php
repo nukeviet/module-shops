@@ -103,7 +103,7 @@ if (! empty($array_id)) {
             } else {
                 //no image
 
-                $homeimgthumbs = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                $homeimgthumbs = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
             }
 
             $data_pro[] = array(

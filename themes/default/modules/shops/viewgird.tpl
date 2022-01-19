@@ -4,7 +4,7 @@
     <div class="col-sm-12 col-md-{NUM}">
         <div class="thumbnail">
             <div style="height: {HEIGHT}px" class="item-image">
-                <a href="{ROW.link_pro}" title="{ROW.title}"><img src="{ROW.homeimgthumb}" alt="{ROW.title}"
+                <a href="{ROW.link_pro}" title="{ROW.title}" rel="dofollow"><img src="{ROW.homeimgthumb}" alt="{ROW.title}"
                 <!-- BEGIN: tooltip_js -->data-content='{ROW.hometext}' data-rel="tooltip" data-img="{ROW.homeimgthumb}"<!-- END: tooltip_js -->class="img-thumbnail" style="max-height:{HEIGHT}px;max-width:{WIDTH}px;"></a>
             </div>
             <div class="info_pro">
@@ -23,7 +23,7 @@
             </div>
             <div class="caption text-center">
                 <h3>
-                    <a href="{ROW.link_pro}" title="{ROW.title}">{ROW.title}</a>
+                    <a href="{ROW.link_pro}" title="{ROW.title}" rel="dofollow">{ROW.title}</a>
                 </h3>
                 <!-- BEGIN: product_code -->
                 <p class="label label-default">{PRODUCT_CODE}</p>

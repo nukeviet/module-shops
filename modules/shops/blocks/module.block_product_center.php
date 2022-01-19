@@ -86,7 +86,7 @@ if (! function_exists('nv_product_center')) {
             } else {
                 //no image
 
-                $src_img = NV_BASE_SITEURL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
+                $src_img = NV_STATIC_URL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
             }
 
             $xtpl->assign('LINK', $link);

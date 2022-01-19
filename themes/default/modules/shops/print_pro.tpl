@@ -41,7 +41,7 @@ body {
 	
 	<div id="footer">
 		<div id="contact" class="pull-right">
-			<a href="mailto:{CONTENT.contact}">{contact}</a>
+			<a href="mailto:{CONTENT.contact}" rel="dofollow">{contact}</a>
 		</div>
 		<div class="pull-left">
 			&copy; {site_name}

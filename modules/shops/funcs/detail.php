@@ -199,7 +199,7 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
     } elseif ($data_content['homeimgthumb'] == 3) {
         $data_content['homeimgthumb'] = $data_content['homeimgfile'] = $homeimgfile;
     } else {
-        $data_content['homeimgthumb'] = $data_content['homeimgfile'] = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+        $data_content['homeimgthumb'] = $data_content['homeimgfile'] = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
     }
 
     array_push($array_images, array(
@@ -242,7 +242,7 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
             $thumb = $homeimgfile;
         } else {
             // no image
-            $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+            $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
         }
 
         $data_others[] = array(
@@ -299,7 +299,7 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
                     $thumb = $homeimgfile;
                 } else {
                     // no image
-                    $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                    $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
                 }
 
                 $array_other_view[] = array(

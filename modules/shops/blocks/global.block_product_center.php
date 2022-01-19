@@ -124,7 +124,7 @@ if (!nv_function_exists('nv_global_product_center')) {
             } else {
                 $block_css = 'default';
             }
-            $my_head .= '<link rel="stylesheet" href="' . NV_BASE_SITEURL . 'themes/' . $block_css . '/css/' . $mod_file . '.css' . '" type="text/css" />';
+            $my_head .= '<link rel="stylesheet" href="' . NV_STATIC_URL . 'themes/' . $block_css . '/css/' . $mod_file . '.css' . '" type="text/css" />';
 
             // Language
             if (file_exists(NV_ROOTDIR . '/modules/' . $mod_file . '/language/' . NV_LANG_DATA . '.php')) {
@@ -221,7 +221,7 @@ if (!nv_function_exists('nv_global_product_center')) {
             } else {
                 //no image
 
-                $src_img = NV_BASE_SITEURL . 'themes/' . $block_theme . '/images/shops/no-image.jpg';
+                $src_img = NV_STATIC_URL . 'themes/' . $block_theme . '/images/shops/no-image.jpg';
             }
 
             $xtpl->assign('LINK', $link);

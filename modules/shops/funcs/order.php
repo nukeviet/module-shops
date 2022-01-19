@@ -644,7 +644,7 @@ if ($action == 0) {
                 $thumb = $homeimgfile;
             } else {
                 //no image
-                $thumb = NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
             }
 
             if ($pro_config['active_price'] == '0') {

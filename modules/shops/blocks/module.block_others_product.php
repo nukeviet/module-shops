@@ -58,7 +58,7 @@ if (! function_exists('nv_others_product')) {
                 } else {
                     //no image
 
-                    $src_img = NV_BASE_SITEURL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
+                    $src_img = NV_STATIC_URL . 'themes/' . $global_config['site_theme'] . '/images/shops/no-image.jpg';
                 }
 
                 $xtpl->assign('link', NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$listcatid_i]['alias'] . '/' . $alias_i . $global_config['rewrite_exturl']);
