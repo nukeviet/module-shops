@@ -43,7 +43,6 @@ if (isset($array_op[1])) {
         if ($page > 1) {
             $page_title .= ' ' . NV_TITLEBAR_DEFIS . ' ' . $lang_global['page'] . ' ' . $page;
             $base_url_rewrite .= '/page-' . $page;
-        }
 
         $base_url_rewrite = nv_url_rewrite($base_url_rewrite, true);
         $base_url_rewrite = str_replace('&amp;', '&', $base_url_rewrite);

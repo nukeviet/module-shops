@@ -93,6 +93,10 @@ if (empty($data_content) and $page > 1) {
 }
 
 $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=wishlist';
+
+// Không cho tùy ý đánh số page + xác định trang trước, trang sau
+betweenURLs($page, ceil($num_items/$per_page), $base_url, '&amp;' . NV_OP_VARIABLE . '=page-', $prevPage, $nextPage);
+
 $html_pages = nv_alias_page($page_title, $base_url, $num_items, $per_page, $page);
 
 $contents = nv_template_wishlist($data_content, $html_pages);
