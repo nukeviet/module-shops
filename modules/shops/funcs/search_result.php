@@ -50,6 +50,13 @@ $sid = $nv_Request->get_int('sid', 'get', 0);
 $page = $nv_Request->get_int('page', 'get', 1);
 $num_items = 0;
 
+$page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+
+if ($page > 1) {
+    $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
+}
+$canonicalUrl = getCanonicalUrl($page_url);
+
 $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
 $compare_id = unserialize($compare_id);
 

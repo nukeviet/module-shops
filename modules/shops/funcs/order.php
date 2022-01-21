@@ -19,9 +19,14 @@ if (!defined('NV_IS_USER') and !$pro_config['active_guest_order']) {
 $contents = '';
 
 $link1 = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
-$link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
+$page_url = $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 $action = 0;
 $order_info = [];
+$page = 1;
+if ($page > 1) {
+    $page_url .= 'page-' . $page;
+}
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $data_order = [
     'user_id' => isset($user_info['userid']) ? $user_info['userid'] : 0,

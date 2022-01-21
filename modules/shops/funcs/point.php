@@ -28,7 +28,12 @@ $data_content = array();
 $point = 0;
 $per_page = 20;
 $page = $nv_Request->get_int('page', 'get', 1);
-$base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op;
+$page_url = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op;
+$page = 1;
+if ($page > 1) {
+    $page_url .= '=page-' . $page;
+}
+$canonicalUrl = getCanonicalUrl($page_url);
 
 // Lay so diem hien tai cua khach hang
 $result = $db->query('SELECT point_total FROM ' . $db_config['prefix'] . '_' . $module_data . '_point WHERE userid = ' . $user_info['userid']);

@@ -27,6 +27,12 @@ if (preg_match('/^page\-([0-9]+)$/', (isset($array_op[1]) ? $array_op[1] : ''), 
     $page = (int) $m[1];
 }
 
+$page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+if ($page > 1) {
+    $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
+}
+$canonicalUrl = getCanonicalUrl($page_url);
+
 $data_content = array();
 $array_wishlist_id = implode(',', $array_wishlist_id);
 

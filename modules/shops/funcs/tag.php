@@ -42,6 +42,12 @@ if (isset($array_op[1])) {
 $page_title = trim(str_replace('-', ' ', $alias));
 
 if (!empty($page_title) and $page_title == strip_punctuation($page_title)) {
+    $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+    if ($page > 1) {
+        $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
+    }
+    $canonicalUrl = getCanonicalUrl($page_url);
+
     $stmt = $db->prepare('SELECT tid, image, description, bodytext, keywords FROM ' . $db_config['prefix'] . '_' . $module_data . '_tags_' . NV_LANG_DATA . ' WHERE alias= :alias');
     $stmt->bindParam(':alias', $alias, PDO::PARAM_STR);
     $stmt->execute();

@@ -12,6 +12,13 @@ if (! defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
 
+$page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+$page = 1;
+if ($page > 1 and $pro_config['home_data'] == 'all') {
+    $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
+}
+$canonicalUrl = getCanonicalUrl($page_url);
+
 // Chặn lập chỉ mục tìm kiếm
 $nv_BotManager->setPrivate();
 
