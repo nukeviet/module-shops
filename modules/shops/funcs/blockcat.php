@@ -23,8 +23,9 @@ if (isset($array_op[1])) {
 
     list ($bid, $page_title, $alias, $image_group, $description, $bodytext, $key_words, $tag_title, $tag_description) = $stmt->fetch(3);
     if ($bid > 0) {
-        $base_url_rewrite = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['blockcat'] . '/' . $alias;
-
+        $page_url = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['blockcat'] . '/' . $alias;
+        $page = 1;
+        
         if (!empty($image_group) && file_exists(NV_ROOTDIR . '/' . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image_group)) {
             $image_group = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $image_group;
             $meta_property['og:image'] = (preg_match('/^(http|https|ftp|gopher)\:\/\//', $image_group)) ? $image_group : NV_MY_DOMAIN . $image_group;
@@ -42,15 +43,9 @@ if (isset($array_op[1])) {
 
         if ($page > 1) {
             $page_title .= ' ' . NV_TITLEBAR_DEFIS . ' ' . $lang_global['page'] . ' ' . $page;
-            $base_url_rewrite .= '/page-' . $page;
+            $page_url .= '/page-' . $page;
         }
-
-        $base_url_rewrite = nv_url_rewrite($base_url_rewrite, true);
-        $base_url_rewrite = str_replace('&amp;', '&', $base_url_rewrite);
-
-        if ($_SERVER['REQUEST_URI'] != $base_url_rewrite and NV_MY_DOMAIN . $_SERVER['REQUEST_URI'] != $base_url_rewrite) {
-            nv_redirect_location($base_url_rewrite);
-        }
+        $canonicalUrl = getCanonicalUrl($page_url);
 
         $array_mod_title[] = array(
             'id' => 0,
@@ -69,6 +64,9 @@ if (isset($array_op[1])) {
 
         $num_items = $db->query($db->sql())
             ->fetchColumn();
+
+        // Không cho tùy ý đánh số page + xác định trang trước, trang sau
+        betweenURLs($page, ceil($num_items/$per_page), $base_url, $base_url_rewrite, $prevPage, $nextPage);
 
         $db->select('t1.id, t1.listcatid, t1.publtime, t1.' . NV_LANG_DATA . '_title title, t1.' . NV_LANG_DATA . '_alias alias, t1.' . NV_LANG_DATA . '_hometext hometext, t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_code, t1.product_number, t1.product_price, t1.money_unit, t1.showprice, t1.' . NV_LANG_DATA . '_gift_content, t1.gift_from, t1.gift_to')
             ->order('t2.weight ASC')

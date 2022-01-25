@@ -23,7 +23,12 @@ $data_content = array();
 $sql = "SELECT order_id, order_code, order_note, user_id, unit_total, order_total, order_time, transaction_status, transaction_id, transaction_count FROM " . $db_config['prefix'] . "_" . $module_data . "_orders WHERE user_id = " . $user_info["userid"] . " ORDER BY order_id DESC";
 $result = $db->query($sql);
 
-$link_module = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name;
+$page_url = $link_module = NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name;
+$page = 1;
+if ($page > 1) {
+    $page_url .= '&amp' . NV_OP_VARIABLE . '=page-' . $page;
+}
+$canonicalUrl = getCanonicalUrl($page_url);
 
 while (list($order_id, $order_code, $order_note, $user_id, $unit_total, $order_total, $order_time, $transaction_status, $transaction_id, $transaction_count) = $result->fetch(3)) {
     $checkss = md5($order_id . $global_config['sitekey'] . session_id());

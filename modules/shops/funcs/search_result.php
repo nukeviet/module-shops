@@ -50,6 +50,13 @@ $sid = $nv_Request->get_int('sid', 'get', 0);
 $page = $nv_Request->get_int('page', 'get', 1);
 $num_items = 0;
 
+$page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+
+if ($page > 1) {
+    $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
+}
+$canonicalUrl = getCanonicalUrl($page_url);
+
 $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
 $compare_id = unserialize($compare_id);
 
@@ -205,6 +212,10 @@ $db->select("DISTINCT t1.id, t1.listcatid, t1.publtime, t1." . NV_LANG_DATA . "_
 $result = $db->query($db->sql());
 
 $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=search_result&keyword=' . $keyword . '&price1=' . $price1 . '&price2=' . $price2 . '&typemoney=' . $typemoney . '&cata=' . $cataid . $url;
+
+// Không cho tùy ý đánh số page + xác định trang trước, trang sau
+betweenURLs($page, ceil($num_items/$per_page), $base_url, '&amp;' . NV_OP_VARIABLE . '=page-', $prevPage, $nextPage);
+
 $html_pages = nv_generate_page($base_url, $num_items, $per_page, $page);
 
 $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
