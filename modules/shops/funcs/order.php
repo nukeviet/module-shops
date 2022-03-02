@@ -634,7 +634,7 @@ if ($action == 0) {
         }
         $result = $db->query($sql);
         $weight_total = 0;
-        while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_price, $unit, $money_unit, $product_weight, $weight_unit) = $result->fetch(3)) {
+      while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_price, $product_number, $money_unit, $product_weight, $weight_unit, $unit) = $result->fetch(3)) {
             if ($homeimgthumb == 1) {
                 // image thumb
                 $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
