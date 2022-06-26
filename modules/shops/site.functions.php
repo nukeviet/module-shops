@@ -172,6 +172,9 @@ function nv_get_price($pro_id, $currency_convert, $number = 1, $per_pro = false,
     }elseif ($pro_config['saleprice_active'] && $global_array_shops_cat[$product['listcatid']]['typeprice'] == 0 && !empty($product['saleprice'])) {
         $discount = $product['product_price'] - $product['saleprice'];
         $discount_percent = ($discount * 100) / $product['product_price'];
+        if (!$per_pro) {
+            $discount = $discount * $number;
+        }
     }
 
     $price = nv_currency_conversion($price, $product['money_unit'], $currency_convert);
