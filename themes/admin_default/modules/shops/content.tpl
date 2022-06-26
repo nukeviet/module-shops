@@ -432,11 +432,11 @@
     <div class="text-center" style="margin-top: 10px">
         <input type="hidden" name="copy" value="{IS_COPY}">
         <!-- BEGIN:status -->
-        <input class="btn btn-primary submit" data-status="1" type="submit" value="{LANG.save}" />
+        <input class="btn btn-primary submitform" name="sst1" data-status="1" type="submit" value="{LANG.save}" />
         <!-- END:status -->
         <!-- BEGIN:status0 -->
-        <input class="btn btn-primary submit" data-status="0" type="submit" value="{LANG.save_temp}" />
-        <input class="btn btn-primary submit" data-status="1" type="submit" value="{LANG.publtime}" />
+        <input class="btn btn-primary submitform" name="sst0" data-status="0" type="submit" value="{LANG.save_temp}" />
+        <input class="btn btn-primary submitform" name="sst1" data-status="1" type="submit" value="{LANG.publtime}" />
         <!-- END:status0 -->
     </div>
 </form>
@@ -472,7 +472,7 @@
         $("#catid").select2();
         $("#catid").trigger("change");
 
-        $('.submit').click(function(e){
+        $('.submitform').click(function(e){
             e.preventDefault();
 
             for(var instanceName in CKEDITOR.instances){
