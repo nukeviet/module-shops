@@ -8,8 +8,9 @@
  * @Createdate 2-10-2010 20:59
  */
 
-if (!defined('NV_IS_UPDATE'))
+if (!defined('NV_IS_UPDATE')) {
     die('Stop!!!');
+}
 
 $nv_update_config = array();
 
@@ -17,17 +18,19 @@ $nv_update_config = array();
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUSHOPS4500';
+$nv_update_config['packageID'] = 'NVUSHOPS4502';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = 'shops';
 
 // Thong tin phien ban, tac gia, ho tro
-$nv_update_config['release_date'] = 1658966400;
-$nv_update_config['author'] = 'VINADES.,JSC (contact@vinades.vn)';
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/module-shops/tree/to-4.5.00';
-$nv_update_config['to_version'] = '4.5.00';
-$nv_update_config['allow_old_version'] = array('4.0.25');
+$nv_update_config['id'] = 31;
+$nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
+$nv_update_config['note'] = '';
+$nv_update_config['release_date'] = 1664268378;
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/module-shops/tree/to-4.5.02';
+$nv_update_config['to_version'] = '4.5.02';
+$nv_update_config['allow_old_version'] = array('4.3.00', '4.5.00', '4.5.01');
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -36,25 +39,25 @@ $nv_update_config['lang'] = array();
 $nv_update_config['lang']['vi'] = array();
 
 // Tiếng Việt
-$nv_update_config['lang']['vi']['nv_up_f1'] = 'Thay đổi cấu trúc bảng dữ liệu';
-$nv_update_config['lang']['vi']['nv_up_f2'] = 'Cập nhật cấu hình CSDL bản 4.5.00';
+$nv_update_config['lang']['vi']['nv_up_f1'] = 'Cập nhật cấu hình CSDL bản 4.3.01';
+$nv_update_config['lang']['vi']['nv_up_f2'] = 'Cập nhật cấu hình CSDL bản 4.4.00';
 $nv_update_config['lang']['vi']['nv_up_finish'] = 'Đánh dấu phiên bản mới';
 
 $nv_update_config['tasklist'] = array();
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.5.00',
+    'r' => '4.3.01',
     'rq' => 1,
     'l' => 'nv_up_f1',
     'f' => 'nv_up_f1'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.5.00',
+    'r' => '4.4.00',
     'rq' => 1,
     'l' => 'nv_up_f2',
     'f' => 'nv_up_f2'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.5.00',
+    'r' => '4.5.02',
     'rq' => 1,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'
@@ -117,7 +120,7 @@ while (list($_tmp) = $result->fetch(PDO::FETCH_NUM)) {
  */
 function nv_up_f1()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $array_modlang_update;
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $array_modlang_update, $nv_update_config;
     $return = array(
         'status' => 1,
         'complete' => 1,
@@ -126,126 +129,28 @@ function nv_up_f1()
         'lang' => 'NO',
         'message' => ''
     );
+
+    try {
+        $db->query("DROP TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_payment ");
+    } catch(PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
     foreach ($array_modlang_update as $lang => $array_mod) {
         foreach ($array_mod['mod'] as $module_info) {
-            $table_prefix = $db_config['prefix'] . "_" . $module_info['module_data'];
             try {
-                $db->query("ALTER TABLE " . $table_prefix . "_template ADD weight mediumint(8) unsigned NOT NULL DEFAULT '1' AFTER `alias`");
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (
+                    lang, module, config_name, config_value
+                ) VALUES 
+                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'home_data', 'all')
+                ");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
+
             try {
-                $db->query("ALTER TABLE " . $table_prefix . "_group CHANGE `viewgroup` `viewgroup` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'viewgrid'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_warehouse_logs CHANGE `price` `price` DOUBLE NOT NULL DEFAULT '0'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_warehouse_logs_group CHANGE `price` `price` DOUBLE NOT NULL DEFAULT '0'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_rows CHANGE `product_price` `product_price` DOUBLE NOT NULL DEFAULT '0', CHANGE `product_weight` `product_weight` DOUBLE NOT NULL DEFAULT '0'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_rows ADD saleprice double NOT NULL DEFAULT '0' AFTER `price_config`, ADD " . $lang . "_tag_title VARCHAR(255) NOT NULL DEFAULT '', ADD " . $lang . "_tag_description mediumtext NOT NULL DEFAULT ''");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_catalogs ADD " . $lang . "_tag_description mediumtext NOT NULL DEFAULT ''");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_block_cat
-                    ADD " . $lang . "_bodytext TEXT NULL DEFAULT NULL AFTER " . $lang . "_description,
-                    ADD " . $lang . "_tag_title VARCHAR(255) NOT NULL DEFAULT '',
-                    ADD " . $lang . "_tag_description mediumtext NOT NULL");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_orders_id CHANGE `price` `price` DOUBLE NOT NULL DEFAULT '0',
-                    ADD listgroupid VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' AFTER `order_id`");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_orders_shipping CHANGE `id` `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-                    CHANGE `weight` `weight` double NOT NULL DEFAULT '0', CHANGE `ship_price` `ship_price` double NOT NULL DEFAULT '0'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_money_" . $lang . " CHANGE `exchange` `exchange` double NOT NULL default '0', ADD symbol varchar(3) NOT NULL default '' AFTER `currency`");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("UPDATE " . $table_prefix . "_money_" . $lang . " SET `symbol` = '$' WHERE `nv4_shops_money_vi`.`id` = 840;");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("UPDATE " . $table_prefix . "_money_" . $lang . " SET `symbol` = 'đ' WHERE `nv4_shops_money_vi`.`id` = 704;");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("DROP TABLE " . $table_prefix . "_payment");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_weight_" . $lang . " CHANGE `exchange` `exchange` double NOT NULL default '0'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_tags_" . $lang . " ADD bodytext text NULL DEFAULT '' AFTER description");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_coupons CHANGE `discount` `discount` double NOT NULL DEFAULT '0', CHANGE `total_amount` `total_amount` double NOT NULL DEFAULT '0'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_coupons_history CHANGE `amount` `amount` double NOT NULL DEFAULT '0'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("ALTER TABLE " . $table_prefix . "_carrier_config_weight CHANGE `weight` `weight` double unsigned NOT NULL, CHANGE `carrier_price` `carrier_price` double NOT NULL");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("UPDATE " . $table_prefix . "_catalogs SET viewcat = 'viewlist' WHERE viewcat = 'viewcat_page_list'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("UPDATE " . $table_prefix . "_catalogs SET viewcat = 'viewgrid' WHERE viewcat = 'viewcat_page_gird'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("UPDATE " . $table_prefix . "_group SET viewgroup = 'viewlist' WHERE viewcat = 'viewcat_page_list'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("UPDATE " . $table_prefix . "_group SET viewgroup = 'viewgrid' WHERE viewcat = 'viewcat_page_gird'");
+                $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET config_value='viewgrid'
+                WHERE lang='" . $lang . "' AND module = '" . $module_info['module_data'] . "' AND config_name = 'home_view'");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
@@ -262,7 +167,7 @@ function nv_up_f1()
  */
 function nv_up_f2()
 {
-    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $array_modlang_update;
+    global $nv_update_baseurl, $db, $db_config, $nv_Cache, $array_modlang_update, $nv_update_config;
     $return = array(
         'status' => 1,
         'complete' => 1,
@@ -271,31 +176,63 @@ function nv_up_f2()
         'lang' => 'NO',
         'message' => ''
     );
+
+    try {
+        $db->query(
+            "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_catalogs
+            CHANGE form form VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' "
+        );
+    } catch(PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
+    try {
+        $db->query(
+            "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_template
+            ADD weight MEDIUMINT(8) UNSIGNED NOT NULL DEFAULT '1' AFTER alias "
+        );
+    } catch(PDOException $e) {
+        trigger_error($e->getMessage());
+    }
+
     foreach ($array_modlang_update as $lang => $array_mod) {
         foreach ($array_mod['mod'] as $module_info) {
             try {
-                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (lang, module, config_name, config_value) VALUES
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'home_data', 'all'),
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'money_to_point', '0'),
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'saleprice_active', '0'),
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'sortdefault', '0'),
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'allowattachcomm', '0'),
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'alloweditorcomm', '0'),
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'captcha_area_comm', '1'),
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'captcha_type_comm', 'captcha'),
-                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'captcha_type', 'captcha')
+                $db->query(
+                    "ALTER TABLE " . $db_config['prefix'] . "_" . $module_info['module_data'] . "_block_cat
+                    ADD COLUMN " . $lang. "_bodytext TEXT NOT NULL AFTER " . $lang. "_keywords,
+                    ADD COLUMN " . $lang. "_tag_title TEXT NOT NULL AFTER " . $lang. "_bodytext,
+                    ADD COLUMN " . $lang. "_tag_description TEXT NOT NULL AFTER " . $lang. "_tag_title "
+                );
+            } catch(PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+
+            try {
+                $db->query(
+                    "ALTER TABLE " . $db_config['prefix'] . "_" . $module_info['module_data']. "_tags_".$lang
+                    ." ADD bodytext TEXT NOT NULL AFTER description "
+                );
+            } catch(PDOException $e) {
+                trigger_error($e->getMessage());
+            }
+
+            try {
+                $db->query("INSERT INTO " . NV_CONFIG_GLOBALTABLE . " (
+                    lang, module, config_name, config_value
+                ) VALUES 
+                    ('" . $lang . "', '" . $module_info['module_data'] . "', 'saleprice_active', '0')
                 ");
             } catch (PDOException $e) {
                 trigger_error($e->getMessage());
             }
+
             try {
-                $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET `config_value` = 'viewgrid' WHERE lang = '" . $lang . "' AND module = '" . $module_info['module_data'] . "' AND config_name = 'home_view'");
-            } catch (PDOException $e) {
-                trigger_error($e->getMessage());
-            }
-            try {
-                $db->query("UPDATE " . NV_CONFIG_GLOBALTABLE . " SET `config_value` = 0 WHERE lang = '" . $lang . "' AND module = '" . $module_info['module_data'] . "' AND config_name = 'active_warehouse'");
-            } catch (PDOException $e) {
+                $db->query(
+                    "ALTER TABLE " . $db_config['prefix'] . "_" . $module_info['module_data']. "_rows
+                        ADD saleprice DOUBLE UNSIGNED NOT NULL DEFAULT '0' AFTER price_config "
+                );
+            } catch(PDOException $e) {
                 trigger_error($e->getMessage());
             }
         }
@@ -368,14 +305,15 @@ function nv_up_finish()
             $db->query("INSERT INTO " . $db_config['prefix'] . "_setup_extensions (
                 id, type, title, is_sys, is_virtual, basename, table_prefix, version, addtime, author, note
             ) VALUES (
-                28, 'module', 'faq', 0, 1, 'faq', 'faq', '" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "', " . NV_CURRENTTIME . ", 'VINADES.,JSC (contact@vinades.vn)',
-                'Module quản lý các câu hỏi thường gặp'
+                ". $nv_update_config['id'] .", 'module', '" . $nv_update_config['formodule'] . "', 0, 1,
+                '" . $nv_update_config['formodule'] . "', '" . $nv_update_config['formodule'] . "', '" . $version . "', " . NV_CURRENTTIME . ", 
+                '". $nv_update_config['author'] ."', '". $nv_update_config['note'] ."'
             )");
         } else {
             $db->query("UPDATE " . $db_config['prefix'] . "_setup_extensions SET
-                id=28,
+                id=". $nv_update_config['id'] .",
                 version='" . $version . "',
-                author='VINADES.,JSC (contact@vinades.vn)'
+                author='". $nv_update_config['author'] ."'
             WHERE basename='" . $nv_update_config['formodule'] . "' AND type='module'");
         }
     } catch (PDOException $e) {
@@ -383,5 +321,6 @@ function nv_up_finish()
     }
 
     $nv_Cache->delAll(true);
+
     return $return;
 }
