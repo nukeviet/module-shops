@@ -279,8 +279,6 @@ function nv_up_f3()
             "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_carrier_config_weight
             CHANGE weight weight double UNSIGNED NOT NULL "
         );
-        //cotheloi, cancheck
-        //chuadc
     } catch(PDOException $e) {
         trigger_error($e->getMessage());
     }
@@ -289,8 +287,6 @@ function nv_up_f3()
             "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_carrier_config_weight
             CHANGE carrier_price carrier_price double NOT NULL "
         );
-        //cotheloi, cancheck
-        //chuadc
     } catch(PDOException $e) {
         trigger_error($e->getMessage());
     }
@@ -300,8 +296,6 @@ function nv_up_f3()
             "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_coupons
             CHANGE discount discount double NOT NULL DEFAULT '0' "
         );
-        //cotheloi, cancheck
-        //chuadc
     } catch(PDOException $e) {
         trigger_error($e->getMessage());
     }
@@ -310,8 +304,6 @@ function nv_up_f3()
             "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_coupons
             CHANGE total_amount total_amount double NOT NULL DEFAULT '0' "
         );
-        //cotheloi, cancheck
-        //chuadc
     } catch(PDOException $e) {
         trigger_error($e->getMessage());
     }
@@ -348,8 +340,6 @@ function nv_up_f3()
             "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_orders_shipping
             CHANGE weight weight double NOT NULL DEFAULT '0' "
         );
-        //cotheloi, cancheck
-        //chuadc
     } catch(PDOException $e) {
         trigger_error($e->getMessage());
     }
@@ -358,8 +348,6 @@ function nv_up_f3()
             "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_orders_shipping
             CHANGE ship_price ship_price double NOT NULL DEFAULT '0' "
         );
-        //cotheloi, cancheck
-        //chuadc
     } catch(PDOException $e) {
         trigger_error($e->getMessage());
     }
@@ -369,8 +357,6 @@ function nv_up_f3()
             "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_rows
             CHANGE product_price product_price double NOT NULL DEFAULT '0' "
         );
-        //cotheloi, cancheck
-        //chuadc
     } catch(PDOException $e) {
         trigger_error($e->getMessage());
     }
@@ -379,8 +365,6 @@ function nv_up_f3()
             "ALTER TABLE " . $db_config['prefix'] . "_" . $nv_update_config['formodule'] . "_rows
             CHANGE product_weight product_weight double NOT NULL DEFAULT '0' "
         );
-        //cotheloi, cancheck
-        //chuadc
     } catch(PDOException $e) {
         trigger_error($e->getMessage());
     }
