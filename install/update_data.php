@@ -368,7 +368,7 @@ function nv_up_finish()
             $db->query("INSERT INTO " . $db_config['prefix'] . "_setup_extensions (
                 id, type, title, is_sys, is_virtual, basename, table_prefix, version, addtime, author, note
             ) VALUES (
-                28, 'module', 'faq', 0, 1, 'faq', 'faq', '" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "', " . NV_CURRENTTIME . ", 'VINADES.,JSC (contact@vinades.vn)',
+                31, 'module', 'faq', 0, 1, 'faq', 'faq', '" . $nv_update_config['to_version'] . " " . $nv_update_config['release_date'] . "', " . NV_CURRENTTIME . ", 'VINADES.,JSC (contact@vinades.vn)',
                 'Module quản lý các câu hỏi thường gặp'
             )");
         } else {
