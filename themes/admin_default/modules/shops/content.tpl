@@ -232,7 +232,7 @@
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="gift_from" value="{rowcontent.gift_from}" id="gift_from" readonly="readonly" placeholder="{LANG.date_from}"> <span class="input-group-btn">
+                                                <input type="text" class="form-control" name="gift_from" value="{rowcontent.gift_from}" id="gift_from" placeholder="{LANG.date_from}"> <span class="input-group-btn">
                                                     <button class="btn btn-default" type="button" id="from-btn">
                                                         <em class="fa fa-calendar fa-fix">&nbsp;</em>
                                                     </button>
@@ -255,7 +255,7 @@
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="gift_to" value="{rowcontent.gift_to}" id="gift_to" readonly="readonly" placeholder="{LANG.date_to}"> <span class="input-group-btn">
+                                                <input type="text" class="form-control" name="gift_to" value="{rowcontent.gift_to}" id="gift_to" placeholder="{LANG.date_to}"> <span class="input-group-btn">
                                                     <button class="btn btn-default" type="button" id="to-btn">
                                                         <em class="fa fa-calendar fa-fix">&nbsp;</em>
                                                     </button>
