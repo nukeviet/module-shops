@@ -463,7 +463,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     }
 
     // Xu ly tu khoa
-    if ($rowcontent['keywords'] == '') {
+    if ($rowcontent['keywords'] == '' && !empty($pro_config['auto_tags'])) {
         $keywords = ($rowcontent['hometext'] != '') ? $rowcontent['hometext'] : $rowcontent['bodyhtml'];
         $keywords = nv_get_keywords($keywords, 100);
         $keywords = explode(',', $keywords);
