@@ -135,7 +135,7 @@ function nv_set_status_module()
  */
 function nv_del_content_module($id)
 {
-    global $db, $module_name, $module_data, $title, $db_config;
+    global $db, $module_name, $module_data, $title, $db_config, $lang_module;
 
     $content_del = 'NO_' . $id;
     $title = '';
