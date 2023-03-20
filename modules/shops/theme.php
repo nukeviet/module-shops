@@ -762,7 +762,7 @@ function cart_product($data_content, $coupons_code, $order_info, $array_error_nu
 }
 
 /**
- * uers_order()
+ * users_order()
  *
  * @param mixed $data_content
  * @param mixed $data_order
@@ -770,7 +770,7 @@ function cart_product($data_content, $coupons_code, $order_info, $array_error_nu
  * @param mixed $error
  * @return
  */
-function uers_order($data_content, $data_order, $total_coupons, $order_info)
+function users_order($data_content, $data_order, $total_coupons, $order_info)
 {
     global $module_info, $lang_module, $lang_global, $module_config, $module_data, $module_file, $module_name, $pro_config, $money_config, $global_array_group, $shipping_data;
 
