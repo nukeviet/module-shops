@@ -688,7 +688,7 @@ if ($action == 0) {
     if ($i == 0) {
         nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
     } else {
-        $contents = call_user_func('uers_order', $data_content, $data_order, $array_counpons['discount'], $order_info);
+        $contents = call_user_func('users_order', $data_content, $data_order, $array_counpons['discount'], $order_info);
     }
 }
 
