@@ -1609,7 +1609,7 @@ function nv_review_content($data_content)
     }
     $xtpl->assign('RATE_TOTAL', $data_content['rating_total']);
     $xtpl->assign('RATE_VALUE', $data_content['rating_point']);
-    
+
     $reCaptchaPass = (!empty($global_config['recaptcha_sitekey']) and !empty($global_config['recaptcha_secretkey']) and ($global_config['recaptcha_ver'] == 2 or $global_config['recaptcha_ver'] == 3));
 
     if ($pro_config['review_captcha']) {
