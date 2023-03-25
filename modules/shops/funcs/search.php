@@ -38,7 +38,7 @@ $per_pages = 20;
 
 $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=search';
 if ($page > 1) {
-    $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
+    $page_url .= '&amp;page-' . $page;
 }
 $canonicalUrl = getCanonicalUrl($page_url);
 
