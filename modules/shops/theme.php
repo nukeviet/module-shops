@@ -284,7 +284,7 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
             $xtpl->parse('main.image');
         }
 
-        if ($pro_config['active_gift'] and !empty($data_content[NV_LANG_DATA . '_gift_content']) and NV_CURRENTTIME >= $data_content['gift_from'] and NV_CURRENTTIME <= $data_content['gift_to']) {
+        if ($pro_config['active_gift'] and !empty($data_content[NV_LANG_DATA . '_gift_content']) and NV_CURRENTTIME >= $data_content['gift_from'] and (empty($data_content['gift_to']) || NV_CURRENTTIME <= $data_content['gift_to'])) {
             $xtpl->assign('gift_content', $data_content[NV_LANG_DATA . '_gift_content']);
             $xtpl->parse('main.gift');
         }
@@ -1279,6 +1279,7 @@ function search_theme($key, $check_num, $date_array, $array_cat_search)
 
     $xtpl = new XTemplate("search.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file);
 
+    $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('MODULE_NAME', $module_name);
     $xtpl->assign('TO_DATE', $date_array['to_date']);
@@ -1315,7 +1316,7 @@ function search_theme($key, $check_num, $date_array, $array_cat_search)
  */
 function search_result_theme($key, $numRecord, $per_pages, $pages, $array_content, $url_link, $catid)
 {
-    global $module_file, $module_info, $lang_module, $global_array_shops_cat, $pro_config;
+    global $module_file, $module_info, $lang_module, $global_array_shops_cat, $pro_config, $global_config;
 
     $xtpl = new XTemplate("search.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file);
 
@@ -1329,7 +1330,7 @@ function search_result_theme($key, $numRecord, $per_pages, $pages, $array_conten
         foreach ($array_content as $value) {
             $listcatid = explode(",", $value['listcatid']);
             $catid_i = ($catid > 0) ? $catid : end($listcatid);
-            $url = $global_array_shops_cat[$catid_i]['link'] . '/' . $value['alias'] . "-" . $value['id'];
+            $url = $global_array_shops_cat[$catid_i]['link'] . '/' . $value['alias'] . $global_config['rewrite_exturl'];
 
             $value['hometext'] = nv_clean60($value['hometext'], 170);
 

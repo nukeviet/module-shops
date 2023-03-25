@@ -1,6 +1,6 @@
 <!-- BEGIN: main -->
 <link rel="stylesheet" type="text/css" href="{NV_STATIC_URL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.css">
-<form action="{BASE_URL_SITE}index.php" name="fsea" method="get" id="fsea" class="form-horizontal">
+<form action="{NV_BASE_SITEURL}index.php" name="fsea" method="get" id="fsea" class="form-horizontal">
     <div class="panel panel-default">
         <div class="panel-heading">{LANG.search_title}</div>
         <div class="panel-body">
