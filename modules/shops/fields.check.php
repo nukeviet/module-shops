@@ -11,11 +11,23 @@
 if (!defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
+$template_ids = [];
+$template_alias = explode(',', preg_replace("/[\_]/", "-", $global_array_shops_cat[$rowcontent['listcatid']]['form']));
+if (!empty($template_alias)) {
+    $result = $db->query('SELECT id FROM ' . $db_config['prefix'] . '_' . $module_data . '_template where alias IN ("' . implode('", "', $template_alias) . '")');
+    while (list($template_id) = $result->fetch(3)) {
+        $template_ids[] = $template_id;
+    }
+}
 
-$idtemplate = $db->query('SELECT id FROM ' . $db_config['prefix'] . '_' . $module_data . '_template where alias = "' . preg_replace("/[\_]/", "-", $global_array_shops_cat[$rowcontent['listcatid']]['form']) . '"')->fetchColumn();
-if ($idtemplate) {
+if ($template_ids) {
+    $error = '';
+    $where_template = array_map(function($id) {
+        return 'FIND_IN_SET(' . $id . ', listtemplate)';
+    }, $template_ids);
+   
     $array_tmp = array( );
-    $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_field');
+    $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_field WHERE ' . implode(' OR ', $where_template) . ' ORDER BY weight');
     while ($row = $result->fetch()) {
         $language = unserialize($row['language']);
         $row['title'] = (isset($language[NV_LANG_DATA])) ? $language[NV_LANG_DATA][0] : $row['field'];
@@ -141,6 +153,12 @@ if ($idtemplate) {
             }
 
             $array_custom[$row['fid']] = $value;
+        }
+        if (!empty($error)) {
+            nv_jsonOutput(array(
+                'error' => 1,
+                'msg' => $error
+            ));
         }
     }
 }

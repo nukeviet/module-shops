@@ -1007,84 +1007,81 @@ function nv_show_custom_form($is_edit, $form, $array_custom)
     list($idtemplate, $titletemplate) = $db->query('SELECT id, ' . NV_LANG_DATA . '_title title FROM ' . $db_config['prefix'] . '_' . $module_data . '_template WHERE alias = "' . preg_replace("/[\_]/", "-", $form) . '"')->fetch(3);
     if ($idtemplate) {
         $array_tmp = array();
-        $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_field');
+        $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_field WHERE FIND_IN_SET(' . $idtemplate . ', listtemplate)');
         while ($row = $result->fetch()) {
-            $listtemplate = explode('|', $row['listtemplate']);
-            if (in_array($idtemplate, $listtemplate)) {
-                if (!$is_edit) {
-                    if ($row['field_type'] == 'date') {
-                        $array_custom[$row['field']] = ($row['field_choices']['current_date']) ? NV_CURRENTTIME : $row['default_value'];
-                    } elseif ($row['field_type'] == 'number') {
-                        $array_custom[$row['field']] = $row['default_value'];
-                    } else {
-                        if (!empty($row['field_choices'])) {
-                            $temp = array_keys($row['field_choices']);
-                            $tempkey = intval($row['default_value']) - 1;
-                            $array_custom[$row['field']] = (isset($temp[$tempkey])) ? $temp[$tempkey] : '';
-                        }
-                    }
-                } elseif (!empty($row['field_choices'])) {
-                    $row['field_choices'] = unserialize($row['field_choices']);
-                } elseif (!empty($row['sql_choices'])) {
-                    $row['sql_choices'] = explode('|', $row['sql_choices']);
-                    $query = 'SELECT ' . $row['sql_choices'][2] . ', ' . $row['sql_choices'][3] . ' FROM ' . $row['sql_choices'][1];
-                    $result_sql = $db->query($query);
-                    $weight = 0;
-                    while (list ($key, $val) = $result_sql->fetch(3)) {
-                        $row['field_choices'][$key] = $val;
-                    }
-                }
-
+            if (!$is_edit) {
                 if ($row['field_type'] == 'date') {
-                    $array_custom[$row['field']] = (empty($array_custom[$row['field']])) ? '' : date('d/m/Y', $array_custom[$row['field']]);
-                } elseif ($row['field_type'] == 'textarea') {
-                    $array_custom[$row['field']] = nv_htmlspecialchars(nv_br2nl($array_custom[$row['field']]));
-                } elseif ($row['field_type'] == 'editor') {
-                    $array_custom[$row['field']] = (empty($array_custom[$row['field']])) ? '' : htmlspecialchars(nv_editor_br2nl($array_custom[$row['field']]));
-                    $array_custom[$row['fid']] = !empty($array_custom[$row['fid']]) ? $array_custom[$row['fid']] : '';
-
-                    if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
-                        $row['class'] = explode('@', $row['class']);
-                        $edits = nv_aleditor('custom[' . $row['fid'] . ']', $row['class'][0], $row['class'][1], $array_custom[$row['fid']]);
-                        $array_custom[$row['field']] = $edits;
-                    } else {
-                        $row['class'] = '';
-                    }
-                } elseif ($row['field_type'] == 'select') {
-                    foreach ($row['field_choices'] as $key => $value) {
-                        $xtpl->assign('OPTION', array(
-                            'key' => $key,
-                            'selected' => ($key == $array_custom[$row['field']]) ? ' selected="selected"' : '',
-                            'title' => $value
-                        ));
-                        $xtpl->parse('main.select_' . $row['field']);
-                    }
-                } elseif ($row['field_type'] == 'radio' or $row['field_type'] == 'checkbox') {
-                    $number = 0;
-                    foreach ($row['field_choices'] as $key => $value) {
-                        $xtpl->assign('OPTION', array(
-                            'id' => $row['fid'] . '_' . $number++,
-                            'key' => $key,
-                            'checked' => ($key == $array_custom[$row['field']]) ? ' checked="checked"' : '',
-                            'title' => $value
-                        ));
-
-                        $xtpl->parse('main.' . $row['field_type'] . '_' . $row['field']);
-                    }
-                } elseif ($row['field_type'] == 'multiselect') {
-                    foreach ($row['field_choices'] as $key => $value) {
-                        $xtpl->assign('OPTION', array(
-                            'key' => $key,
-                            'selected' => ($key == $array_custom[$row['field']]) ? ' selected="selected"' : '',
-                            'title' => $value
-                        ));
-                        $xtpl->parse('main.' . $row['field']);
+                    $array_custom[$row['field']] = ($row['field_choices']['current_date']) ? NV_CURRENTTIME : $row['default_value'];
+                } elseif ($row['field_type'] == 'number') {
+                    $array_custom[$row['field']] = $row['default_value'];
+                } else {
+                    if (!empty($row['field_choices'])) {
+                        $temp = array_keys($row['field_choices']);
+                        $tempkey = intval($row['default_value']) - 1;
+                        $array_custom[$row['field']] = (isset($temp[$tempkey])) ? $temp[$tempkey] : '';
                     }
                 }
-
-                // Du lieu hien thi tieu de
-                $array_tmp[$row['fid']] = unserialize($row['language']);
+            } elseif (!empty($row['field_choices'])) {
+                $row['field_choices'] = unserialize($row['field_choices']);
+            } elseif (!empty($row['sql_choices'])) {
+                $row['sql_choices'] = explode('|', $row['sql_choices']);
+                $query = 'SELECT ' . $row['sql_choices'][2] . ', ' . $row['sql_choices'][3] . ' FROM ' . $row['sql_choices'][1];
+                $result_sql = $db->query($query);
+                $weight = 0;
+                while (list ($key, $val) = $result_sql->fetch(3)) {
+                    $row['field_choices'][$key] = $val;
+                }
             }
+
+            if ($row['field_type'] == 'date') {
+                $array_custom[$row['field']] = (empty($array_custom[$row['field']])) ? '' : date('d/m/Y', $array_custom[$row['field']]);
+            } elseif ($row['field_type'] == 'textarea') {
+                $array_custom[$row['field']] = nv_htmlspecialchars(nv_br2nl($array_custom[$row['field']]));
+            } elseif ($row['field_type'] == 'editor') {
+                $array_custom[$row['field']] = (empty($array_custom[$row['field']])) ? '' : htmlspecialchars(nv_editor_br2nl($array_custom[$row['field']]));
+                $array_custom[$row['fid']] = !empty($array_custom[$row['fid']]) ? $array_custom[$row['fid']] : '';
+
+                if (defined('NV_EDITOR') and nv_function_exists('nv_aleditor')) {
+                    $row['class'] = explode('@', $row['class']);
+                    $edits = nv_aleditor('custom[' . $row['fid'] . ']', $row['class'][0], $row['class'][1], $array_custom[$row['fid']]);
+                    $array_custom[$row['field']] = $edits;
+                } else {
+                    $row['class'] = '';
+                }
+            } elseif ($row['field_type'] == 'select') {
+                foreach ($row['field_choices'] as $key => $value) {
+                    $xtpl->assign('OPTION', array(
+                        'key' => $key,
+                        'selected' => ($key == $array_custom[$row['field']]) ? ' selected="selected"' : '',
+                        'title' => $value
+                    ));
+                    $xtpl->parse('main.select_' . $row['field']);
+                }
+            } elseif ($row['field_type'] == 'radio' or $row['field_type'] == 'checkbox') {
+                $number = 0;
+                foreach ($row['field_choices'] as $key => $value) {
+                    $xtpl->assign('OPTION', array(
+                        'id' => $row['fid'] . '_' . $number++,
+                        'key' => $key,
+                        'checked' => ($key == $array_custom[$row['field']]) ? ' checked="checked"' : '',
+                        'title' => $value
+                    ));
+
+                    $xtpl->parse('main.' . $row['field_type'] . '_' . $row['field']);
+                }
+            } elseif ($row['field_type'] == 'multiselect') {
+                foreach ($row['field_choices'] as $key => $value) {
+                    $xtpl->assign('OPTION', array(
+                        'key' => $key,
+                        'selected' => ($key == $array_custom[$row['field']]) ? ' selected="selected"' : '',
+                        'title' => $value
+                    ));
+                    $xtpl->parse('main.' . $row['field']);
+                }
+            }
+
+            // Du lieu hien thi tieu de
+            $array_tmp[$row['fid']] = unserialize($row['language']);
         }
 
         if (!empty($array_tmp)) {
@@ -1164,12 +1161,9 @@ function nv_create_form_file($array_template_id)
 
     foreach ($array_template_id as $templateids_i) {
         $array_views = array();
-        $result = $db->query("SELECT fid, field, field_type, listtemplate FROM " . $db_config['prefix'] . '_' . $module_data . "_field");
+        $result = $db->query("SELECT fid, field, field_type, listtemplate FROM " . $db_config['prefix'] . '_' . $module_data . "_field WHERE FIND_IN_SET(" . $templateids_i . ", listtemplate) ORDER BY weight");
         while ($column = $result->fetch()) {
-            $column['listtemplate'] = explode('|', $column['listtemplate']);
-            if (in_array($templateids_i, $column['listtemplate'])) {
-                $array_views[$column['fid']] = $column;
-            }
+            $array_views[$column['fid']] = $column;
         }
 
         $array_field_js = array();
@@ -1206,9 +1200,7 @@ function nv_create_form_file($array_template_id)
 
                 if (isset($array_requireds[$key])) {
                     $content_2 .= 'required="required" ';
-                    if ($oninvalid) {
-                        $content_2 .= "oninvalid=\"setCustomValidity( nv_required )\" oninput=\"setCustomValidity('')\" ";
-                    }
+                    $content_2 .= "oninvalid=\"setCustomValidity( nv_required )\" oninput=\"setCustomValidity('')\" ";
                 }
                 $content_2 .= ">{OPTION.title} &nbsp;</label>\n";
                 $content_2 .= "\t\t\t\t\t<!-- END: " . $type_html . "_" . $key . " -->\n";
