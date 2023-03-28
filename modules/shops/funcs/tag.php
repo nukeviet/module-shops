@@ -10,7 +10,7 @@
 if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
-
+$per_page = 4;
 $alias = $nv_Request->get_title('alias', 'get');
 $array_op = explode('/', $alias);
 $alias = $array_op[0];
@@ -42,11 +42,11 @@ if (isset($array_op[1])) {
 $page_title = trim(str_replace('-', ' ', $alias));
 
 if (!empty($page_title) and $page_title == strip_punctuation($page_title)) {
-    $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
+    $base_url = $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '/' . $alias;
     if ($page > 1) {
-        $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
+        $page_url .= '/page-' . $page;
     }
-    $canonicalUrl = getCanonicalUrl($page_url);
+    $canonicalUrl = getCanonicalUrl($page_url, true, true);
 
     $stmt = $db->prepare('SELECT tid, image, description, bodytext, keywords FROM ' . $db_config['prefix'] . '_' . $module_data . '_tags_' . NV_LANG_DATA . ' WHERE alias= :alias');
     $stmt->bindParam(':alias', $alias, PDO::PARAM_STR);
@@ -119,7 +119,6 @@ if (!empty($page_title) and $page_title == strip_punctuation($page_title)) {
             $image_tag = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/topics/' . $image_tag;
         }
 
-        $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=wishlist';
         $html_pages = nv_alias_page($page_title, $base_url, $num_items, $per_page, $page);
 
         $contents = nv_template_tag($data_content, $bodytext, $html_pages, $sorts, $viewtype);
