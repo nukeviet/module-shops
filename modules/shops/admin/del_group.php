@@ -88,7 +88,7 @@ if ($groupid > 0) {
                     nv_fix_group_order();
                     $nv_Cache->delMod($module_name);
 
-                    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=group&parentid=" . $parentid);
+                    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=group&parentid=" . $parentid);
                 } elseif (! empty($movegroup) and $groupidnews > 0 and $groupidnews != $groupid) {
                     $groupidnews = $db->query("SELECT groupid FROM " . $db_config['prefix'] . "_" . $module_data . "_group WHERE groupid=" . $groupidnews)->fetchColumn();
 
@@ -111,7 +111,7 @@ if ($groupid > 0) {
                         nv_fix_group_count($groupidnews);
                         $nv_Cache->delMod($module_name);
 
-                        nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=group&parentid=" . $parentid);
+                        nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=group&parentid=" . $parentid);
                     }
                 }
             } else {
@@ -141,5 +141,5 @@ if (defined('NV_IS_AJAX')) {
     echo $contents;
     include NV_ROOTDIR . '/includes/footer.php';
 } else {
-    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=group");
+    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=group");
 }

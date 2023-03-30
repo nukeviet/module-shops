@@ -31,6 +31,6 @@
 <hr class="clearfix" />
 <script type="text/javascript">
 	$('#shipping').click(function(){
-		window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=shipping';
+		window.location.href = script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=shipping';
 	});
 </script>

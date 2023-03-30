@@ -54,7 +54,7 @@ if (! empty($savelocation)) {
             nv_insert_logs(NV_LANG_DATA, $module_name, 'log_add_location', 'id ' . $newid, $admin_info['userid']);
             nv_fix_location_order();
             $nv_Cache->delMod($module_name);
-            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']);
+            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']);
         } else {
             $error = $lang_module['errorsave'];
         }
@@ -77,7 +77,7 @@ if (! empty($savelocation)) {
 
                 $nv_Cache->delMod($module_name);
 
-                nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']);
+                nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']);
             }
         } catch (PDOException $e) {
             $error = $lang_module['errorsave'];

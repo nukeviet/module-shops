@@ -4,7 +4,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="mb-2 mr-2 pull-left">
-                <a href="{ROW.link_pro}" title="{ROW.title}" rel="dofollow"><img src="{ROW.homeimgthumb}" alt="{ROW.title}" width="{WIDTH}"></a>
+                <a href="{ROW.link_pro}" title="{ROW.title}" rel="dofollow"><img src="{ROW.homeimgthumb}" alt="{ROW.title}" max-width="{WIDTH}"></a>
             </div>
             <h3>
                 <a href="{ROW.link_pro}" title="{ROW.title}" rel="dofollow">{ROW.title}</a>
