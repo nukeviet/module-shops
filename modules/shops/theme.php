@@ -1823,7 +1823,7 @@ function nv_template_viewgrid($array_data, $page = '')
  */
 function nv_template_viewlist($array_data, $page)
 {
-    global $module_info, $lang_module, $lang_global, $module_name, $module_data, $module_file, $module_upload, $pro_config, $op, $compareid;
+    global $module_info, $lang_module, $lang_global, $module_name, $module_data, $module_file, $module_upload, $pro_config, $op, $compareid, $global_array_shops_cat;
 
     $xtpl = new XTemplate('viewlist.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
