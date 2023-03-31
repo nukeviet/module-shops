@@ -10,7 +10,7 @@
 if (!defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
-$per_page = 4;
+
 $alias = $nv_Request->get_title('alias', 'get');
 $array_op = explode('/', $alias);
 $alias = $array_op[0];
