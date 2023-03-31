@@ -291,7 +291,7 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
 
         // Hien thi du lieu tuy bien o phan gioi thieu
         if (!empty($data_content['array_custom']) and !empty($data_content['array_custom_lang'])) {
-            $custom_data = nv_custom_tpl('tab-introduce' . '.tpl', $data_content['array_custom'], $data_content['array_custom_lang'], $idtemplates);
+            $custom_data = nv_custom_tab_fields($data_content);
             $xtpl->assign('CUSTOM_DATA', $custom_data);
             $xtpl->parse('main.custom_data');
         }
@@ -342,13 +342,7 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
                     } elseif ($tabs_key == 'content_customdata') {
                         // Dữ liệu tùy biến
                         if (!empty($data_content['array_custom']) and !empty($data_content['array_custom_lang'])) {
-                            if (sizeof($data_content['template']) > 1) {
-                                // Tab tùy biến theo nhóm (dạng mới)
-                                $tabs_content = nv_custom_tab_fields($data_content);
-                            } else {
-                                // Tab tùy biến theo danh sách chỉ có một nhóm (dạng cũ)
-                                $tabs_content = nv_custom_tpl('tab-' . strtolower(change_alias($data_content['tabs'][$tabs_id][NV_LANG_DATA . '_title'])) . '.tpl', $data_content['array_custom'], $data_content['array_custom_lang'], $idtemplates);
-                            }
+                            $tabs_content = nv_custom_tab_fields($data_content);
                         }
                     }
 
