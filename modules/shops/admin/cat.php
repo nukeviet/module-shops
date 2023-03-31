@@ -118,8 +118,22 @@ if (!empty($savecat)) {
     if ($check_alias and $data['parentid'] > 0) {
         $parentid_alias = $db->query('SELECT ' . NV_LANG_DATA . '_alias FROM ' . $table_name . ' WHERE catid=' . $data['parentid'])->fetchColumn();
         $data['alias'] = $parentid_alias . '-' . $data['alias'];
+
+        // Tiếp tục kiểm tra có trùng alias của loại sản phẩm bên trong hay không
+        $stmt = $db->prepare('SELECT count(*) FROM ' . $table_name . ' WHERE catid!=' . $data['catid'] . ' AND ' . NV_LANG_DATA . '_alias= :alias');
+        $stmt->bindParam(':alias', $data['alias'], PDO::PARAM_STR);
+        $stmt->execute();
+        $check_alias = $stmt->fetchColumn();
+    }
+    
+    // Vẫn tiếp tục bị trùng alias thì thêm number vào phía sau
+    if ($check_alias) {
+        $rows_id = $db->query('SELECT MAX(catid) FROM ' . $table_name)->fetchColumn();
+        $rows_id = intval($rows_id) + 1;
+        $data['alias'] .= '-' . $rows_id;
     }
 
+    
     if ($data['catid'] == 0 and $data['title'] != '') {
         $listfield = '';
         $listvalue = '';
