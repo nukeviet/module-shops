@@ -26,8 +26,8 @@
 					<option value="{OPTION.key}"{OPTION.selected}>{OPTION.title}</option>
 					<!-- END: weight -->
 				</select></td>
-				<td><a href="{NV_BASE_ADMINURL}index.php?{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}=location&amp;parentid={ROW.id}"><strong>{ROW.title}</strong></a>{ROW.numsub} </td>
-				<td class="text-center"><i class="fa fa-edit fa-lg">&nbsp;</i><a href="{NV_BASE_ADMINURL}index.php?{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}=location&amp;id={ROW.id}&amp;parentid={ROW.parentid}#edit">{GLANG.edit}</a> &nbsp; - <i class="fa fa-trash-o fa-lg">&nbsp;</i><a href="javascript:void(0);" onclick="nv_del_location({ROW.id})">{GLANG.delete}</a></td>
+				<td><a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}=location&amp;parentid={ROW.id}"><strong>{ROW.title}</strong></a>{ROW.numsub} </td>
+				<td class="text-center"><i class="fa fa-edit fa-lg">&nbsp;</i><a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}=location&amp;id={ROW.id}&amp;parentid={ROW.parentid}#edit">{GLANG.edit}</a> &nbsp; - <i class="fa fa-trash-o fa-lg">&nbsp;</i><a href="javascript:void(0);" onclick="nv_del_location({ROW.id})">{GLANG.delete}</a></td>
 			</tr>
 			<!-- END: loop -->
 		</tbody>

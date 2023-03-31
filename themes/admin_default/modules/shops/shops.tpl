@@ -126,13 +126,13 @@
 	function nv_change_weight(id) {
 		var nv_timer = nv_settimeout_disable('id_weight_' + id, 5000);
 		var new_vid = $('#id_weight_' + id).val();
-		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=shops&nocache=' + new Date().getTime(), 'ajax_action=1&id=' + id + '&new_vid=' + new_vid, function(res) {
+		$.post(script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=shops&nocache=' + new Date().getTime(), 'ajax_action=1&id=' + id + '&new_vid=' + new_vid, function(res) {
 			var r_split = res.split('_');
 			if (r_split[0] != 'OK') {
 				alert(nv_is_change_act_confirm[2]);
 			}
 			clearTimeout(nv_timer);
-			window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=shops';
+			window.location.href = script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=shops';
 			return;
 		});
 		return;
@@ -143,7 +143,7 @@
 		var new_status = $('#change_active_' + id).is(':checked') ? 1 : 0;
 		if (confirm(nv_is_change_act_confirm[0])) {
 			var nv_timer = nv_settimeout_disable('change_active_' + id, 3000);
-			$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=shops&nocache=' + new Date().getTime(), 'change_active=1&id=' + id + '&new_status=' + new_status, function(res) {
+			$.post(script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=shops&nocache=' + new Date().getTime(), 'change_active=1&id=' + id + '&new_status=' + new_status, function(res) {
 
 			});
 		}

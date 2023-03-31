@@ -22,7 +22,7 @@ if ($save == 1) {
     $order_id = $nv_Request->get_int('order_id', 'post', 0);
 
     $db->query('UPDATE ' . $table_name . ' SET status = 1 WHERE order_id=' . $order_id);
-    Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order');
+    Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=order');
 }
 
 $data = $db->query('SELECT * FROM ' . $table_name . ' WHERE order_id=' . $id)->fetch();

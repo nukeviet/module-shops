@@ -162,7 +162,7 @@ if (!empty($savecat)) {
             $nv_Cache->delMod($module_name);
             nv_jsonOutput(array(
                 'error' => 0,
-                'redirect' => NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']
+                'redirect' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']
             ));
         } else {
             nv_jsonOutput(array(
@@ -255,7 +255,7 @@ if (!empty($savecat)) {
 
                 nv_jsonOutput(array(
                     'error' => 0,
-                    'redirect' => NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']
+                    'redirect' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']
                 ));
             }
         } catch (PDOException $e) {
@@ -272,7 +272,7 @@ if (!empty($savecat)) {
     if ($data['catid'] > 0) {
         $data = $db->query('SELECT * FROM ' . $table_name . ' where catid=' . $data['catid'])->fetch();
         if (empty($data)) {
-            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
+            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
         }
         $data['title'] = $data[NV_LANG_DATA . '_title'];
         $data['title_custom'] = $data[NV_LANG_DATA . '_title_custom'];

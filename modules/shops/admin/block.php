@@ -23,7 +23,7 @@ while (list($bid_i, $title_i) = $result->fetch(3)) {
     $array_block[$bid_i] = $title_i;
 }
 if (empty($array_block)) {
-    Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=blockcat');
+    Header('Location: ' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=blockcat');
 }
 
 $cookie_bid = $nv_Request->get_int('int_bid', 'cookie', 0);
@@ -49,7 +49,7 @@ if ($nv_Request->isset_request('checkss,idcheck', 'post') and $nv_Request->get_s
     }
     nv_news_fix_block($bid);
     $nv_Cache->delMod($module_name);
-    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&bid=' . $bid);
+    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&bid=' . $bid);
 }
 
 $xtpl = new XTemplate('block.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);

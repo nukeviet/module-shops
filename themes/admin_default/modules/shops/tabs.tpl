@@ -102,20 +102,20 @@
 		var path = "{NV_UPLOADS_DIR}/{MODULE_NAME}";
 		var currentpath = "{NV_UPLOADS_DIR}/{MODULE_NAME}";
 		var type = "image";
-		nv_open_browse(script_name + "?" + nv_name_variable + "=upload&popup=1&area=" + area + "&path=" + path + "&type=" + type + "&currentpath=" + currentpath, "NVImg", 850, 420, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
+		nv_open_browse(script_name + "?" + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + "=upload&popup=1&area=" + area + "&path=" + path + "&type=" + type + "&currentpath=" + currentpath, "NVImg", 850, 420, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
 		return false;
 	});
 
 	function nv_change_weight(id) {
 		var nv_timer = nv_settimeout_disable('id_weight_' + id, 5000);
 		var new_vid = $('#id_weight_' + id).val();
-		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tabs&nocache=' + new Date().getTime(), 'ajax_action=1&id=' + id + '&new_vid=' + new_vid, function(res) {
+		$.post(script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tabs&nocache=' + new Date().getTime(), 'ajax_action=1&id=' + id + '&new_vid=' + new_vid, function(res) {
 			var r_split = res.split('_');
 			if (r_split[0] != 'OK') {
 				alert(nv_is_change_act_confirm[2]);
 			}
 			clearTimeout(nv_timer);
-			window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tabs';
+			window.location.href = script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tabs';
 			return;
 		});
 		return;
@@ -125,7 +125,7 @@
 		var new_status = $('#change_status_' + id).is(':checked') ? true : false;
 		if (confirm(nv_is_change_act_confirm[0])) {
 			var nv_timer = nv_settimeout_disable('change_status_' + id, 5000);
-			$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tabs&nocache=' + new Date().getTime(), 'change_status=1&id=' + id, function(res) {
+			$.post(script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=tabs&nocache=' + new Date().getTime(), 'change_status=1&id=' + id, function(res) {
 				var r_split = res.split('_');
 				if (r_split[0] != 'OK') {
 					alert(nv_is_change_act_confirm[2]);

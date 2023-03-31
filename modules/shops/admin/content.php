@@ -17,7 +17,7 @@ if (defined('NV_EDITOR')) {
 }
 
 if (empty($global_array_shops_cat)) {
-    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cat';
+    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cat';
     $contents = nv_theme_alert($lang_module['error_cat_empty_title'], $lang_module['error_cat_empty_content'], 'warning', $url_back, $lang_module['continue']);
     include NV_ROOTDIR . '/includes/header.php';
     echo nv_admin_theme($contents);
@@ -25,7 +25,7 @@ if (empty($global_array_shops_cat)) {
 }
 
 if (empty($money_config)) {
-    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=money';
+    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=money';
     $contents = nv_theme_alert($lang_module['error_munit_empty_title'], $lang_module['error_munit_empty_content'], 'warning', $url_back, $lang_module['continue']);
     include NV_ROOTDIR . '/includes/header.php';
     echo nv_admin_theme($contents);
@@ -909,7 +909,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
 
     nv_jsonOutput(array(
         'error' => 0,
-        'redirect' => NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=items'
+        'redirect' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=items'
     ));
 }
 
@@ -962,6 +962,8 @@ if ($is_copy) {
 $xtpl->assign('ALIAS', $get_alias_id);
 $xtpl->assign('rowcontent', $rowcontent);
 $xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
+$xtpl->assign('NV_LANG_VARIABLE', NV_LANG_VARIABLE);
+$xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);
 $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
@@ -1015,7 +1017,7 @@ if (!empty($rowcontent['group_id'])) {
 }
 
 $inrow = nv_base64_encode(serialize($array_groupid_in_row));
-$xtpl->assign('url_load', NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=getgroup&cid=' . $rowcontent['listcatid'] . '&inrow=' . $inrow);
+$xtpl->assign('url_load', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=getgroup&cid=' . $rowcontent['listcatid'] . '&inrow=' . $inrow);
 $xtpl->assign('inrow', $inrow);
 $xtpl->parse('main.listgroup');
 
@@ -1149,7 +1151,7 @@ while ($_discount = $_result->fetch()) {
 $sql = 'SELECT id, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_units';
 $result_unit = $db->query($sql);
 if ($result_unit->rowCount() == 0) {
-    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=prounit';
+    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=prounit';
     $contents = nv_theme_alert($lang_module['error_punit_empty_title'], $lang_module['error_punit_empty_content'], 'warning', $url_back, $lang_module['continue']);
     include NV_ROOTDIR . '/includes/header.php';
     echo nv_admin_theme($contents);

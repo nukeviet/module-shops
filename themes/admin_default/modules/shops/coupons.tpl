@@ -161,7 +161,7 @@
     		}
     	}).autocomplete({
     		source : function(request, response) {
-    			$.getJSON(script_name + "?" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=coupons&get_product=1", {
+    			$.getJSON(script_name + "?" + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=coupons&get_product=1", {
     				term : extractLast(request.term)
     			}, response);
     		},

@@ -74,7 +74,7 @@ $xtpl->assign('OP', $op);
 
 $per_page = 20;
 $page = $nv_Request->get_int('page', 'get', 1);
-$base_url = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
+$base_url = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op;
 $count = 0;
 $order_info = array( 'num_items' => 0, 'sum_price' => 0, 'sum_unit' => '' );
 
@@ -110,7 +110,7 @@ while ($row = $query->fetch()) {
         $row['status_payment'] = "ERROR";
     }
 
-    $row['link_user'] = NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=users&" . NV_OP_VARIABLE . "=edit&userid=" . $row['user_id'];
+    $row['link_user'] = NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=users&" . NV_OP_VARIABLE . "=edit&userid=" . $row['user_id'];
     $row['order_time'] = nv_date("H:i d/m/y", $row['order_time']);
     $row['order_total'] = nv_number_format($price);
 	$row['unit_total'] = $money_config[$pro_config['money_unit']]['symbol'];
@@ -118,10 +118,10 @@ while ($row = $query->fetch()) {
     $xtpl->assign('DATA', $row);
 
     $xtpl->assign('order_id', $row['order_id'] . "_" . md5($row['order_id'] . $global_config['sitekey'] . session_id()));
-    $xtpl->assign('link_view', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=or_view&order_id=" . $row['order_id']);
+    $xtpl->assign('link_view', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=or_view&order_id=" . $row['order_id']);
 
     if ($row['transaction_status'] < 1) {
-        $xtpl->assign('link_del', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=or_del&order_id=" . $row['order_id'] . "&checkss=" . md5($row['order_id'] . $global_config['sitekey'] . session_id()));
+        $xtpl->assign('link_del', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=or_del&order_id=" . $row['order_id'] . "&checkss=" . md5($row['order_id'] . $global_config['sitekey'] . session_id()));
         $xtpl->parse('main.data.row.delete');
         $xtpl->assign('DIS', '');
     } else {
@@ -136,8 +136,8 @@ while ($row = $query->fetch()) {
     ++$count;
 }
 
-$xtpl->assign('URL_DEL', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=or_del");
-$xtpl->assign('URL_DEL_BACK', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
+$xtpl->assign('URL_DEL', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=or_del");
+$xtpl->assign('URL_DEL_BACK', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
 $xtpl->assign('PAGES', nv_generate_page($base_url, $num_items, $per_page, $page));
 $xtpl->parse('main.data');
 

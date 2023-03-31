@@ -91,7 +91,7 @@ if ($catid > 0) {
 
                     nv_fix_cat_order();
                     $nv_Cache->delMod($module_name);
-                    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&parentid=" . $parentid);
+                    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&parentid=" . $parentid);
                 } elseif (! empty($movecat) and $catidnews > 0 and $catidnews != $catid) {
                     // Di chuyen san pham sang chu de moi
 
@@ -106,7 +106,7 @@ if ($catid > 0) {
                         nv_fix_cat_order();
                         $nv_Cache->delMod($module_name);
 
-                        nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&parentid=" . $parentid);
+                        nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&parentid=" . $parentid);
                     }
                 }
             } else {
@@ -131,5 +131,5 @@ if (defined('NV_IS_AJAX')) {
     echo $contents;
     include NV_ROOTDIR . '/includes/footer.php';
 } else {
-    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat");
+    nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat");
 }
