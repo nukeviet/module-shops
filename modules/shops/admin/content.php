@@ -823,13 +823,23 @@ if ($nv_Request->get_int('save', 'post') == 1) {
 
     nv_set_status_module();
 
-    $db->query('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . '_block WHERE id = ' . $rowcontent['id']);
-
-    foreach ($id_block_content as $bid_i) {
-        $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_block (bid, id, weight) VALUES ('" . $bid_i . "', '" . $rowcontent['id'] . "', '0')");
+    // Xử lý block sản phẩm
+    // Xóa các block sản phẩm mà sản phẩm không thuộc
+    foreach ($array_block_cat_module as $bid_i => $value) {
+        if (!in_array($bid_i, $id_block_content)) {
+            $db->query('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . '_block WHERE id = ' . $rowcontent['id'] . ' AND bid = ' . $bid_i);        
+        }
     }
 
-    foreach ($array_block_cat_module as $bid_i) {
+    foreach ($id_block_content as $bid_i) {
+        // Kiểm tra nếu  đã tồn tại thì không thêm nữa
+        $num = $db->query('SELECT COUNT(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_block WHERE id = ' . $rowcontent['id'] . ' AND bid=' . $bid_i)->fetchColumn();
+        if ($num == 0) {
+            $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_block (bid, id, weight) VALUES ('" . $bid_i . "', '" . $rowcontent['id'] . "', '0')");
+        }
+    }
+
+    foreach ($array_block_cat_module as $bid_i => $value) {
         nv_news_fix_block($bid_i);
     }
 
