@@ -118,7 +118,6 @@ if ($page > 1) {
 }
 $canonicalUrl = getCanonicalUrl($page_url);
 
-$contents = '';
 if (empty($contents)) {
     $data_content = [];
 

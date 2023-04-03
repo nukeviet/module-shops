@@ -98,7 +98,7 @@ function nv_template_view_home($array_data, $compare_id, $pages = '', $sort = 0,
  */
 function nv_template_main_cat($array_data, $pages = '', $viewtype = 'viewgrid')
 {
-    global $module_info, $module_file, $lang_module, $lang_global, $global_array_shops_cat;
+    global $module_info, $module_file, $lang_module, $lang_global, $global_array_shops_cat, $module_name;
 
     $xtpl = new XTemplate('main_cat.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('GLANG', $lang_global);
@@ -110,6 +110,10 @@ function nv_template_main_cat($array_data, $pages = '', $viewtype = 'viewgrid')
                 $xtpl->assign('TITLE_CATALOG', $data_row['title']);
                 $xtpl->assign('LINK_CATALOG', $data_row['link']);
                 $xtpl->assign('NUM_PRO', $data_row['num_pro']);
+                if (!empty($global_array_shops_cat[$data_row['catid']]['image'])) {
+                    $xtpl->assign('icon_image', NV_BASE_SITEURL . NV_ASSETS_DIR . '/' . $module_name . '/' . $global_array_shops_cat[$data_row['catid']]['image']);
+                    $xtpl->parse('main.loop.icon_image');
+                }
 
                 if (function_exists('nv_template_' . $viewtype)) {
                     $xtpl->assign('CONTENT', call_user_func('nv_template_' . $viewtype, $data_row['data'], $pages));
