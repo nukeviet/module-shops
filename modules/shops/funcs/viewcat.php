@@ -100,7 +100,7 @@ $sorts = $nv_Request->get_int('sorts', 'post', $sorts_old);
 $viewtype_old = $nv_Request->get_string('viewtype', 'session', '');
 $viewtype = $nv_Request->get_string('viewtype', 'post', $viewtype_old);
 
-if (! empty($viewtype)) {
+if (! empty($viewtype) && $global_array_shops_cat[$catid]['viewcat'] !== 'view_home_cat') {
     $global_array_shops_cat[$catid]['viewcat'] = $viewtype;
 }
 
@@ -118,6 +118,7 @@ if ($page > 1) {
 }
 $canonicalUrl = getCanonicalUrl($page_url);
 
+$contents = '';
 if (empty($contents)) {
     $data_content = [];
 
@@ -161,7 +162,7 @@ if (empty($contents)) {
 
         $sql_groups = ' AND t1.id IN ( ' . $sql_groups . ' )';
     }
-
+    
     if ($global_array_shops_cat[$catid]['viewcat'] == 'view_home_cat' and $global_array_shops_cat[$catid]['numsubcat'] > 0) {
         // Hiển thị theo loại sản phẩm
         $data_content = [];
