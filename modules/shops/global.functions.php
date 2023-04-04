@@ -530,11 +530,13 @@ function GetGroupID($pro_id, $group_by_parent = 0)
         }
     }
     // Sắp xếp lại thứ tự
-    uksort($data, function ($item1, $item2) {
-        global $global_array_group;
-        if ($global_array_group[$item1]['weight'] == $global_array_group[$item2]['weight']) return 0;
-        return ($global_array_group[$item1]['weight'] < $global_array_group[$item2]['weight']) ? -1 : 1;
-    });
+    if (!empty($group_by_parent)) {
+        uksort($data, function ($item1, $item2) {
+            global $global_array_group;
+            if ($global_array_group[$item1]['weight'] == $global_array_group[$item2]['weight']) return 0;
+            return ($global_array_group[$item1]['weight'] < $global_array_group[$item2]['weight']) ? -1 : 1;
+        });
+    }
     return $data;
 }
 
