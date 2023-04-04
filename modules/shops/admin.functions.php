@@ -258,7 +258,7 @@ function shops_show_cat_list($parentid = 0)
     $xtpl->assign('GLANG', $lang_global);
     $xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
     $xtpl->assign('NV_LANG_VARIABLE', NV_LANG_VARIABLE);
-    $xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);    
+    $xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);
     $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
     $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
     $xtpl->assign('MODULE_NAME', $module_name);
@@ -551,7 +551,7 @@ function shops_show_group_list($parentid = 0)
  * @param integer $parentid
  * @return
  */
-function shops_show_location_list($parentid = 0, $page, $per_page, $base_url)
+function shops_show_location_list($parentid, $page, $per_page, $base_url)
 {
     global $db, $db_config, $lang_module, $lang_global, $module_name, $module_data, $op, $array_viewcat_nosub, $module_file, $global_config;
 
@@ -840,7 +840,7 @@ function nv_show_block_list($bid)
     $xtpl->assign('GLANG', $lang_global);
     $xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
     $xtpl->assign('NV_LANG_VARIABLE', NV_LANG_VARIABLE);
-    $xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);    
+    $xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);
     $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
     $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
     $xtpl->assign('MODULE_NAME', $module_name);
