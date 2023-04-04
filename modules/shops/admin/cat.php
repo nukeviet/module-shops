@@ -115,9 +115,11 @@ if (!empty($savecat)) {
     $stmt->execute();
     $check_alias = $stmt->fetchColumn();
 
-    if ($check_alias and $data['parentid'] > 0) {
-        $parentid_alias = $db->query('SELECT ' . NV_LANG_DATA . '_alias FROM ' . $table_name . ' WHERE catid=' . $data['parentid'])->fetchColumn();
-        $data['alias'] = $parentid_alias . '-' . $data['alias'];
+    if ($check_alias) {
+        nv_jsonOutput(array(
+            'error' => 1,
+            'msg' => $lang_module['error_unique_alias']
+        ));
     }
 
     if ($data['catid'] == 0 and $data['title'] != '') {

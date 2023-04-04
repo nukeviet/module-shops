@@ -36,6 +36,33 @@ if ($mod == 'content') {
     }
 }
 
+if ($mod == 'cat') {
+    list($parentid) = $db->query('SELECT parentid FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid = ' . $id)->fetch(3);
+
+    $stmt = $db->prepare('SELECT count(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid!=' . $id . ' AND ' . NV_LANG_DATA . '_alias= :alias');
+    $stmt->bindParam(':alias', $alias, PDO::PARAM_STR);
+    $stmt->execute();
+    $check_alias = $stmt->fetchColumn();
+
+    if ($check_alias and $parentid > 0) {
+        $parentid_alias = $db->query('SELECT ' . NV_LANG_DATA . '_alias FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid=' . $parentid)->fetchColumn();
+        $alias = $parentid_alias . '-' . $alias;
+
+        // Tiếp tục kiểm tra có trùng alias của loại sản phẩm bên trong hay không
+        $stmt = $db->prepare('SELECT count(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid!=' . $id . ' AND ' . NV_LANG_DATA . '_alias= :alias');
+        $stmt->bindParam(':alias', $alias, PDO::PARAM_STR);
+        $stmt->execute();
+        $check_alias = $stmt->fetchColumn();
+    }
+    
+    // Vẫn tiếp tục bị trùng alias thì thêm number vào phía sau
+    if ($check_alias) {
+        $rows_id = $db->query('SELECT MAX(catid) FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs')->fetchColumn();
+        $rows_id = intval($rows_id) + 1;
+        $alias .= '-' . $rows_id;
+    }
+}
+
 include NV_ROOTDIR . '/includes/header.php';
 echo $alias;
 include NV_ROOTDIR . '/includes/footer.php';
