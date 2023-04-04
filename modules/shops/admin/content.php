@@ -260,7 +260,8 @@ if ($nv_Request->get_int('save', 'post') == 1) {
         $rowcontent['alias'] = ($alias == '') ? change_alias($rowcontent['title']) : change_alias($alias);
     }
     if (!empty($rowcontent['alias'])) {
-        $stmt = $db->prepare('SELECT COUNT(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE id !=' . $rowcontent['id'] . ' AND ' . NV_LANG_DATA . '_alias = :alias');
+        $scheck_unique_alias = 'SELECT COUNT(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE ' . NV_LANG_DATA . '_alias = :alias' . (!$is_copy ? ' AND id !=' . $rowcontent['id'] : '');
+        $stmt = $db->prepare($scheck_unique_alias);
         $stmt->bindParam(':alias', $rowcontent['alias'], PDO::PARAM_STR);
         $stmt->execute();
         if ($stmt->fetchColumn()) {

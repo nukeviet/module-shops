@@ -133,7 +133,6 @@ if (!empty($savecat)) {
         $data['alias'] .= '-' . $rows_id;
     }
 
-    
     if ($data['catid'] == 0 and $data['title'] != '') {
         $listfield = '';
         $listvalue = '';
