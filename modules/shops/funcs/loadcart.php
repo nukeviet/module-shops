@@ -168,7 +168,6 @@ if (defined('NV_IS_USER')) {
 
     // Diem tich luy
     if ($pro_config['point_active']) {
-        
         $result = $db->query('SELECT point_total FROM ' . $db_config['prefix'] . '_' . $module_data . '_point WHERE userid = ' . $user_info['userid']);
         if ($result->rowCount()) {
             $array_data['point'] = $result->fetchColumn();
