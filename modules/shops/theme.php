@@ -2122,6 +2122,7 @@ function nv_template_loadcart($array_data, $array_products = array())
     $xtpl->assign('TEMPLATE', $module_info['template']);
     $xtpl->assign('LINK_VIEW', NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=cart");
     $xtpl->assign('WISHLIST', NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=wishlist");
+    $xtpl->assign('POINT_URL', NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=point");
     $xtpl->assign('TOTAL', $array_data['total']);
 
     if (!empty($array_products)) {
