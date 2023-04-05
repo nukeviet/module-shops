@@ -168,7 +168,6 @@ if (defined('NV_IS_USER')) {
 
     // Diem tich luy
     if ($pro_config['point_active']) {
-        $xtpl->assign('POINT_URL', NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=point");
         $result = $db->query('SELECT point_total FROM ' . $db_config['prefix'] . '_' . $module_data . '_point WHERE userid = ' . $user_info['userid']);
         if ($result->rowCount()) {
             $array_data['point'] = $result->fetchColumn();

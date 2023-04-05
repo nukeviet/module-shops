@@ -2143,6 +2143,7 @@ function nv_template_loadcart($array_data, $array_products = array())
         // Diem tich luy
         if ($pro_config['point_active']) {
             $xtpl->assign('POINT', $array_data['point']);
+            $xtpl->assign('POINT_URL', NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=point");
             $xtpl->parse('main.point');
         }
     }
