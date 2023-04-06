@@ -132,6 +132,15 @@ if (!empty($rowcontent['id'])) {
     $rowcontent['tag_description'] = $rowcontent[NV_LANG_DATA . '_tag_description'];
     $rowcontent['group_id'] = $group_id_old = getGroupID($rowcontent['id']);
 
+    if(($rowcontent['product_number'] + $nv_Request->get_int('product_number', 'post', 0))<0){
+        nv_jsonOutput(array(
+            'error' => 1,
+            'input' => 'product_number',
+            'msg' => $lang_module['error_product_number']
+        ));
+
+    };
+
     $id_block_content = [];
     $sql = 'SELECT bid FROM ' . $db_config['prefix'] . '_' . $module_data . '_block WHERE id=' . $rowcontent['id'];
     $result = $db->query($sql);
@@ -526,6 +535,14 @@ if ($nv_Request->get_int('save', 'post') == 1) {
         if ($rowcontent['status'] == 1 and $rowcontent['publtime'] > NV_CURRENTTIME) {
             $rowcontent['status'] = 2;
         }
+    
+    if($rowcontent['product_number']<0){
+        nv_jsonOutput(array(
+            'error' => 1,
+            'input' => 'product_number',
+            'msg' => $lang_module['error_product_number']
+        ));
+    }
 
         $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_rows (id, listcatid, user_id, addtime, edittime, status, publtime, exptime, archive, product_code, product_number, product_price, price_config, saleprice, money_unit, product_unit, product_weight, weight_unit, discount_id, homeimgfile, homeimgthumb, homeimgalt,otherimage,imgposition, copyright, inhome, allowed_comm, allowed_rating, ratingdetail, allowed_send, allowed_print, allowed_save, hitstotal, hitscm, hitslm, showprice " . $listfield . ")
                  VALUES ( NULL ,

@@ -188,6 +188,7 @@ $lang_module['error_hometext'] = 'Lỗi: Phần giới thiệu ngắn gọn chư
 $lang_module['error_product_unit'] = 'Bạn cần thêm đơn vị cho sản phẩm';
 $lang_module['error_cat'] = 'Lỗi: Sản phẩm chưa có loại sản phẩm';
 $lang_module['error_product_price'] = 'Lỗi: giá sản phẩm không được âm hoặc bằng 0. Nếu bạn không muốn hiển thị giá, hãy hủy tùy chọn Cho phép hiển thị giá sản phẩm này ở phần Tính năng mở rộng';
+$lang_module['error_product_number'] = 'Lỗi: Số lượng sản phẩm không được âm hoặc bằng 0';
 $lang_module['error_product_discounts'] = 'Lỗi: tỷ lệ giảm giá không được âm';
 $lang_module['error_inputnumber'] = 'Lỗi: số nhập vào không hợp lệ';
 $lang_module['content_cat'] = 'Loại sản phẩm';
