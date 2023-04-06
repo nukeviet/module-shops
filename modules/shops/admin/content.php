@@ -680,13 +680,13 @@ if ($nv_Request->get_int('save', 'post') == 1) {
             $auto_product_code = '';
             if (!empty($pro_config['format_code_id']) and empty($rowcontent['product_code'])) {
                 $i = 1;
-                $auto_product_code = vsprintf($pro_config['format_code_id'], $rowcontent['id']);
+                $auto_product_code = sprintf($pro_config['format_code_id'], $rowcontent['id']);
 
                 $stmt = $db->prepare('SELECT id FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE product_code= :product_code');
                 $stmt->bindParam(':product_code', $auto_product_code, PDO::PARAM_STR);
                 $stmt->execute();
                 while ($stmt->rowCount()) {
-                    $auto_product_code = vsprintf($pro_config['format_code_id'], ($rowcontent['id'] + $i++));
+                    $auto_product_code = sprintf($pro_config['format_code_id'], ($rowcontent['id'] + $i++));
                 }
 
                 $stmt = $db->prepare('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_rows SET product_code= :product_code WHERE id=' . $rowcontent['id']);
