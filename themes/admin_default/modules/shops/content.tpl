@@ -72,12 +72,17 @@
                                 </div>
                             </div>
                             <!-- BEGIN: warehouse -->
+                            <!-- BEGIN: add2 -->
                             <label class="col-md-4 control-label">{LANG.content_product_number}</label>
+                            <!-- END: add2 -->
+                            <!-- BEGIN: edit2 -->
+                            <label class="col-md-4 control-label">{LANG.content_product_number_edit}</label>
+                            <!-- END: edit2 -->
                             <div class="col-md-8">
                                 <!-- BEGIN: edit -->
                                 <div class="input-group">
                                     <div class="input-group-addon">{rowcontent.product_number} +</div>
-                                    <input class="form-control" type="number" min="0" maxlength="50" value="0" name="product_number" />
+                                    <input class="form-control" type="number" maxlength="50" value="0" name="product_number" />
                                 </div>
                                 <!-- END: edit -->
                                 <!-- BEGIN: add -->
