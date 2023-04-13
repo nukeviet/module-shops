@@ -174,12 +174,16 @@ if (empty($contents)) {
         $data_content['data'] = [];
 
         $array_subcatid = explode(',', $global_array_shops_cat[$catid]['subcatid']);
+        array_unshift($array_subcatid, $catid);
+
+        $parent_catid = [];
+        $parent_catid[$catid] = true;
 
         foreach ($array_subcatid as $catid_i) {
             $array_info_i = $global_array_shops_cat[$catid_i];
 
             $array_cat = [];
-            $array_cat = GetCatidInParent($catid_i);
+            $array_cat = $parent_catid[$catid_i] ? [$catid_i] : GetCatidInParent($catid_i);
 
             $db->sqlreset()
                 ->select('COUNT(*)')
