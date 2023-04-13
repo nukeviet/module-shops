@@ -12,7 +12,7 @@
 
 	<div class="form-group">
 		<label>{LANG.price2}</label>
-		<input id="price2" type="text" value="{price2}" name="price2" class="form-control input-sm" onkeyup="this.value=FormatNumber(this.value);">
+		<input id="price2" type="text" value="{value_price2}" name="price2" class="form-control input-sm" onkeyup="this.value=FormatNumber(this.value);">
 	</div>
 
 	<div class="form-group">

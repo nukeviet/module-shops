@@ -32,24 +32,17 @@ if (!function_exists('nv_search_product')) {
 
         include NV_ROOTDIR . '/modules/' . $mod_file . '/language/' . NV_LANG_DATA . '.php';
 
-        $keyword = $nv_Request->get_string('keyword', 'get');
-        $price1_temp = $nv_Request->get_string('price1', 'get', '');
-        $price2_temp = $nv_Request->get_string('price2', 'get', '');
+        $keyword = $nv_Request->get_string('q', 'get');
+        $price1 = $nv_Request->get_string('price1', 'get', '');
+        $price2 = $nv_Request->get_string('price2', 'get', '');
         $typemoney = $nv_Request->get_string('typemoney', 'get', '');
-        $cataid = $nv_Request->get_int('cata', 'get', 0);
+        $cataid = $nv_Request->get_int('catid', 'get', 0);
+
+        $price1 = preg_replace('/[^0-9,\.]/', '', $price1);
+        $price2 = preg_replace('/[^0-9,\.]/', '', $price2);
 
         if ($cataid == 0) {
             $cataid = $catid;
-        }
-        if ($price1_temp == '') {
-            $price1 = -1;
-        } else {
-            $price1 = floatval($price1_temp);
-        }
-        if ($price2_temp == '') {
-            $price2 = -1;
-        } else {
-            $price2 = floatval($price2_temp);
         }
 
         if (file_exists(NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $mod_file . '/block.search.tpl')) {
@@ -93,13 +86,6 @@ if (!function_exists('nv_search_product')) {
             $row['selected'] = ($typemoney == $row['code']) ? 'selected="selected"' : '';
             $xtpl->assign('ROW', $row);
             $xtpl->parse('main.typemoney');
-        }
-
-        if ($price1 == -1) {
-            $price1 = '';
-        }
-        if ($price2 == -1) {
-            $price2 = '';
         }
 
         $xtpl->assign('value_keyword', $keyword);
