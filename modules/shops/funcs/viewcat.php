@@ -117,7 +117,6 @@ if ($page > 1) {
     $page_url .= '/page-' . $page;
 }
 $canonicalUrl = getCanonicalUrl($page_url);
-
 if (empty($contents)) {
     $data_content = [];
 
@@ -174,10 +173,29 @@ if (empty($contents)) {
         $data_content['data'] = [];
 
         // Lấy dữ liệu cho cat cha
-        $data_content_parent = get_data_in_catid($catid, $orderby);
-        $num_items = $data_content_parent['count'];
+        $array_info_i = $global_array_shops_cat[$catid];
+        $db->sqlreset()
+        ->select('COUNT(*)')
+        ->from($db_config['prefix'] . '_' . $module_data . '_rows t1')
+        ->join('INNER JOIN ' . $db_config['prefix'] . '_' . $module_data . '_catalogs t2 ON t2.catid = t1.listcatid')
+        ->where('t1.listcatid = ' . $catid . ' AND t1.status = 1');
+
+        $num_pro_parent = $db->query($db->sql())->fetchColumn();
+
+        $db->select('t1.id, t1.listcatid, t1.publtime, t1.' . NV_LANG_DATA . '_title,
+        t1.' . NV_LANG_DATA . '_alias, t1.' . NV_LANG_DATA . '_hometext, t1.homeimgalt, t1.homeimgfile,
+        t1.homeimgthumb, t1.product_code, t1.product_number, t1.product_price, t1.money_unit, t1.discount_id,
+        t1.showprice, t1.' . NV_LANG_DATA . '_gift_content, t1.gift_from,
+        t1.gift_to, t2.newday, t2.image')
+        ->order($orderby)
+        ->limit($array_info_i['numlinks'])
+        ->offset(($page - 1) * $array_info_i['numlinks']);
+        $result = $db->query($db->sql());
+
+        $data_content_parent = GetDataIn($result, $catid);
+        $data_content_parent['count'] = $num_pro_parent;
         $base_url_parent = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'];
-        $pages = nv_alias_page('', $base_url_parent, $num_items, $global_array_shops_cat[$catid]['numlinks'], $page);
+        $pages = nv_alias_page('', $base_url_parent, $num_pro_parent, $array_info_i['numlinks'], $page);
         $content_parent_html = nv_template_viewgrid($data_content_parent['data'], $pages);
         // =========================
 
@@ -255,7 +273,7 @@ if (empty($contents)) {
 
         $content_parent['html'] = $content_parent_html;
         $content_parent['page'] = $page;
-        $data_content['count'] += $num_items; // Cộng thêm số lượng sản phẩm ở loại sản phẩm cha
+        $data_content['count'] += $num_pro_parent; // Cộng thêm số lượng sản phẩm ở loại sản phẩm cha
 
         $contents = call_user_func('nv_template_viewcat', $data_content, $compare_id, '', $sorts, 'viewgrid', $content_parent);
     } else {
