@@ -173,17 +173,21 @@ if (empty($contents)) {
         $data_content['count'] = 0;
         $data_content['data'] = [];
 
-        $array_subcatid = explode(',', $global_array_shops_cat[$catid]['subcatid']);
-        array_unshift($array_subcatid, $catid);
+        // Lấy dữ liệu cho cat cha
+        $data_content_parent = get_data_in_catid($catid, $orderby);
+        $num_items = $data_content_parent['count'];
+        $base_url_parent = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid]['alias'];
+        $pages = nv_alias_page('', $base_url_parent, $num_items, $global_array_shops_cat[$catid]['numlinks'], $page);
+        $content_parent_html = nv_template_viewgrid($data_content_parent['data'], $pages);
+        // =========================
 
-        $parent_catid = [];
-        $parent_catid[$catid] = true;
+        $array_subcatid = explode(',', $global_array_shops_cat[$catid]['subcatid']);
 
         foreach ($array_subcatid as $catid_i) {
             $array_info_i = $global_array_shops_cat[$catid_i];
 
             $array_cat = [];
-            $array_cat = $parent_catid[$catid_i] ? [$catid_i] : GetCatidInParent($catid_i);
+            $array_cat = GetCatidInParent($catid_i);
 
             $db->sqlreset()
                 ->select('COUNT(*)')
@@ -249,11 +253,11 @@ if (empty($contents)) {
             $data_content['count'] += $num_pro;
         }
 
-        if ($page > 1) {
-            nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name, true);
-        }
+        $content_parent['html'] = $content_parent_html;
+        $content_parent['page'] = $page;
+        $data_content['count'] += $num_items; // Cộng thêm số lượng sản phẩm ở loại sản phẩm cha
 
-        $contents = call_user_func('nv_template_viewcat', $data_content, $compare_id, '', $sorts);
+        $contents = call_user_func('nv_template_viewcat', $data_content, $compare_id, '', $sorts, 'viewgrid', $content_parent);
     } else {
         /*
          * Hiển thị danh sách sản phẩm

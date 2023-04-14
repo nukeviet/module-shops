@@ -1958,7 +1958,7 @@ function nv_template_viewlist($array_data, $page)
  * @param mixed $pages
  * @return
  */
-function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $viewtype = 'viewgrid')
+function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $viewtype = 'viewgrid', $content_parent = '')
 {
     global $module_info, $lang_module, $module_file, $module_upload, $module_name, $pro_config, $array_displays, $array_wishlist_id, $op, $global_array_shops_cat, $global_array_group, $my_head, $page;
 
@@ -1969,6 +1969,15 @@ function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $vie
     $xtpl->assign('CATID', $data_content['id']);
     $xtpl->assign('CAT_NAME', $data_content['title']);
     $xtpl->assign('COUNT', $data_content['count']);
+
+    if (!empty($content_parent)) {
+        $xtpl->assign('PARENT_HTML', $content_parent['html']);
+        $xtpl->parse('main.parent_html');
+    }
+    if (!empty($content_parent['page'] > 1)) {
+        $xtpl->parse('main');
+        return $xtpl->text('main');
+    }
 
     // Hiển thị phần giới thiệu loại sản phẩm
     if ($op != 'group') {
