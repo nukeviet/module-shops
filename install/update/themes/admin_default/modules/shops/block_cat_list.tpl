@@ -21,7 +21,7 @@
 					</select>
 				</td>
 				<td class="text-center"><b>{ROW.bid}</b></td>
-				<td><a href="{NV_BASE_ADMINURL}index.php?{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}=block&amp;bid={ROW.bid}">{ROW.title}{ROW.numnews}</a></td>
+				<td><a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}=block&amp;bid={ROW.bid}">{ROW.title}{ROW.numnews}</a></td>
 				<td class="text-center">
 					<select class="form-control" id="id_adddefault_{ROW.bid}" onchange="nv_chang_block_cat('{ROW.bid}','adddefault');">
 						<!-- BEGIN: adddefault -->
@@ -29,7 +29,7 @@
 						<!-- END: adddefault -->
 					</select>
 				</td>
-				<td class="text-center"><i class="fa fa-edit fa-lg">&nbsp;</i><a href="{NV_BASE_ADMINURL}index.php?{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}&amp;bid={ROW.bid}#edit">{GLANG.edit}</a> &nbsp;-&nbsp;<i class="fa fa-trash-o fa-lg">&nbsp;</i><a href="javascript:void(0);" onclick="nv_del_block_cat({ROW.bid})">{GLANG.delete}</a></td>
+				<td class="text-center"><i class="fa fa-edit fa-lg">&nbsp;</i><a href="{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&amp;{NV_NAME_VARIABLE}={MODULE_NAME}&amp;{NV_OP_VARIABLE}={OP}&amp;bid={ROW.bid}#edit">{GLANG.edit}</a> &nbsp;-&nbsp;<i class="fa fa-trash-o fa-lg">&nbsp;</i><a href="javascript:void(0);" onclick="nv_del_block_cat({ROW.bid})">{GLANG.delete}</a></td>
 			</tr>
 			<!-- END: loop -->
 		</tbody>

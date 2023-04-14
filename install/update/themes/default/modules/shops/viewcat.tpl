@@ -13,6 +13,9 @@
         </div>
         <!-- END: viewdescriptionhtml -->
     </div>
+    <!-- BEGIN: parent_html -->
+    {PARENT_HTML}
+    <!-- END: parent_html -->
     <!-- BEGIN: displays -->
     <div class="form-group text-right s-cat-fillter">
         <select name="sort" id="sort" class="form-control input-sm d-inline-block" onchange="nv_chang_price();">

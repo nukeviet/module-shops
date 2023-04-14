@@ -375,7 +375,9 @@ $(document).ready(function() {
 <!-- BEGIN: popup -->
 <script type="text/javascript">
 $(window).on('load', function() {
-    resize_popup();
+    setTimeout(function() {
+        resize_popup();
+    }, 300);
 });
 </script>
 <!-- END: popup -->

@@ -98,7 +98,7 @@ function nv_template_view_home($array_data, $compare_id, $pages = '', $sort = 0,
  */
 function nv_template_main_cat($array_data, $pages = '', $viewtype = 'viewgrid')
 {
-    global $module_info, $module_file, $lang_module, $lang_global, $global_array_shops_cat;
+    global $module_info, $module_file, $lang_module, $lang_global, $global_array_shops_cat, $module_name;
 
     $xtpl = new XTemplate('main_cat.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('GLANG', $lang_global);
@@ -110,6 +110,10 @@ function nv_template_main_cat($array_data, $pages = '', $viewtype = 'viewgrid')
                 $xtpl->assign('TITLE_CATALOG', $data_row['title']);
                 $xtpl->assign('LINK_CATALOG', $data_row['link']);
                 $xtpl->assign('NUM_PRO', $data_row['num_pro']);
+                if (!empty($global_array_shops_cat[$data_row['catid']]['image'])) {
+                    $xtpl->assign('icon_image', NV_BASE_SITEURL . NV_ASSETS_DIR . '/' . $module_name . '/' . $global_array_shops_cat[$data_row['catid']]['image']);
+                    $xtpl->parse('main.loop.icon_image');
+                }
 
                 if (function_exists('nv_template_' . $viewtype)) {
                     $xtpl->assign('CONTENT', call_user_func('nv_template_' . $viewtype, $data_row['data'], $pages));
@@ -284,14 +288,14 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
             $xtpl->parse('main.image');
         }
 
-        if ($pro_config['active_gift'] and !empty($data_content[NV_LANG_DATA . '_gift_content']) and NV_CURRENTTIME >= $data_content['gift_from'] and NV_CURRENTTIME <= $data_content['gift_to']) {
+        if ($pro_config['active_gift'] and !empty($data_content[NV_LANG_DATA . '_gift_content']) and NV_CURRENTTIME >= $data_content['gift_from'] and (empty($data_content['gift_to']) || NV_CURRENTTIME <= $data_content['gift_to'])) {
             $xtpl->assign('gift_content', $data_content[NV_LANG_DATA . '_gift_content']);
             $xtpl->parse('main.gift');
         }
 
         // Hien thi du lieu tuy bien o phan gioi thieu
         if (!empty($data_content['array_custom']) and !empty($data_content['array_custom_lang'])) {
-            $custom_data = nv_custom_tpl('tab-introduce' . '.tpl', $data_content['array_custom'], $data_content['array_custom_lang'], $idtemplates);
+            $custom_data = nv_custom_tab_fields($data_content);
             $xtpl->assign('CUSTOM_DATA', $custom_data);
             $xtpl->parse('main.custom_data');
         }
@@ -342,13 +346,7 @@ function nv_template_detail($data_content, $data_unit, $data_others, $array_othe
                     } elseif ($tabs_key == 'content_customdata') {
                         // Dữ liệu tùy biến
                         if (!empty($data_content['array_custom']) and !empty($data_content['array_custom_lang'])) {
-                            if (sizeof($data_content['template']) > 1) {
-                                // Tab tùy biến theo nhóm (dạng mới)
-                                $tabs_content = nv_custom_tab_fields($data_content);
-                            } else {
-                                // Tab tùy biến theo danh sách chỉ có một nhóm (dạng cũ)
-                                $tabs_content = nv_custom_tpl('tab-' . strtolower(change_alias($data_content['tabs'][$tabs_id][NV_LANG_DATA . '_title'])) . '.tpl', $data_content['array_custom'], $data_content['array_custom_lang'], $idtemplates);
-                            }
+                            $tabs_content = nv_custom_tab_fields($data_content);
                         }
                     }
 
@@ -762,7 +760,7 @@ function cart_product($data_content, $coupons_code, $order_info, $array_error_nu
 }
 
 /**
- * uers_order()
+ * users_order()
  *
  * @param mixed $data_content
  * @param mixed $data_order
@@ -770,7 +768,7 @@ function cart_product($data_content, $coupons_code, $order_info, $array_error_nu
  * @param mixed $error
  * @return
  */
-function uers_order($data_content, $data_order, $total_coupons, $order_info)
+function users_order($data_content, $data_order, $total_coupons, $order_info)
 {
     global $module_info, $lang_module, $lang_global, $module_config, $module_data, $module_file, $module_name, $pro_config, $money_config, $global_array_group, $shipping_data;
 
@@ -1273,18 +1271,31 @@ function history_order($data_content)
  * @param mixed $array_cat_search
  * @return
  */
-function search_theme($key, $check_num, $date_array, $array_cat_search)
+function search_theme($key, $check_num, $date_array, $array_cat_search, $array_price, $typemoney)
 {
-    global $module_name, $module_info, $module_file, $lang_module, $module_name;
+    global $module_name, $module_info, $module_file, $lang_module, $module_name, $nv_Cache, $db_config, $module_data;
 
     $xtpl = new XTemplate("search.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file);
 
+    $xtpl->assign('NV_BASE_SITEURL', NV_BASE_SITEURL);
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('MODULE_NAME', $module_name);
     $xtpl->assign('TO_DATE', $date_array['to_date']);
     $xtpl->assign('FROM_DATE', $date_array['from_date']);
+    $xtpl->assign('price1', $array_price['price1']);
+    $xtpl->assign('price2', $array_price['price2']);
     $xtpl->assign('KEY', $key);
     $xtpl->assign('OP_NAME', 'search');
+
+    // Get money
+    $sql = 'SELECT code, currency FROM ' . $db_config['prefix'] . '_' . $module_data . '_money_' . NV_LANG_DATA;
+    $list = $nv_Cache->db($sql, '', $module_data);
+
+    foreach ($list as $row) {
+        $row['selected'] = ($typemoney == $row['code']) ? 'selected="selected"' : '';
+        $xtpl->assign('ROW', $row);
+        $xtpl->parse('main.typemoney');
+    }
 
     foreach ($array_cat_search as $search_cat) {
         $xtpl->assign('SEARCH_CAT', $search_cat);
@@ -1315,7 +1326,7 @@ function search_theme($key, $check_num, $date_array, $array_cat_search)
  */
 function search_result_theme($key, $numRecord, $per_pages, $pages, $array_content, $url_link, $catid)
 {
-    global $module_file, $module_info, $lang_module, $global_array_shops_cat, $pro_config;
+    global $module_file, $module_info, $lang_module, $global_array_shops_cat, $pro_config, $global_config;
 
     $xtpl = new XTemplate("search.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file);
 
@@ -1329,7 +1340,7 @@ function search_result_theme($key, $numRecord, $per_pages, $pages, $array_conten
         foreach ($array_content as $value) {
             $listcatid = explode(",", $value['listcatid']);
             $catid_i = ($catid > 0) ? $catid : end($listcatid);
-            $url = $global_array_shops_cat[$catid_i]['link'] . '/' . $value['alias'] . "-" . $value['id'];
+            $url = $global_array_shops_cat[$catid_i]['link'] . '/' . $value['alias'] . $global_config['rewrite_exturl'];
 
             $value['hometext'] = nv_clean60($value['hometext'], 170);
 
@@ -1609,7 +1620,7 @@ function nv_review_content($data_content)
     }
     $xtpl->assign('RATE_TOTAL', $data_content['rating_total']);
     $xtpl->assign('RATE_VALUE', $data_content['rating_point']);
-    
+
     $reCaptchaPass = (!empty($global_config['recaptcha_sitekey']) and !empty($global_config['recaptcha_secretkey']) and ($global_config['recaptcha_ver'] == 2 or $global_config['recaptcha_ver'] == 3));
 
     if ($pro_config['review_captcha']) {
@@ -1822,7 +1833,7 @@ function nv_template_viewgrid($array_data, $page = '')
  */
 function nv_template_viewlist($array_data, $page)
 {
-    global $module_info, $lang_module, $lang_global, $module_name, $module_data, $module_file, $module_upload, $pro_config, $op, $compareid;
+    global $module_info, $lang_module, $lang_global, $module_name, $module_data, $module_file, $module_upload, $pro_config, $op, $compareid, $global_array_shops_cat;
 
     $xtpl = new XTemplate('viewlist.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
     $xtpl->assign('LANG', $lang_module);
@@ -1947,7 +1958,7 @@ function nv_template_viewlist($array_data, $page)
  * @param mixed $pages
  * @return
  */
-function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $viewtype = 'viewgrid')
+function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $viewtype = 'viewgrid', $content_parent = '')
 {
     global $module_info, $lang_module, $module_file, $module_upload, $module_name, $pro_config, $array_displays, $array_wishlist_id, $op, $global_array_shops_cat, $global_array_group, $my_head, $page;
 
@@ -1958,6 +1969,15 @@ function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $vie
     $xtpl->assign('CATID', $data_content['id']);
     $xtpl->assign('CAT_NAME', $data_content['title']);
     $xtpl->assign('COUNT', $data_content['count']);
+
+    if (!empty($content_parent)) {
+        $xtpl->assign('PARENT_HTML', $content_parent['html']);
+        $xtpl->parse('main.parent_html');
+    }
+    if (!empty($content_parent['page'] > 1)) {
+        $xtpl->parse('main');
+        return $xtpl->text('main');
+    }
 
     // Hiển thị phần giới thiệu loại sản phẩm
     if ($op != 'group') {
@@ -2144,6 +2164,7 @@ function nv_template_loadcart($array_data, $array_products = array())
         // Diem tich luy
         if ($pro_config['point_active']) {
             $xtpl->assign('POINT', $array_data['point']);
+            $xtpl->assign('POINT_URL', NV_BASE_SITEURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=point");
             $xtpl->parse('main.point');
         }
     }

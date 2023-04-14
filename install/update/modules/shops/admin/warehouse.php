@@ -88,6 +88,7 @@ if ($nv_Request->isset_request('checkss', 'get') and $nv_Request->get_string('ch
                 $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_rows SET product_number = product_number + ' . $total_num . ' WHERE id=' . $pro_id);
             }
         }
+        $nv_Cache->delMod($module_name);
         nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=warehouse_logs');
     }
 

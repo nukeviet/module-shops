@@ -17,7 +17,7 @@ if (defined('NV_EDITOR')) {
 }
 
 if (empty($global_array_shops_cat)) {
-    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cat';
+    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cat';
     $contents = nv_theme_alert($lang_module['error_cat_empty_title'], $lang_module['error_cat_empty_content'], 'warning', $url_back, $lang_module['continue']);
     include NV_ROOTDIR . '/includes/header.php';
     echo nv_admin_theme($contents);
@@ -25,7 +25,7 @@ if (empty($global_array_shops_cat)) {
 }
 
 if (empty($money_config)) {
-    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=money';
+    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=money';
     $contents = nv_theme_alert($lang_module['error_munit_empty_title'], $lang_module['error_munit_empty_content'], 'warning', $url_back, $lang_module['continue']);
     include NV_ROOTDIR . '/includes/header.php';
     echo nv_admin_theme($contents);
@@ -260,7 +260,8 @@ if ($nv_Request->get_int('save', 'post') == 1) {
         $rowcontent['alias'] = ($alias == '') ? change_alias($rowcontent['title']) : change_alias($alias);
     }
     if (!empty($rowcontent['alias'])) {
-        $stmt = $db->prepare('SELECT COUNT(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE id !=' . $rowcontent['id'] . ' AND ' . NV_LANG_DATA . '_alias = :alias');
+        $scheck_unique_alias = 'SELECT COUNT(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE ' . NV_LANG_DATA . '_alias = :alias' . (!$is_copy ? ' AND id !=' . $rowcontent['id'] : '');
+        $stmt = $db->prepare($scheck_unique_alias);
         $stmt->bindParam(':alias', $rowcontent['alias'], PDO::PARAM_STR);
         $stmt->execute();
         if ($stmt->fetchColumn()) {
@@ -277,7 +278,6 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     $rowcontent['hometext'] = defined('NV_EDITOR') ? nv_nl2br($hometext, '') : nv_nl2br(nv_htmlspecialchars(strip_tags($hometext)), '<br />');
 
     $rowcontent['product_code'] = nv_substr($nv_Request->get_title('product_code', 'post', '', 1), 0, 255);
-    $rowcontent['product_number'] = $nv_Request->get_int('product_number', 'post', 0);
     $rowcontent['product_price'] = $nv_Request->get_string('product_price', 'post', '');
     $rowcontent['product_price'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['product_price']));
     $rowcontent['saleprice'] = $nv_Request->get_string('saleprice', 'post', '');
@@ -380,6 +380,25 @@ if ($nv_Request->get_int('save', 'post') == 1) {
         }
     }
 
+    // Xử lý số lượng sản phẩm trong kho
+    $product_number = $nv_Request->get_int('product_number', 'post', 0);
+    $error_product_number = '';
+    if (empty($pro_config['active_warehouse'])) {
+        if ($rowcontent['id'] > 0 and !$is_copy) {
+            $rowcontent['product_number'] += $product_number;
+            if ($rowcontent['product_number'] < 0) {
+                $error_product_number = sprintf($lang_module['error_pro_number_empty2'], $rowcontent['product_number']);
+            }
+        } else {
+            $rowcontent['product_number'] = $product_number;
+            if ($rowcontent['product_number'] < 0) {
+                $error_product_number = $lang_module['error_pro_number_empty1'];
+            }
+        }
+    } elseif (empty($rowcontent['id']) or $is_copy) {
+        $rowcontent['product_number'] = 0;
+    }
+
     if (empty($rowcontent['title'])) {
         nv_jsonOutput(array(
             'error' => 1,
@@ -404,6 +423,12 @@ if ($nv_Request->get_int('save', 'post') == 1) {
             'input' => 'f_weight',
             'msg' => $lang_module['error_weight']
         ));
+    } elseif ($error_product_number) {
+        nv_jsonOutput([
+            'error' => 1,
+            'input' => 'product_number',
+            'msg' => $error_product_number
+        ]);
     } elseif (trim(strip_tags($rowcontent['hometext'])) == '') {
         nv_jsonOutput(array(
             'error' => 1,
@@ -463,7 +488,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     }
 
     // Xu ly tu khoa
-    if ($rowcontent['keywords'] == '') {
+    if ($rowcontent['keywords'] == '' && !empty($pro_config['auto_tags'])) {
         $keywords = ($rowcontent['hometext'] != '') ? $rowcontent['hometext'] : $rowcontent['bodyhtml'];
         $keywords = nv_get_keywords($keywords, 100);
         $keywords = explode(',', $keywords);
@@ -527,45 +552,51 @@ if ($nv_Request->get_int('save', 'post') == 1) {
             $rowcontent['status'] = 2;
         }
 
-        $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_rows (id, listcatid, user_id, addtime, edittime, status, publtime, exptime, archive, product_code, product_number, product_price, price_config, saleprice, money_unit, product_unit, product_weight, weight_unit, discount_id, homeimgfile, homeimgthumb, homeimgalt,otherimage,imgposition, copyright, inhome, allowed_comm, allowed_rating, ratingdetail, allowed_send, allowed_print, allowed_save, hitstotal, hitscm, hitslm, showprice " . $listfield . ")
-                 VALUES ( NULL ,
-                 :listcatid,
-                 " . intval($rowcontent['user_id']) . ",
-                 " . intval($rowcontent['addtime']) . ",
-                 " . intval($rowcontent['edittime']) . ",
-                 " . intval($rowcontent['status']) . ",
-                 " . intval($rowcontent['publtime']) . ",
-                 " . intval($rowcontent['exptime']) . ",
-                 " . intval($rowcontent['archive']) . ",
-                 :product_code,
-                 " . intval($rowcontent['product_number']) . ",
-                 :product_price,
-                 :price_config,
-                 :saleprice,
-                 :money_unit,
-                 " . intval($rowcontent['product_unit']) . ",
-                 :product_weight,
-                 :weight_unit,
-                 " . intval($rowcontent['discount_id']) . ",
-                 :homeimgfile,
-                 :homeimgthumb,
-                 :homeimgalt,
-                 :otherimage,
-                 " . intval($rowcontent['imgposition']) . ",
-                 " . intval($rowcontent['copyright']) . ",
-                 " . intval($rowcontent['inhome']) . ",
-                 :allowed_comm,
-                 " . intval($rowcontent['allowed_rating']) . ",
-                 :ratingdetail,
-                 " . intval($rowcontent['allowed_send']) . ",
-                 " . intval($rowcontent['allowed_print']) . ",
-                 " . intval($rowcontent['allowed_save']) . ",
-                 " . intval($rowcontent['hitstotal']) . ",
-                 " . intval($rowcontent['hitscm']) . ",
-                 " . intval($rowcontent['hitslm']) . ",
-                 " . intval($rowcontent['showprice']) . "
-                " . $listvalue . "
-            )";
+        $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_rows (
+            listcatid, user_id, addtime, edittime, status, publtime, exptime, archive,
+            product_code, product_number, product_price, price_config, saleprice,
+            money_unit, product_unit, product_weight, weight_unit, discount_id,
+            homeimgfile, homeimgthumb, homeimgalt,otherimage,imgposition, copyright,
+            inhome, allowed_comm, allowed_rating, ratingdetail, allowed_send, allowed_print,
+            allowed_save, hitstotal, hitscm, hitslm, showprice " . $listfield . "
+        ) VALUES (
+             :listcatid,
+             " . intval($rowcontent['user_id']) . ",
+             " . intval($rowcontent['addtime']) . ",
+             " . intval($rowcontent['edittime']) . ",
+             " . intval($rowcontent['status']) . ",
+             " . intval($rowcontent['publtime']) . ",
+             " . intval($rowcontent['exptime']) . ",
+             " . intval($rowcontent['archive']) . ",
+             :product_code,
+             " . intval($rowcontent['product_number']) . ",
+             :product_price,
+             :price_config,
+             :saleprice,
+             :money_unit,
+             " . intval($rowcontent['product_unit']) . ",
+             :product_weight,
+             :weight_unit,
+             " . intval($rowcontent['discount_id']) . ",
+             :homeimgfile,
+             :homeimgthumb,
+             :homeimgalt,
+             :otherimage,
+             " . intval($rowcontent['imgposition']) . ",
+             " . intval($rowcontent['copyright']) . ",
+             " . intval($rowcontent['inhome']) . ",
+             :allowed_comm,
+             " . intval($rowcontent['allowed_rating']) . ",
+             :ratingdetail,
+             " . intval($rowcontent['allowed_send']) . ",
+             " . intval($rowcontent['allowed_print']) . ",
+             " . intval($rowcontent['allowed_save']) . ",
+             " . intval($rowcontent['hitstotal']) . ",
+             " . intval($rowcontent['hitscm']) . ",
+             " . intval($rowcontent['hitslm']) . ",
+             " . intval($rowcontent['showprice']) . "
+            " . $listvalue . "
+        )";
 
         $data_insert = [];
         $data_insert['listcatid'] = $rowcontent['listcatid'];
@@ -649,13 +680,13 @@ if ($nv_Request->get_int('save', 'post') == 1) {
             $auto_product_code = '';
             if (!empty($pro_config['format_code_id']) and empty($rowcontent['product_code'])) {
                 $i = 1;
-                $auto_product_code = vsprintf($pro_config['format_code_id'], $rowcontent['id']);
+                $auto_product_code = sprintf($pro_config['format_code_id'], $rowcontent['id']);
 
                 $stmt = $db->prepare('SELECT id FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE product_code= :product_code');
                 $stmt->bindParam(':product_code', $auto_product_code, PDO::PARAM_STR);
                 $stmt->execute();
                 while ($stmt->rowCount()) {
-                    $auto_product_code = vsprintf($pro_config['format_code_id'], ($rowcontent['id'] + $i++));
+                    $auto_product_code = sprintf($pro_config['format_code_id'], ($rowcontent['id'] + $i++));
                 }
 
                 $stmt = $db->prepare('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_rows SET product_code= :product_code WHERE id=' . $rowcontent['id']);
@@ -705,7 +736,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
              edittime= " . NV_CURRENTTIME . " ,
              archive=" . intval($rowcontent['archive']) . ",
              product_code = :product_code,
-             product_number = product_number + " . intval($rowcontent['product_number']) . ",
+             product_number = " . intval($rowcontent['product_number']) . ",
              product_price = :product_price,
              price_config = :price_config,
              saleprice = :saleprice,
@@ -737,7 +768,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
              " . NV_LANG_DATA . "_gift_content= :gift_content,
              " . NV_LANG_DATA . "_tag_title= :tag_title,
              " . NV_LANG_DATA . "_tag_description= :tag_description
-             WHERE id =" . $rowcontent['id']);
+         WHERE id =" . $rowcontent['id']);
 
         $stmt->bindParam(':listcatid', $rowcontent['listcatid'], PDO::PARAM_STR);
         $stmt->bindParam(':product_code', $rowcontent['product_code'], PDO::PARAM_STR);
@@ -823,13 +854,23 @@ if ($nv_Request->get_int('save', 'post') == 1) {
 
     nv_set_status_module();
 
-    $db->query('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . '_block WHERE id = ' . $rowcontent['id']);
-
-    foreach ($id_block_content as $bid_i) {
-        $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_block (bid, id, weight) VALUES ('" . $bid_i . "', '" . $rowcontent['id'] . "', '0')");
+    // Xử lý block sản phẩm
+    // Xóa các block sản phẩm mà sản phẩm không thuộc
+    foreach ($array_block_cat_module as $bid_i => $value) {
+        if (!in_array($bid_i, $id_block_content)) {
+            $db->query('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . '_block WHERE id = ' . $rowcontent['id'] . ' AND bid = ' . $bid_i);
+        }
     }
 
-    foreach ($array_block_cat_module as $bid_i) {
+    foreach ($id_block_content as $bid_i) {
+        // Kiểm tra nếu  đã tồn tại thì không thêm nữa
+        $num = $db->query('SELECT COUNT(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_block WHERE id = ' . $rowcontent['id'] . ' AND bid=' . $bid_i)->fetchColumn();
+        if ($num == 0) {
+            $db->query("INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_block (bid, id, weight) VALUES ('" . $bid_i . "', '" . $rowcontent['id'] . "', '0')");
+        }
+    }
+
+    foreach ($array_block_cat_module as $bid_i => $value) {
         nv_news_fix_block($bid_i);
     }
 
@@ -909,7 +950,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
 
     nv_jsonOutput(array(
         'error' => 0,
-        'redirect' => NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=items'
+        'redirect' => NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=items'
     ));
 }
 
@@ -962,6 +1003,8 @@ if ($is_copy) {
 $xtpl->assign('ALIAS', $get_alias_id);
 $xtpl->assign('rowcontent', $rowcontent);
 $xtpl->assign('NV_BASE_ADMINURL', NV_BASE_ADMINURL);
+$xtpl->assign('NV_LANG_VARIABLE', NV_LANG_VARIABLE);
+$xtpl->assign('NV_LANG_DATA', NV_LANG_DATA);
 $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
@@ -1015,7 +1058,7 @@ if (!empty($rowcontent['group_id'])) {
 }
 
 $inrow = nv_base64_encode(serialize($array_groupid_in_row));
-$xtpl->assign('url_load', NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=getgroup&cid=' . $rowcontent['listcatid'] . '&inrow=' . $inrow);
+$xtpl->assign('url_load', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=getgroup&cid=' . $rowcontent['listcatid'] . '&inrow=' . $inrow);
 $xtpl->assign('inrow', $inrow);
 $xtpl->parse('main.listgroup');
 
@@ -1149,7 +1192,7 @@ while ($_discount = $_result->fetch()) {
 $sql = 'SELECT id, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_units';
 $result_unit = $db->query($sql);
 if ($result_unit->rowCount() == 0) {
-    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=prounit';
+    $url_back = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=prounit';
     $contents = nv_theme_alert($lang_module['error_punit_empty_title'], $lang_module['error_punit_empty_content'], 'warning', $url_back, $lang_module['continue']);
     include NV_ROOTDIR . '/includes/header.php';
     echo nv_admin_theme($contents);
@@ -1233,22 +1276,15 @@ if (!$is_submit and $is_copy) {
     $xtpl->parse('main.pre_getalias');
 }
 
-if (!$pro_config['active_warehouse']) {
+if (empty($pro_config['active_warehouse'])) {
     if ($rowcontent['id'] > 0 and !$is_copy) {
         $xtpl->parse('main.warehouse.edit');
+        $xtpl->parse('main.warehouse.edit2');
     } else {
         $xtpl->parse('main.warehouse.add');
+        $xtpl->parse('main.warehouse.add2');
     }
     $xtpl->parse('main.warehouse');
-}
-
-// Custom fiels
-if ($pro_config['template_active'] and $rowcontent['listcatid'] and !empty($global_array_shops_cat[$rowcontent['listcatid']]['form'])) {
-    $form = $global_array_shops_cat[$rowcontent['listcatid']]['form'];
-    if (nv_is_file(NV_BASE_SITEURL . NV_ASSETS_DIR . '/' . $module_upload . '/files_tpl/cat_form_' . $form . '.tpl', NV_ASSETS_DIR . '/' . $module_upload)) {
-        $datacustom_form = nv_show_custom_form($rowcontent['id'], $form, $custom);
-        $xtpl->assign('DATACUSTOM_FORM', $datacustom_form);
-    }
 }
 
 $xtpl->parse('main');

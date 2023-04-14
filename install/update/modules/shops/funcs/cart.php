@@ -145,8 +145,8 @@ if (!empty($_SESSION[$module_data . '_cart'])) {
         $array = explode('_', $pro_id);
         if (isset($array[1]) and (empty($array[1]) or preg_match('/^[0-9\,]+$/', $array[1]))) {
             $array[0] = intval($array[0]);
-            if (empty($array[1])) {
-                // Sản phẩm không có nhóm
+            if (empty($array[1]) || !empty($pro_config['active_order_number'])) {
+                // Sản phẩm không có nhóm hoặc ứng dụng đã được cấu hình đăng ký không giới hạn số lượng
                 $sql = "SELECT t1.id, t1.listcatid, t1.publtime, t1." . NV_LANG_DATA . "_title, t1." . NV_LANG_DATA . "_alias, t1." . NV_LANG_DATA . "_hometext,
                 t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_number, t1.product_price, t2." . NV_LANG_DATA . "_title, t1.money_unit
                 FROM " . $db_config['prefix'] . "_" . $module_data . "_rows AS t1, " . $db_config['prefix'] . "_" . $module_data . "_units AS t2

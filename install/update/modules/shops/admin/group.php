@@ -125,7 +125,7 @@ if (!empty($savegroup)) {
             nv_insert_logs(NV_LANG_DATA, $module_name, 'log_add_group', 'id ' . $newgroupid, $admin_info['userid']);
             nv_fix_group_order();
             $nv_Cache->delMod($module_name);
-            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']);
+            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']);
         } else {
             $error = $lang_module['errorsave'];
         }
@@ -168,7 +168,7 @@ if (!empty($savegroup)) {
 
                 $nv_Cache->delMod($module_name);
 
-                nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']);
+                nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&parentid=' . $data['parentid']);
             }
         } catch (PDOException $e) {
             $error = $lang_module['errorsave'];
@@ -202,7 +202,7 @@ $xtpl->assign('GLANG', $lang_global);
 $xtpl->assign('CAPTION', $caption);
 
 $xtpl->assign('DATA', $data);
-$xtpl->assign('URL', NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=getcatalog&pid=' . $data['parentid'] . '&cid=' . nv_base64_encode(serialize($data['cateid_old'])));
+$xtpl->assign('URL', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=getcatalog&pid=' . $data['parentid'] . '&cid=' . nv_base64_encode(serialize($data['cateid_old'])));
 $xtpl->assign('GROUP_LIST', shops_show_group_list($data['parentid']));
 $xtpl->assign('UPLOAD_CURRENT', $currentpath);
 $xtpl->assign('FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;groupid=' . $data['groupid'] . '&amp;parentid=' . $data['parentid']);

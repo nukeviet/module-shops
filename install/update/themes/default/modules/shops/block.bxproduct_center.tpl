@@ -11,12 +11,14 @@ $(document).ready(function(){
         speed: {SPEED},
         slideWidth: {WIDTH},
         slideMargin: {MARGIN},
-        minSlides: {NUMVIEW},
+        minSlides: 1,
         maxSlides: {NUMVIEW},
         moveSlides: {MOVE},
         pager: {PAGER},
         adaptiveHeight: true,
-        touchEnabled: false
+        touchEnabled: false,
+        responsive: true,
+        shrinkItems: true
     });
     if (window.navigator.userAgent.toLowerCase().indexOf("chrome") > 0) {
         $("body").on("mousedown", ".slider_{BLOCKID} a", function() {
@@ -25,6 +27,7 @@ $(document).ready(function(){
             }
         });
     }
+
 });
 </script>
 
