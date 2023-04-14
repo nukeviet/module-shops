@@ -1271,9 +1271,9 @@ function history_order($data_content)
  * @param mixed $array_cat_search
  * @return
  */
-function search_theme($key, $check_num, $date_array, $array_cat_search)
+function search_theme($key, $check_num, $date_array, $array_cat_search, $array_price, $typemoney)
 {
-    global $module_name, $module_info, $module_file, $lang_module, $module_name;
+    global $module_name, $module_info, $module_file, $lang_module, $module_name, $nv_Cache, $db_config, $module_data;
 
     $xtpl = new XTemplate("search.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file);
 
@@ -1282,8 +1282,20 @@ function search_theme($key, $check_num, $date_array, $array_cat_search)
     $xtpl->assign('MODULE_NAME', $module_name);
     $xtpl->assign('TO_DATE', $date_array['to_date']);
     $xtpl->assign('FROM_DATE', $date_array['from_date']);
+    $xtpl->assign('price1', $array_price['price1']);
+    $xtpl->assign('price2', $array_price['price2']);
     $xtpl->assign('KEY', $key);
     $xtpl->assign('OP_NAME', 'search');
+
+    // Get money
+    $sql = 'SELECT code, currency FROM ' . $db_config['prefix'] . '_' . $module_data . '_money_' . NV_LANG_DATA;
+    $list = $nv_Cache->db($sql, '', $module_data);
+
+    foreach ($list as $row) {
+        $row['selected'] = ($typemoney == $row['code']) ? 'selected="selected"' : '';
+        $xtpl->assign('ROW', $row);
+        $xtpl->parse('main.typemoney');
+    }
 
     foreach ($array_cat_search as $search_cat) {
         $xtpl->assign('SEARCH_CAT', $search_cat);
@@ -1946,7 +1958,7 @@ function nv_template_viewlist($array_data, $page)
  * @param mixed $pages
  * @return
  */
-function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $viewtype = 'viewgrid')
+function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $viewtype = 'viewgrid', $content_parent = '')
 {
     global $module_info, $lang_module, $module_file, $module_upload, $module_name, $pro_config, $array_displays, $array_wishlist_id, $op, $global_array_shops_cat, $global_array_group, $my_head, $page;
 
@@ -1957,6 +1969,15 @@ function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $vie
     $xtpl->assign('CATID', $data_content['id']);
     $xtpl->assign('CAT_NAME', $data_content['title']);
     $xtpl->assign('COUNT', $data_content['count']);
+
+    if (!empty($content_parent)) {
+        $xtpl->assign('PARENT_HTML', $content_parent['html']);
+        $xtpl->parse('main.parent_html');
+    }
+    if (!empty($content_parent['page'] > 1)) {
+        $xtpl->parse('main');
+        return $xtpl->text('main');
+    }
 
     // Hiển thị phần giới thiệu loại sản phẩm
     if ($op != 'group') {

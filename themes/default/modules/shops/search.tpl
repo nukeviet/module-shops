@@ -22,6 +22,30 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-4 control-label">{LANG.price1}</label>
+                <div class="col-sm-20">
+                    <input id="price1" type="text" value="{price1}" name="price1" class="form-control input-sm" onkeyup="this.value=FormatNumber(this.value);">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{LANG.price2}</label>
+                <div class="col-sm-20">
+                    <input id="price2" type="text" value="{price2}" name="price2" class="form-control input-sm" onkeyup="this.value=FormatNumber(this.value);">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{LANG.moneyunit}</label>
+                <div class="col-sm-20">
+                    <select name="typemoney" id="typemoney" class="form-control input-sm">
+                        <option value="0">{LANG.moneyunit}</option>
+                        <!-- BEGIN: typemoney -->
+                        <option {ROW.selected} value="{ROW.code}">{ROW.currency}</option>
+                        <!-- END: typemoney -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-4 control-label">{LANG.from_date}</span></label>
                 <div class="col-sm-20">
                     <input name="to_date" id="to_date" value="{TO_DATE}" class="form-control" style="width: 90px; display: inline" maxlength="10" readonly="readonly" type="text" />
