@@ -107,7 +107,7 @@ if ($global_array_shops_cat[$data_content['listcatid']]['form'] != '') {
             if (!empty($listfield)) {
                 $result = $db->query('SELECT t1.field_value, t2.field, t2.listtemplate FROM ' . $db_config['prefix'] . "_" . $module_data . "_field_value_" . NV_LANG_DATA . ' t1
                 INNER JOIN ' . $db_config['prefix'] . '_' . $module_data . '_field t2 WHERE t1.field_id=t2.fid AND t1.rows_id=' . $id);
-                $data_content['template'][] = $cat_form;
+                $data_content['template'][$cat_form['id']] = $cat_form;
                 while ($row = $result->fetch()) {
                     // Xếp theo danh sách
                     $data_content['array_custom'][$row['field']] = $row['field_value'];

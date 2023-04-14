@@ -96,7 +96,7 @@ if (!empty($savecat)) {
 
                 if ($db->insert_id($sql, 'bid', $data_insert)) {
                     $nv_Cache->delMod($module_name);
-                    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
+                    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
                 } else {
                     $error = $lang_module['errorsave'];
                 }
@@ -120,7 +120,7 @@ if (!empty($savecat)) {
                 if ($stmt->execute()) {
                     $error = $lang_module['saveok'];
                     $nv_Cache->delMod($module_name);
-                    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
+                    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
                 } else {
                     $error = $lang_module['errorsave'];
                 }

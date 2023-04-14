@@ -263,7 +263,7 @@ if ($nv_Request->isset_request('postorder', 'post')) {
             $item = $result->fetch();
             $result->closeCursor();
 
-            $order_code = vsprintf($pro_config['format_order_id'], $item['auto_increment']);
+            $order_code = sprintf($pro_config['format_order_id'], $item['auto_increment']);
             $transaction_status = (empty($pro_config['auto_check_order'])) ? - 1 : 0;
 
             $sql = "INSERT INTO " . $db_config['prefix'] . "_" . $module_data . "_orders (
@@ -294,7 +294,7 @@ if ($nv_Request->isset_request('postorder', 'post')) {
                 // Them don hang
 
                 // Cap nhat lai ma don hang
-                $order_code2 = vsprintf($pro_config['format_order_id'], $order_id);
+                $order_code2 = sprintf($pro_config['format_order_id'], $order_id);
                 if ($order_code != $order_code2) {
                     $stmt = $db->prepare('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_orders SET order_code= :order_code WHERE order_id=' . $order_id);
                     $stmt->bindParam(':order_code', $order_code2, PDO::PARAM_STR);
@@ -688,7 +688,7 @@ if ($action == 0) {
     if ($i == 0) {
         nv_redirect_location(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=cart', true);
     } else {
-        $contents = call_user_func('uers_order', $data_content, $data_order, $array_counpons['discount'], $order_info);
+        $contents = call_user_func('users_order', $data_content, $data_order, $array_counpons['discount'], $order_info);
     }
 }
 

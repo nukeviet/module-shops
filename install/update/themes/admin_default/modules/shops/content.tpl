@@ -72,12 +72,17 @@
                                 </div>
                             </div>
                             <!-- BEGIN: warehouse -->
+                            <!-- BEGIN: add2 -->
                             <label class="col-md-4 control-label">{LANG.content_product_number}</label>
+                            <!-- END: add2 -->
+                            <!-- BEGIN: edit2 -->
+                            <label class="col-md-4 control-label">{LANG.content_product_number_edit}</label>
+                            <!-- END: edit2 -->
                             <div class="col-md-8">
                                 <!-- BEGIN: edit -->
                                 <div class="input-group">
                                     <div class="input-group-addon">{rowcontent.product_number} +</div>
-                                    <input class="form-control" type="number" min="0" maxlength="50" value="0" name="product_number" />
+                                    <input class="form-control" type="number" maxlength="50" value="0" name="product_number" />
                                 </div>
                                 <!-- END: edit -->
                                 <!-- BEGIN: add -->
@@ -171,7 +176,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <input value="{DATAOTHERIMAGE.value}" name="otherimage[]" id="otherimage_{DATAOTHERIMAGE.id}" class="form-control" maxlength="255"> <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" onclick="nv_open_browse( '{NV_BASE_ADMINURL}index.php?{NV_NAME_VARIABLE}=upload&popup=1&area=otherimage_{DATAOTHERIMAGE.id}&path={NV_UPLOADS_DIR}/{MODULE_UPLOAD}&currentpath={CURRENT}&type=file', 'NVImg', 850, 500, 'resizable=no,scrollbars=no,toolbar=no,location=no,status=no' ); return false; ">
+                                    <button class="btn btn-default" type="button" onclick="nv_open_browse( '{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}=upload&popup=1&area=otherimage_{DATAOTHERIMAGE.id}&path={NV_UPLOADS_DIR}/{MODULE_UPLOAD}&currentpath={CURRENT}&type=file', 'NVImg', 850, 500, 'resizable=no,scrollbars=no,toolbar=no,location=no,status=no' ); return false; ">
                                         <em class="fa fa-folder-open-o fa-fix">&nbsp;</em>
                                     </button>
                                 </span>
@@ -232,7 +237,7 @@
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="gift_from" value="{rowcontent.gift_from}" id="gift_from" readonly="readonly" placeholder="{LANG.date_from}"> <span class="input-group-btn">
+                                                <input type="text" class="form-control" name="gift_from" value="{rowcontent.gift_from}" id="gift_from" placeholder="{LANG.date_from}"> <span class="input-group-btn">
                                                     <button class="btn btn-default" type="button" id="from-btn">
                                                         <em class="fa fa-calendar fa-fix">&nbsp;</em>
                                                     </button>
@@ -255,7 +260,7 @@
                                     <div class="col-xs-12">
                                         <div class="form-group">
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="gift_to" value="{rowcontent.gift_to}" id="gift_to" readonly="readonly" placeholder="{LANG.date_to}"> <span class="input-group-btn">
+                                                <input type="text" class="form-control" name="gift_to" value="{rowcontent.gift_to}" id="gift_to" placeholder="{LANG.date_to}" autocomplete="off"> <span class="input-group-btn">
                                                     <button class="btn btn-default" type="button" id="to-btn">
                                                         <em class="fa fa-calendar fa-fix">&nbsp;</em>
                                                     </button>
@@ -481,7 +486,7 @@
 
             $.ajax({
                 type : 'POST',
-                url : script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=content&nocache=' + new Date().getTime(),
+                url : script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=content&nocache=' + new Date().getTime(),
                 data : $('#frm-submit').serialize() + '&status=' + $(this).data('status'),
                 success : function(json) {
                     if (json.error) {
@@ -501,7 +506,7 @@
         var path = "{NV_UPLOADS_DIR}/{MODULE_UPLOAD}";
         var currentpath = "{CURRENT}";
         var type = "image";
-        nv_open_browse("{NV_BASE_ADMINURL}index.php?{NV_NAME_VARIABLE}=upload&popup=1&area=" + area + "&path=" + path + "&type=" + type + "&currentpath=" + currentpath, "NVImg", 850, 500, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
+        nv_open_browse("{NV_BASE_ADMINURL}index.php?{NV_LANG_VARIABLE}={NV_LANG_DATA}&{NV_NAME_VARIABLE}=upload&popup=1&area=" + area + "&path=" + path + "&type=" + type + "&currentpath=" + currentpath, "NVImg", 850, 500, "resizable=no,scrollbars=no,toolbar=no,location=no,status=no");
         return false;
     });
 
@@ -532,7 +537,7 @@ $(document).ready(function() {
     $('#add_file').click(function(){
         $('#idmodals').removeData('bs.modal');
          $('#idmodals').on('show.bs.modal', function () {
-             $('#idmodals .modal-body').load( script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=download&popup=1' );
+             $('#idmodals .modal-body').load( script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=download&popup=1' );
         }).modal();
     });
 });

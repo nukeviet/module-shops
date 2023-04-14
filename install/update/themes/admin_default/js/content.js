@@ -52,7 +52,7 @@ $(document).ready(function() {
 
 	}).autocomplete({
 		source : function(request, response) {
-			$.getJSON(script_name + "?" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=tagsajax", {
+			$.getJSON(script_name + "?" + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=tagsajax", {
 				term : extractLast(request.term)
 			}, response);
 		},

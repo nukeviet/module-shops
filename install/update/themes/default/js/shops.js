@@ -187,11 +187,11 @@ function onsubmitsearch(module) {
     var typemoney = $('#typemoney').val();
     if (typemoney == null)
         typemoney = '';
-    var cataid = $('#cata').val();
-    if (keyword == '' && price1 == '' && price2 == '' && cataid == 0) {
+    var catid = $('#cata').val();
+    if (keyword == '' && price1 == '' && price2 == '' && catid == 0) {
         return false;
     } else {
-        window.location.href = nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + module + '&' + nv_fc_variable + '=search_result&keyword=' + rawurlencode(keyword) + '&price1=' + price1 + '&price2=' + price2 + '&typemoney=' + typemoney + '&cata=' + cataid;
+        window.location.href = nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + module + '&' + nv_fc_variable + '=search&q=' + rawurlencode(keyword) + '&price1=' + price1 + '&price2=' + price2 + '&typemoney=' + typemoney + '&catid=' + catid;
     }
     return false;
 }
@@ -337,9 +337,9 @@ function check_price(id_pro, pro_unit) {
 
     if (data.length > 0) {
         $.ajax({
-            method : "POST",
-            url : nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=detail&nocache=' + new Date().getTime(),
-            data : 'check_quantity=1&id_pro=' + id_pro + '&pro_unit=' + pro_unit + '&listid=' + data,
+            method: "POST",
+            url: nv_base_siteurl + 'index.php?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=detail&nocache=' + new Date().getTime(),
+            data: 'check_quantity=1&id_pro=' + id_pro + '&pro_unit=' + pro_unit + '&listid=' + data,
             success: function(res) {
                 var s = res.split('_');
                 if (s[0] == 'OK') {
@@ -357,7 +357,8 @@ function check_price(id_pro, pro_unit) {
 }
 
 function fix_image_content() {
-    var news = $('.tab-content'), newsW, w, h;
+    var news = $('.tab-content'),
+        newsW, w, h;
     var newsInner = $('.tab-content > .tab-pane');
     if (news.length && newsInner.length) {
         var newsW = newsInner.width();

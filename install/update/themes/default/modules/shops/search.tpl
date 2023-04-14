@@ -1,6 +1,6 @@
 <!-- BEGIN: main -->
 <link rel="stylesheet" type="text/css" href="{NV_STATIC_URL}{NV_ASSETS_DIR}/js/jquery-ui/jquery-ui.min.css">
-<form action="{BASE_URL_SITE}index.php" name="fsea" method="get" id="fsea" class="form-horizontal">
+<form action="{NV_BASE_SITEURL}index.php" name="fsea" method="get" id="fsea" class="form-horizontal">
     <div class="panel panel-default">
         <div class="panel-heading">{LANG.search_title}</div>
         <div class="panel-body">
@@ -18,6 +18,30 @@
                         <!-- BEGIN: search_cat -->
                         <option value="{SEARCH_CAT.catid}"{SEARCH_CAT.select}>{SEARCH_CAT.xtitle}{SEARCH_CAT.title}</option>
                         <!-- END: search_cat -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{LANG.price1}</label>
+                <div class="col-sm-20">
+                    <input id="price1" type="text" value="{price1}" name="price1" class="form-control input-sm" onkeyup="this.value=FormatNumber(this.value);">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{LANG.price2}</label>
+                <div class="col-sm-20">
+                    <input id="price2" type="text" value="{price2}" name="price2" class="form-control input-sm" onkeyup="this.value=FormatNumber(this.value);">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label">{LANG.moneyunit}</label>
+                <div class="col-sm-20">
+                    <select name="typemoney" id="typemoney" class="form-control input-sm">
+                        <option value="0">{LANG.moneyunit}</option>
+                        <!-- BEGIN: typemoney -->
+                        <option {ROW.selected} value="{ROW.code}">{ROW.currency}</option>
+                        <!-- END: typemoney -->
                     </select>
                 </div>
             </div>

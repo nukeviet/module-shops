@@ -18,7 +18,7 @@ $nv_update_config = array();
 $nv_update_config['type'] = 1;
 
 // ID goi cap nhat
-$nv_update_config['packageID'] = 'NVUSHOPS4502';
+$nv_update_config['packageID'] = 'NVUSHOPS4503';
 
 // Cap nhat cho module nao, de trong neu la cap nhat NukeViet, ten thu muc module neu la cap nhat module
 $nv_update_config['formodule'] = 'shops';
@@ -27,10 +27,10 @@ $nv_update_config['formodule'] = 'shops';
 $nv_update_config['id'] = 31;
 $nv_update_config['author'] = 'VINADES.,JSC <contact@vinades.vn>';
 $nv_update_config['note'] = '';
-$nv_update_config['release_date'] = 1664268378;
-$nv_update_config['support_website'] = 'https://github.com/nukeviet/module-shops/tree/to-4.5.02';
+$nv_update_config['release_date'] = 1681442454;
+$nv_update_config['support_website'] = 'https://github.com/nukeviet/module-shops/tree/to-4.5.03';
 $nv_update_config['to_version'] = '4.5.02';
-$nv_update_config['allow_old_version'] = array('4.3.00', '4.3.01', '4.4.00', '4.5.00', '4.5.01');
+$nv_update_config['allow_old_version'] = array('4.3.00', '4.3.01', '4.4.00', '4.5.00', '4.5.01', '4.5.02');
 
 // 0:Nang cap bang tay, 1:Nang cap tu dong, 2:Nang cap nua tu dong
 $nv_update_config['update_auto_type'] = 1;
@@ -64,7 +64,7 @@ $nv_update_config['tasklist'][] = array(
     'f' => 'nv_up_f3'
 );
 $nv_update_config['tasklist'][] = array(
-    'r' => '4.5.00',
+    'r' => '4.5.03',
     'rq' => 1,
     'l' => 'nv_up_finish',
     'f' => 'nv_up_finish'

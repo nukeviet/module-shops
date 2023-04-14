@@ -135,7 +135,7 @@ function nv_set_status_module()
  */
 function nv_del_content_module($id)
 {
-    global $db, $module_name, $module_data, $title, $db_config;
+    global $db, $module_name, $module_data, $title, $db_config, $lang_module;
 
     $content_del = 'NO_' . $id;
     $title = '';
@@ -514,7 +514,13 @@ function GetGroupID($pro_id, $group_by_parent = 0)
     global $db, $db_config, $module_data, $global_array_group;
 
     $data = array();
-    $result = $db->query('SELECT group_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items where pro_id=' . $pro_id);
+    $db->sqlreset()
+    ->select('t1.group_id')
+    ->from($db_config['prefix'] . '_' . $module_data . '_group_items t1')
+    ->join('INNER JOIN ' . $db_config['prefix'] . '_' . $module_data . '_group t2 ON t1.group_id = t2.groupid')
+    ->where('t1.pro_id=' . $pro_id)
+    ->order('t2.weight');
+    $result = $db->query($db->sql());
     while ($row = $result->fetch()) {
         if ($group_by_parent) {
             $parentid = $global_array_group[$row['group_id']]['parentid'];
@@ -522,6 +528,14 @@ function GetGroupID($pro_id, $group_by_parent = 0)
         } else {
             $data[] = $row['group_id'];
         }
+    }
+    // Sắp xếp lại thứ tự
+    if (!empty($group_by_parent)) {
+        uksort($data, function ($item1, $item2) {
+            global $global_array_group;
+            if ($global_array_group[$item1]['weight'] == $global_array_group[$item2]['weight']) return 0;
+            return ($global_array_group[$item1]['weight'] < $global_array_group[$item2]['weight']) ? -1 : 1;
+        });
     }
     return $data;
 }

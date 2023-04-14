@@ -46,7 +46,7 @@ if (!empty($savecat)) {
         if ($db->exec($sql)) {
             $error = $lang_module['saveok'];
             $nv_Cache->delMod($module_name);
-            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
+            nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
         } else {
             $error = $lang_module['errorsave'];
         }
@@ -75,8 +75,8 @@ $array_code_exit = array( );
 $result = $db->query('SELECT id, code, title, exchange, round FROM ' . $table_name . ' ORDER BY code DESC');
 while ($row = $result->fetch()) {
     $array_code_exit[] = $row['code'];
-    $row['link_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&id=' . $row['id'];
-    $row['link_del'] = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=delweight&id=' . $row['id'];
+    $row['link_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op . '&id=' . $row['id'];
+    $row['link_del'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=delweight&id=' . $row['id'];
 
     $row['exchange'] = floatval($row['exchange']);
     if (intval($row['exchange']) == $row['exchange'] or $row['exchange'] > 1000) {
@@ -97,8 +97,8 @@ while ($row = $result->fetch()) {
     ++$count;
 }
 
-$xtpl->assign('URL_DEL', NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=delweight');
-$xtpl->assign('URL_DEL_BACK', NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
+$xtpl->assign('URL_DEL', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=delweight');
+$xtpl->assign('URL_DEL_BACK', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op);
 
 if ($count > 0) {
     $xtpl->parse('main.data');

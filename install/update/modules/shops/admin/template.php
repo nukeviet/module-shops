@@ -118,7 +118,7 @@ if (!empty($savecat)) {
             $templaid = $db->insert_id($sql);
             if ($templaid != 0) {
                 $nv_Cache->delMod($module_name);
-                nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
+                nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
             } else {
                 $error = $lang_module['errorsave'];
             }
@@ -129,7 +129,7 @@ if (!empty($savecat)) {
                 $error = $lang_module['saveok'];
 
                 $nv_Cache->delMod($module_name);
-                nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
+                nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
             } else {
                 $error = $lang_module['errorsave'];
             }
@@ -150,7 +150,7 @@ $xtpl = new XTemplate("template.tpl", NV_ROOTDIR . "/themes/" . $global_config['
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('DATA', $data);
 $xtpl->assign('caption', empty($data['id']) ? $lang_module['template_add'] : $lang_module['template_edit']);
-$xtpl->assign('TEM_ADD', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=template#add");
+$xtpl->assign('TEM_ADD', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=template#add");
 
 $result = $db->query("SELECT id, " . NV_LANG_DATA . "_title, alias, status, weight FROM " . $table_name . " ORDER BY weight ASC");
 $num = $result->rowCount();
@@ -159,9 +159,9 @@ while (list($id, $title, $alias, $status, $weight) = $result->fetch(3)) {
     $xtpl->assign('title', $title);
     $xtpl->assign('alias', $alias);
     $xtpl->assign('active', $status ? 'checked="checked"' : '');
-    $xtpl->assign('FIELD_TAB', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=field_tab&template=". $id);
-    $xtpl->assign('link_edit', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&id=" . $id);
-    $xtpl->assign('link_del', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=detemplate&id=" . $id);
+    $xtpl->assign('FIELD_TAB', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=field_tab&template=". $id);
+    $xtpl->assign('link_edit', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op . "&id=" . $id);
+    $xtpl->assign('link_del', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=detemplate&id=" . $id);
     $xtpl->assign('id', $id);
 
     for ($i = 1; $i <= $num; ++$i) {
@@ -176,9 +176,9 @@ while (list($id, $title, $alias, $status, $weight) = $result->fetch(3)) {
     $xtpl->parse('main.data.row');
 }
 
-$xtpl->assign('FIELD_ADD', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=fields#ffields");
-$xtpl->assign('URL_DEL', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=detemplate");
-$xtpl->assign('URL_DEL_BACK', NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
+$xtpl->assign('FIELD_ADD', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=fields#ffields");
+$xtpl->assign('URL_DEL', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=detemplate");
+$xtpl->assign('URL_DEL_BACK', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=" . $op);
 
 if ($num > 0) {
     $xtpl->parse('main.data');

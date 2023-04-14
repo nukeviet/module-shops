@@ -148,13 +148,13 @@
 	function nv_change_weight(id) {
 		var nv_timer = nv_settimeout_disable('id_weight_' + id, 5000);
 		var new_vid = $('#id_weight_' + id).val();
-		$.post(script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=carrier_config_items&nocache=' + new Date().getTime(), 'ajax_action=1&id=' + id + '&cid={ROW.cid}&new_vid=' + new_vid, function(res) {
+		$.post(script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=carrier_config_items&nocache=' + new Date().getTime(), 'ajax_action=1&id=' + id + '&cid={ROW.cid}&new_vid=' + new_vid, function(res) {
 			var r_split = res.split('_');
 			if (r_split[0] != 'OK') {
 				alert(nv_is_change_act_confirm[2]);
 			}
 			clearTimeout(nv_timer);
-			window.location.href = script_name + '?' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=carrier_config_items&cid={ROW.cid}';
+			window.location.href = script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=carrier_config_items&cid={ROW.cid}';
 			return;
 		});
 		return;

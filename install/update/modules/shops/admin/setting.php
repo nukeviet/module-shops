@@ -113,7 +113,7 @@ if ($savesetting == 1) {
         $nv_Cache->delMod('settings');
         $nv_Cache->delMod($module_name);
 
-        nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . '=setting');
+        nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . '=setting');
     }
 }
 
