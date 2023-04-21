@@ -14,14 +14,16 @@ if (! defined('NV_IS_MOD_SHOPS')) {
 
 function BoldKeywordInStr($str, $keyword)
 {
-    $tmp = explode(' ', $keyword);
-    foreach ($tmp as $k) {
-        $tp = strtolower($k);
-        $str = str_replace($tp, "<span class=\"keyword\">" . $tp . "</span>", $str);
-        $tp = strtoupper($k);
-        $str = str_replace($tp, "<span class=\"keyword\">" . $tp . "</span>", $str);
-        $k[0] = strtoupper($k[0]);
-        $str = str_replace($k, "<span class=\"keyword\">" . $k . "</span>", $str);
+    if (!empty($keyword)) {
+        $tmp = explode(' ', $keyword);
+        foreach ($tmp as $k) {
+            $tp = strtolower($k);
+            $str = str_replace($tp, "<span class=\"keyword\">" . $tp . "</span>", $str);
+            $tp = strtoupper($k);
+            $str = str_replace($tp, "<span class=\"keyword\">" . $tp . "</span>", $str);
+            $k[0] = strtoupper($k[0]);
+            $str = str_replace($k, "<span class=\"keyword\">" . $k . "</span>", $str);
+        }
     }
     return $str;
 }
@@ -39,6 +41,7 @@ $price2_temp = preg_replace('/[^0-9,\.]/', '', $price2_temp);
 $price1_sql = preg_replace('/[^0-9]/', '', $price1_temp);
 $price2_sql = preg_replace('/[^0-9]/', '', $price2_temp);
 $typemoney = $nv_Request->get_string('typemoney', 'get', '');
+$groupid = $nv_Request->get_string('filter', 'get', '');
 
 $check_num = $nv_Request->get_int('choose', 'get', 1);
 $pages = $nv_Request->get_int('page', 'get', 1);
@@ -46,13 +49,13 @@ $date_array['from_date'] = $from_date;
 $date_array['to_date'] = $to_date;
 $array_price['price1'] = $price1_temp;
 $array_price['price2'] = $price2_temp;
-$per_pages = 20;
 
 $page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=search';
 if ($page > 1) {
     $page_url .= '&amp;page=' . $page;
 }
 $canonicalUrl = getCanonicalUrl($page_url);
+$nv_BotManager->setPrivate();
 
 $array_cat_search = array();
 $array_cat_search[0] = array(
@@ -85,96 +88,99 @@ $tbl_src = '';
 if (strlen($key) >= NV_MIN_SEARCH_LENGTH) {
     $dbkey = $db->dblikeescape($key);
     $where = "AND ( product_code LIKE '%" . $dbkey . "%' OR " . NV_LANG_DATA . "_title LIKE '%" . $dbkey . "%' OR " . NV_LANG_DATA . "_bodytext LIKE '%" . $dbkey . "%' ) ";
-
-    if ($pro_config['sortdefault'] == 0) {
-        $orderby = 'id DESC';
-    } elseif ($pro_config['sortdefault'] == 1) {
-        $orderby = 'product_price ASC, t1.id DESC';
-    } else {
-        $orderby = 'product_price DESC, t1.id DESC';
-    }
-
-    if ($catid != 0) {
-        if ($global_array_shops_cat[$catid]['numsubcat'] == 0) {
-            $where .= 'AND listcatid=' . $catid;
-        } else {
-            $array_cat = array();
-            $array_cat = GetCatidInParent($catid);
-            $where .= 'AND listcatid IN (' . implode(',', $array_cat) . ')';
-        }
-    }
-
-    if ($to_date != '') {
-        preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $to_date, $m);
-        $tdate = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
-        preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $from_date, $m);
-        $fdate = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
-        $where .= " AND ( publtime < $fdate AND publtime >= $tdate ) ";
-    }
-
-    if (!empty($price1_sql)) {
-        $where .= " AND product_price >= " . $price1_sql;
-    }
-
-    if (!empty($price2_sql)) {
-        $where .= " AND product_price <= " . $price2_sql;
-    }
-    
-    if (!empty($typemoney)) {
-        $where .= " AND money_unit = " . $db->quote($typemoney);
-    }
-
-    $table_search = $db_config['prefix'] . '_' . $module_data . '_rows';
-
-    // Fetch Limit
-    $db->sqlreset()->select('COUNT(*)')->from($table_search)->where('status =1 ' . $where);
-
-    $numRecord = $db->query($db->sql())->fetchColumn();
-
-    $db->select('id, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, listcatid, ' . NV_LANG_DATA . '_hometext, publtime, homeimgfile, homeimgthumb')->order($orderby)->limit($per_pages)->offset(($page - 1) * $per_page);
-
-    $result = $db->query($db->sql());
-
-    $array_content = array();
-    $url_link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=';
-
-    while (list($id, $title, $alias, $listcatid, $hometext, $publtime, $homeimgfile, $homeimgthumb) = $result->fetch(3)) {
-        if ($homeimgthumb == 1) {
-            //image thumb
-
-            $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
-        } elseif ($homeimgthumb == 2) {
-            //image file
-
-            $thumb = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
-        } elseif ($homeimgthumb == 3) {
-            //image url
-
-            $thumb = $homeimgfile;
-        } else {
-            //no image
-
-            $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
-        }
-
-        $array_content[] = array(
-            'id' => $id,
-            'title' => $title,
-            'alias' => $alias,
-            'listcatid' => $listcatid,
-            'hometext' => $hometext,
-            'publtime' => $publtime,
-            'homeimgthumb' => $thumb,
-        );
-    }
-    $contents .= call_user_func('search_result_theme', $key, $numRecord, $per_pages, $pages, $array_content, $url_link, $catid);
 }
 
-if (empty($key)) {
-    $page_title = $module_info['custom_title'];
+if ($pro_config['sortdefault'] == 0) {
+    $orderby = 'id DESC';
+} elseif ($pro_config['sortdefault'] == 1) {
+    $orderby = 'product_price ASC, t1.id DESC';
 } else {
-    $page_title = $key . ' ' . NV_TITLEBAR_DEFIS . ' ' . $lang_module['search_title'] . ' ' . NV_TITLEBAR_DEFIS . ' ' . $module_info['custom_title'];
+    $orderby = 'product_price DESC, t1.id DESC';
 }
+
+if ($catid != 0) {
+    if ($global_array_shops_cat[$catid]['numsubcat'] == 0) {
+        $where .= 'AND listcatid=' . $catid;
+    } else {
+        $array_cat = array();
+        $array_cat = GetCatidInParent($catid);
+        $where .= 'AND listcatid IN (' . implode(',', $array_cat) . ')';
+    }
+}
+
+if ($to_date != '') {
+    preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $to_date, $m);
+    $tdate = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
+    preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $from_date, $m);
+    $fdate = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
+    $where .= " AND ( publtime < $fdate AND publtime >= $tdate ) ";
+}
+
+if (!empty($price1_sql)) {
+    $where .= " AND product_price >= " . $price1_sql;
+}
+
+if (!empty($price2_sql)) {
+    $where .= " AND product_price <= " . $price2_sql;
+}
+
+if (!empty($typemoney)) {
+    $where .= " AND money_unit = " . $db->quote($typemoney);
+}
+
+if (!empty($groupid)) {
+    $groupid = array_map('intval', json_decode($crypt->decrypt($groupid), true));
+    $_sql = 'SELECT DISTINCT pro_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items WHERE group_id IN ("' . implode(',', $groupid) . '")';
+    $where .= ' AND id IN (' . $_sql . ')';
+}
+
+$table_search = $db_config['prefix'] . '_' . $module_data . '_rows';
+
+// Fetch Limit
+$db->sqlreset()->select('COUNT(*)')->from($table_search)->where('status =1 ' . $where);
+
+$numRecord = $db->query($db->sql())->fetchColumn();
+
+$db->select('id, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, listcatid, ' . NV_LANG_DATA . '_hometext, publtime, homeimgfile, homeimgthumb')->order($orderby)->limit($per_page)->offset(($page - 1) * $per_page);
+
+$result = $db->query($db->sql());
+
+$array_content = array();
+$url_link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=';
+
+while (list($id, $title, $alias, $listcatid, $hometext, $publtime, $homeimgfile, $homeimgthumb) = $result->fetch(3)) {
+    if ($homeimgthumb == 1) {
+        //image thumb
+
+        $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
+    } elseif ($homeimgthumb == 2) {
+        //image file
+
+        $thumb = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+    } elseif ($homeimgthumb == 3) {
+        //image url
+
+        $thumb = $homeimgfile;
+    } else {
+        //no image
+
+        $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+    }
+
+    $array_content[] = array(
+        'id' => $id,
+        'title' => $title,
+        'alias' => $alias,
+        'listcatid' => $listcatid,
+        'hometext' => $hometext,
+        'publtime' => $publtime,
+        'homeimgthumb' => $thumb,
+    );
+}
+$contents .= call_user_func('search_result_theme', $key, $numRecord, $per_page, $pages, $array_content, $url_link, $catid);
+
+
+$page_title = $module_info['custom_title'];
 
 $key_words = $module_info['keywords'];
 $mod_title = $lang_module['main_title'];
