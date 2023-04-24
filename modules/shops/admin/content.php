@@ -280,6 +280,10 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     $rowcontent['product_code'] = nv_substr($nv_Request->get_title('product_code', 'post', '', 1), 0, 255);
     $rowcontent['product_price'] = $nv_Request->get_string('product_price', 'post', '');
     $rowcontent['product_price'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['product_price']));
+    
+    $money_config_round = $money_config[$rowcontent['money_unit']]['round'];
+    $rowcontent['product_price'] =  $money_config_round > 1 ? round($rowcontent['product_price'] / $money_config_round) * $money_config_round : round($rowcontent['product_price'], $money_config[$rowcontent['money_unit']]['decimals']);
+
     $rowcontent['saleprice'] = $nv_Request->get_string('saleprice', 'post', '');
     $rowcontent['saleprice'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['saleprice']));
 
@@ -985,7 +989,11 @@ if (!empty($rowcontent['otherimage'])) {
 }
 
 $rowcontent['product_weight'] = empty($rowcontent['product_weight']) ? '' : $rowcontent['product_weight'];
-$rowcontent['product_price'] = number_format($rowcontent['product_price']);
+
+$money_config_round = $money_config[$rowcontent['money_unit']]['round'];
+$rowcontent['product_price'] =  $money_config_round > 1 ? round($rowcontent['product_price'] / $money_config_round) * $money_config_round : round($rowcontent['product_price'], $money_config[$rowcontent['money_unit']]['decimals']);
+$rowcontent['product_price'] = number_format($rowcontent['product_price'], nv_get_decimals($rowcontent['money_unit']), '.', ',');
+
 $rowcontent['saleprice'] = !empty($rowcontent['saleprice']) ? number_format($rowcontent['saleprice']) : '';
 $array_files = [];
 if ($pro_config['download_active']) {

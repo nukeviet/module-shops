@@ -118,7 +118,6 @@ if (!function_exists('nv_view_product_price')) {
 
         $val = $block_config['price_begin'];
 
-        setlocale(LC_MONETARY,"en_US");
         while (true) {
             $price1 = $val;
             $price2 = $val + $block_config['price_step'];

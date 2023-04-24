@@ -136,8 +136,10 @@ if (!empty($typemoney)) {
     $is_search = true;
 }
 
+
+$groupid = !empty($groupid) ? json_decode($crypt->decrypt($groupid), true) : [];
+$groupid = is_array($groupid) && !empty($groupid) ? array_map('intval', $groupid) : [];
 if (!empty($groupid)) {
-    $groupid = array_map('intval', json_decode($crypt->decrypt($groupid), true));
     $_sql = 'SELECT DISTINCT pro_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items WHERE group_id IN ("' . implode(',', $groupid) . '")';
     $where .= ' AND id IN (' . $_sql . ')';
     $is_search = true;
@@ -203,7 +205,6 @@ while (list($id, $title, $alias, $listcatid, $hometext, $publtime, $homeimgfile,
     );
 }
 $contents .= call_user_func('search_result_theme', $key, $numRecord, $per_page, $pages, $array_content, $url_link, $catid);
-
 
 $page_title = $module_info['custom_title'];
 

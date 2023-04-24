@@ -330,10 +330,10 @@ function nv_sh(sl_id, div_id) {
 function ChangeActive(idobject, url_active) {
     var id = $(idobject).attr('id');
     $.ajax({
-        type : 'POST',
-        url : url_active,
-        data : 'id=' + id,
-        success : function(data) {
+        type: 'POST',
+        url: url_active,
+        data: 'id=' + id,
+        success: function(data) {
             alert(data);
         }
     });
@@ -354,7 +354,7 @@ function get_alias(mod, id) {
 }
 
 function nv_add_otherimage() {
-//	var newitem = "<div class=\"form-group\"><input class=\"form-control\" value=\"\" name=\"otherimage[]\" id=\"otherimage_" + file_items + "\" style=\"width : 80%\" maxlength=\"255\" />";
+    //	var newitem = "<div class=\"form-group\"><input class=\"form-control\" value=\"\" name=\"otherimage[]\" id=\"otherimage_" + file_items + "\" style=\"width : 80%\" maxlength=\"255\" />";
     //newitem += "&nbsp;<input type=\"button\" class=\"btn btn-info\" value=\"" + file_selectfile + "\" name=\"selectfile\" onclick=\"nv_open_browse( '" + nv_base_adminurl + "index.php?" + nv_name_variable + "=upload&popup=1&area=otherimage_" + file_items + "&path=" + file_dir + "&type=file&currentpath=" + currentpath + "', 'NVImg', 850, 400, 'resizable=no,scrollbars=no,toolbar=no,location=no,status=no' ); return false; \" /></div>";
 
     var newitem = '';
@@ -412,11 +412,11 @@ function nv_change_catid(obj, id) {
 }
 
 function nv_price_config_add_item() {
-    var items =  $("input[name^=price_config]").length;
-    items = items/2 + 1;
+    var items = $("input[name^=price_config]").length;
+    items = items / 2 + 1;
     var newitem = '<tr>';
-    newitem += '	<td><input class="form-control" type="number" name="price_config['+items+'][number_to]" value=""/></td>';
-    newitem += '	<td><input class="form-control" type="text" name="price_config['+items+'][price]" value="" onkeyup="this.value=FormatNumber(this.value);" style="text-align: right"/></td>';
+    newitem += '	<td><input class="form-control" type="number" name="price_config[' + items + '][number_to]" value=""/></td>';
+    newitem += '	<td><input class="form-control" type="text" name="price_config[' + items + '][price]" value="" onkeyup="this.value=FormatNumber(this.value);" style="text-align: right"/></td>';
     newitem += '	</tr>';
     $("#id_price_config").append(newitem);
 }
@@ -493,8 +493,7 @@ function nv_del_files(id) {
     }
 }
 
-function nv_change_active_files( id )
-{
+function nv_change_active_files(id) {
     var new_status = $('#change_active_' + id).is(':checked') ? 1 : 0;
     if (confirm(nv_is_change_act_confirm[0])) {
         var nv_timer = nv_settimeout_disable('change_active_' + id, 3000);
@@ -522,64 +521,24 @@ function nv_chang_weight(vid) {
 }
 
 function FormatNumber(str) {
+    str = str.replace(/[^0-9\.]/g, '');
+    var index_cm = str.lastIndexOf(".");
 
-    var strTemp = GetNumber(str);
-    if (strTemp.length <= 3) {
-        return strTemp;
+    var strphannguyen = (index_cm == -1) ? str : str.substring(0, index_cm);
+    strphannguyen = strphannguyen.replace(/\./g, '');
+    var strphanthapphan = (index_cm == -1) ? '' : str.substring(index_cm + 1, str.length);
+
+    var result = '';
+    for (var i = 0; i < strphannguyen.length; i++) {
+        if (i % 3 == 0 && i > 0) {
+            result = ',' + result;
+        }
+        result = strphannguyen.charAt(strphannguyen.length - i - 1) + result;
     }
 
-    strResult = "";
-    for (var i = 0; i < strTemp.length; i++) {
-        strTemp = strTemp.replace(",", "");
-    }
-
-    var m = strTemp.lastIndexOf(".");
-    if (m == -1) {
-        for (var i = strTemp.length; i >= 0; i--) {
-            if (strResult.length > 0 && (strTemp.length - i - 1) % 3 == 0) {
-                strResult = "," + strResult;
-            }
-            strResult = strTemp.substring(i, i + 1) + strResult;
-        }
-    } else {
-        var strphannguyen = strTemp.substring(0, strTemp.lastIndexOf("."));
-        var strphanthapphan = strTemp.substring(strTemp.lastIndexOf("."), strTemp.length);
-        var tam = 0;
-        for (var i = strphannguyen.length; i >= 0; i--) {
-
-            if (strResult.length > 0 && tam == 4) {
-                strResult = "," + strResult;
-                tam = 1;
-            }
-
-            strResult = strphannguyen.substring(i, i + 1) + strResult;
-            tam = tam + 1;
-        }
-        strResult = strResult + strphanthapphan;
-    }
-    return strResult;
-}
-
-function GetNumber(str) {
-    var count = 0;
-    for (var i = 0; i < str.length; i++) {
-        var temp = str.substring(i, i + 1);
-        if (!(temp == "," || temp == "." || (temp >= 0 && temp <= 9))) {
-            alert(inputnumber);
-            return str.substring(0, i);
-        }
-        if (temp == " ") {
-            return str.substring(0, i);
-        }
-
-        if (temp == ".") {
-            if (count > 0) {
-                return str.substring(0, ipubl_date);
-            }
-            count++;
-        }
-    }
-    return str;
+    result = (strphanthapphan !== '') ? result + '.' + strphanthapphan : result;
+    result = str.charAt(str.length - 1) == '.' ? result + '.' : result;
+    return result;
 }
 
 function IsNumberInt(str) {
@@ -598,7 +557,8 @@ function IsNumberInt(str) {
 
 $.fn.clearForm = function() {
     return this.each(function() {
-        var type = this.type, tag = this.tagName.toLowerCase();
+        var type = this.type,
+            tag = this.tagName.toLowerCase();
         if (tag == 'form') {
             return $(':input', this).clearForm();
         }
@@ -668,7 +628,8 @@ $(document).ready(function() {
                                 'get_files': 1,
                                 'ids': $('#files').val(),
                                 'id_new': parseInt(r_split[1])
-                            }, function(res) {
+                            },
+                            function(res) {
                                 $('#files').html(res);
                             }
                         );

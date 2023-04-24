@@ -179,29 +179,6 @@ function nv_template_view_blockcat($array_data, $data_content, $html_pages = '',
 }
 
 /**
- * view_search_all()
- *
- * @param mixed $data_content
- * @param string $html_pages
- * @return
- */
-function view_search_all($data_content, $compare_id, $html_pages = '', $viewtype = 'viewgrid')
-{
-    global $module_info, $lang_module, $module_file, $pro_config, $array_wishlist_id, $global_array_shops_cat, $global_array_group;
-
-    $xtpl = new XTemplate('search_all.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
-    $xtpl->assign('LANG', $lang_module);
-    $xtpl->assign('TEMPLATE', $module_info['template']);
-
-    if (function_exists('nv_template_' . $viewtype)) {
-        $xtpl->assign('CONTENT', call_user_func('nv_template_' . $viewtype, $data_content, $html_pages));
-    }
-
-    $xtpl->parse('main');
-    return $xtpl->text('main');
-}
-
-/**
  * @param array $data_content
  * @param array $data_unit
  * @param array $data_others
