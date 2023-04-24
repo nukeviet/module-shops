@@ -28,6 +28,8 @@ function BoldKeywordInStr($str, $keyword)
     return $str;
 }
 
+$is_search = false;
+
 $key = nv_substr($nv_Request->get_title('q', 'get', '', 1), 0, 100);
 $from_date = $nv_Request->get_title('from_date', 'get', '', 1);
 $to_date = $nv_Request->get_title('to_date', 'get', '', 1);
@@ -42,6 +44,7 @@ $price1_sql = preg_replace('/[^0-9]/', '', $price1_temp);
 $price2_sql = preg_replace('/[^0-9]/', '', $price2_temp);
 $typemoney = $nv_Request->get_string('typemoney', 'get', '');
 $groupid = $nv_Request->get_string('filter', 'get', '');
+$group_price = $nv_Request->get_string('group_price', 'get', '');
 
 $check_num = $nv_Request->get_int('choose', 'get', 1);
 $pages = $nv_Request->get_int('page', 'get', 1);
@@ -55,7 +58,6 @@ if ($page > 1) {
     $page_url .= '&amp;page=' . $page;
 }
 $canonicalUrl = getCanonicalUrl($page_url);
-$nv_BotManager->setPrivate();
 
 $array_cat_search = array();
 $array_cat_search[0] = array(
@@ -88,6 +90,7 @@ $tbl_src = '';
 if (strlen($key) >= NV_MIN_SEARCH_LENGTH) {
     $dbkey = $db->dblikeescape($key);
     $where = "AND ( product_code LIKE '%" . $dbkey . "%' OR " . NV_LANG_DATA . "_title LIKE '%" . $dbkey . "%' OR " . NV_LANG_DATA . "_bodytext LIKE '%" . $dbkey . "%' ) ";
+    $is_search = true;
 }
 
 if ($pro_config['sortdefault'] == 0) {
@@ -106,6 +109,7 @@ if ($catid != 0) {
         $array_cat = GetCatidInParent($catid);
         $where .= 'AND listcatid IN (' . implode(',', $array_cat) . ')';
     }
+    $is_search = true;
 }
 
 if ($to_date != '') {
@@ -114,24 +118,45 @@ if ($to_date != '') {
     preg_match('/^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$/', $from_date, $m);
     $fdate = mktime(0, 0, 0, $m[2], $m[1], $m[3]);
     $where .= " AND ( publtime < $fdate AND publtime >= $tdate ) ";
+    $is_search = true;
 }
 
 if (!empty($price1_sql)) {
     $where .= " AND product_price >= " . $price1_sql;
+    $is_search = true;
 }
 
 if (!empty($price2_sql)) {
     $where .= " AND product_price <= " . $price2_sql;
+    $is_search = true;
 }
 
 if (!empty($typemoney)) {
     $where .= " AND money_unit = " . $db->quote($typemoney);
+    $is_search = true;
 }
 
 if (!empty($groupid)) {
     $groupid = array_map('intval', json_decode($crypt->decrypt($groupid), true));
     $_sql = 'SELECT DISTINCT pro_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items WHERE group_id IN ("' . implode(',', $groupid) . '")';
     $where .= ' AND id IN (' . $_sql . ')';
+    $is_search = true;
+}
+
+if (!empty($group_price)) {
+    $group_price = json_decode($crypt->decrypt($group_price), true);
+    $where_group_price = !empty($group_price) ? array_map(function($group_price_i) {
+        $group_price_i = array_map('intval', explode('-', $group_price_i));
+        return '(product_price >= ' . $group_price_i[0] . ' AND product_price <= ' . $group_price_i[1] . ')';
+    }, $group_price) : [];
+    if (!empty($where_group_price)) {
+        $where .= ' AND (' . implode(' OR ', $where_group_price) . ')';
+        $is_search = true;
+    }
+}
+
+if ($is_search) {
+    $nv_BotManager->setPrivate();
 }
 
 $table_search = $db_config['prefix'] . '_' . $module_data . '_rows';
