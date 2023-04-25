@@ -1248,9 +1248,9 @@ function history_order($data_content)
  * @param mixed $array_cat_search
  * @return
  */
-function search_theme($key, $check_num, $date_array, $array_cat_search, $array_price, $typemoney)
+function search_theme($key, $check_num, $date_array, $array_cat_search, $array_price, $typemoney, $groupid, $group_price)
 {
-    global $module_name, $module_info, $module_file, $lang_module, $module_name, $nv_Cache, $db_config, $module_data;
+    global $module_name, $module_info, $module_file, $lang_module, $module_name, $nv_Cache, $db_config, $module_data, $crypt;
 
     $xtpl = new XTemplate("search.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file);
 
@@ -1277,6 +1277,19 @@ function search_theme($key, $check_num, $date_array, $array_cat_search, $array_p
     foreach ($array_cat_search as $search_cat) {
         $xtpl->assign('SEARCH_CAT', $search_cat);
         $xtpl->parse('main.search_cat');
+    }
+
+    if (!empty($groupid) || !empty($group_price)) {
+        if (!empty($groupid)) {
+            $xtpl->assign('FILTER', $crypt->encrypt(json_encode($groupid)));
+            $xtpl->parse('main.filter_group_price.filter');
+        }
+        if (!empty($group_price)) {
+            $xtpl->assign('GROUP_PRICE', $crypt->encrypt(json_encode($group_price)));
+            $xtpl->parse('main.filter_group_price.group_price');
+        }
+        $xtpl->parse('main.filter_group_price');
+
     }
     for ($i = 0; $i <= 3; $i++) {
         if ($check_num == $i) {
