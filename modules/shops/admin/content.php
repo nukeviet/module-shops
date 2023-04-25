@@ -321,9 +321,6 @@ if ($nv_Request->get_int('save', 'post') == 1) {
         $rowcontent['product_price'] = isset($price_config_save[1]) ? $price_config_save[1]['price'] : 0;
         $rowcontent['price_config'] = serialize($price_config_save);
     } else {
-        $rowcontent['product_price'] = $nv_Request->get_string('product_price', 'post', '');
-        $rowcontent['product_price'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['product_price']));
-
         $rowcontent['price_config'] = '';
     }
 
