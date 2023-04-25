@@ -40,8 +40,8 @@ $price2_temp = $nv_Request->get_string('price2', 'get', '');
 $price1_temp = preg_replace('/[^0-9,\.]/', '', $price1_temp);
 $price2_temp = preg_replace('/[^0-9,\.]/', '', $price2_temp);
 
-$price1_sql = preg_replace('/[^0-9]/', '', $price1_temp);
-$price2_sql = preg_replace('/[^0-9]/', '', $price2_temp);
+$price1_sql = preg_replace('/[^0-9\.]/', '', $price1_temp);
+$price2_sql = preg_replace('/[^0-9\.]/', '', $price2_temp);
 $typemoney = $nv_Request->get_string('typemoney', 'get', '');
 $groupid = $nv_Request->get_string('filter', 'get', '');
 $group_price = $nv_Request->get_string('group_price', 'get', '');
@@ -206,7 +206,7 @@ while (list($id, $title, $alias, $listcatid, $hometext, $publtime, $homeimgfile,
 }
 $contents .= call_user_func('search_result_theme', $key, $numRecord, $per_page, $pages, $array_content, $url_link, $catid);
 
-$page_title = $module_info['custom_title'];
+$page_title =  $lang_module['search_title'] . NV_TITLEBAR_DEFIS . $module_info['site_title'];
 
 $key_words = $module_info['keywords'];
 $mod_title = $lang_module['main_title'];
