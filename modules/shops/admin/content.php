@@ -278,14 +278,18 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     $rowcontent['hometext'] = defined('NV_EDITOR') ? nv_nl2br($hometext, '') : nv_nl2br(nv_htmlspecialchars(strip_tags($hometext)), '<br />');
 
     $rowcontent['product_code'] = nv_substr($nv_Request->get_title('product_code', 'post', '', 1), 0, 255);
+    $rowcontent['money_unit'] = $nv_Request->get_string('money_unit', 'post', 'VND');
+
     $rowcontent['product_price'] = $nv_Request->get_string('product_price', 'post', '');
     $rowcontent['product_price'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['product_price']));
+    $money_config_round = $money_config[$rowcontent['money_unit']]['round'];
+    $rowcontent['product_price'] =  $money_config_round > 1 ? round($rowcontent['product_price'] / $money_config_round) * $money_config_round : round($rowcontent['product_price'], $money_config[$rowcontent['money_unit']]['decimals']);
+
     $rowcontent['saleprice'] = $nv_Request->get_string('saleprice', 'post', '');
     $rowcontent['saleprice'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['saleprice']));
 
     $rowcontent['discount_id'] = $nv_Request->get_int('discount_id', 'post', 0);
-    $rowcontent['money_unit'] = $nv_Request->get_string('money_unit', 'post', '');
-
+    
     $rowcontent['product_weight'] = $nv_Request->get_string('product_weight', 'post', '');
     $rowcontent['product_weight'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['product_weight']));
     $rowcontent['weight_unit'] = $nv_Request->get_string('weight_unit', 'post', '');
@@ -317,9 +321,6 @@ if ($nv_Request->get_int('save', 'post') == 1) {
         $rowcontent['product_price'] = isset($price_config_save[1]) ? $price_config_save[1]['price'] : 0;
         $rowcontent['price_config'] = serialize($price_config_save);
     } else {
-        $rowcontent['product_price'] = $nv_Request->get_string('product_price', 'post', '');
-        $rowcontent['product_price'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['product_price']));
-
         $rowcontent['price_config'] = '';
     }
 
@@ -985,7 +986,11 @@ if (!empty($rowcontent['otherimage'])) {
 }
 
 $rowcontent['product_weight'] = empty($rowcontent['product_weight']) ? '' : $rowcontent['product_weight'];
-$rowcontent['product_price'] = number_format($rowcontent['product_price']);
+
+$money_config_round = $money_config[$rowcontent['money_unit']]['round'];
+$rowcontent['product_price'] =  $money_config_round > 1 ? round($rowcontent['product_price'] / $money_config_round) * $money_config_round : round($rowcontent['product_price'], $money_config[$rowcontent['money_unit']]['decimals']);
+$rowcontent['product_price'] = number_format($rowcontent['product_price'], nv_get_decimals($rowcontent['money_unit']), '.', ',');
+
 $rowcontent['saleprice'] = !empty($rowcontent['saleprice']) ? number_format($rowcontent['saleprice']) : '';
 $array_files = [];
 if ($pro_config['download_active']) {

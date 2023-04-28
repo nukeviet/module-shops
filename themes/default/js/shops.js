@@ -426,7 +426,7 @@ function GetNumber(str) {
             return str.substring(0, i);
         if (temp == ".") {
             if (count > 0)
-                return str.substring(0, ipubl_date);
+                return str.substring(0, i);
             count++;
         }
     }

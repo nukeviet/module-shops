@@ -16,7 +16,11 @@ $cid = $nv_Request->get_title('cid', 'get', 0);
 
 if ($id > 0) {
     $rowcontent = $db->query("SELECT * FROM " . $db_config['prefix'] . "_" . $module_data . "_rows where id=" . $id)->fetch();
-    $rowcontent['product_price'] = ($rowcontent['product_price'] > 0) ? number_format($rowcontent['product_price'], nv_get_decimals($pro_config['money_unit'])) : '';
+    
+    $money_config_round = $money_config[$rowcontent['money_unit']]['round'];
+    $rowcontent['product_price'] =  $money_config_round > 1 ? round($rowcontent['product_price'] / $money_config_round) * $money_config_round : round($rowcontent['product_price'], $money_config[$rowcontent['money_unit']]['decimals']);
+    $rowcontent['product_price'] = number_format($rowcontent['product_price'], nv_get_decimals($rowcontent['money_unit']), '.', ',');
+    
     $rowcontent['saleprice'] = !empty($rowcontent['saleprice']) ? number_format($rowcontent['saleprice']) : '';
 } else {
     $rowcontent = array(

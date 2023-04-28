@@ -133,12 +133,7 @@ function nv_get_price($pro_id, $currency_convert, $number = 1, $per_pro = false,
 
     $r = $money_config[$product['money_unit']]['round'];
     $decimals = nv_get_decimals($currency_convert);
-
-    if ($r > 1) {
-        $price = round($price / $r) * $r;
-    } else {
-        $price = round($price, $decimals);
-    }
+    $price =  $r > 1 ? round($price / $r) * $r : round($price, $money_config[$product['money_unit']]['decimals']);
 
     if ($global_array_shops_cat[$product['listcatid']]['typeprice'] == 2) {
         $_price_config = unserialize($product['price_config']);

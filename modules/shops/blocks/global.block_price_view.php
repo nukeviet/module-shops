@@ -88,14 +88,14 @@ if (!function_exists('nv_view_product_price')) {
     {
         global $site_mods, $module_info, $nv_Request, $catid;
 
-        $cataid = $nv_Request->get_int('cata', 'get', 0);
+        $cataid = $nv_Request->get_int('catid', 'get', 0);
 
         if ($cataid == 0) {
             $cataid = $catid;
         }
         $recata = '';
         if ($cataid > 0) {
-            $recata = '&cata=' . $cataid;
+            $recata = '&catid=' . $cataid;
         }
 
         $module = $block_config['module'];
@@ -125,14 +125,14 @@ if (!function_exists('nv_view_product_price')) {
 
             if ($val < $block_config['price_end']) {
                 $title = '<span class="label label-success">' . numoney_to_strmoney($price1, $mod_file) . '</span> <span class="glyphicon glyphicon-arrow-right"></span> ' . '<span class="label label-success">' . numoney_to_strmoney($price2, $mod_file) . '</span>';
-                $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=search_result&price1=' . $price1 . '&price2=' . $price2 . $recata;
+                $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=search&amp;price1=' . number_format($price1, 0, '', ',') . '&price2=' . number_format($price2, 0, '', ',') . $recata;
                 $arr_price = array(
                     'title' => $title,
                     'link' => $link
                 );
             } elseif ($val >= $block_config['price_end']) {
                 $title = '<span class="label label-warning">' . $lang_module['price2_over'] . ' ' . numoney_to_strmoney($val, $mod_file) . '</span>';
-                $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=search_result&price2=' . $val . $recata;
+                $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module . '&amp;' . NV_OP_VARIABLE . '=search&amp;price1=' . number_format($val, 0, '', ',') . $recata;
                 $arr_price = array(
                     'title' => $title,
                     'link' => $link

@@ -57,6 +57,32 @@
                     <input name="from_date" id="from_date" value="{FROM_DATE}" class="form-control" style="width: 90px; display: inline" maxlength="10" readonly="readonly" type="text" />
                 </div>
             </div>
+            <!-- BEGIN: filter_group_price -->
+            <div class="form-group">
+                <div class="col-md-24">
+                    <div class="text-right search-filter">
+                        <!-- BEGIN: filter -->
+                        <span class="label label-success mr-2">
+                            {LANG.search_group}&nbsp;
+                            <a id="del_search_filter" href="javascript:void(0)" rel="nofollow">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            </a>
+                        </span>
+                        <input type="hidden" name="filter" value="{FILTER}"/>
+                        <!-- END: filter -->
+                        <!-- BEGIN: group_price -->
+                        <span class="label label-success">
+                            {LANG.search_price_space}&nbsp;
+                            <a id="del_search_group_price" href="javascript:void(0)" rel="nofollow">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            </a>
+                        </span>
+                        <input type="hidden" name="group_price" value="{GROUP_PRICE}"/>
+                        <!-- END: group_price -->
+                    </div>
+                </div>
+            </div>
+            <!-- END: filter_group_price -->
             <div class="text-center">
                 <input class="btn btn-primary" type="submit" value="{LANG.search_title}" /> <input class="btn btn-warning" type="button" value="{LANG.search_reset}" id="reset" />
             </div>
@@ -75,6 +101,14 @@
             showOtherMonths : true,
             buttonImage : nv_base_siteurl + "assets/images/calendar.gif",
             buttonImageOnly : true
+        });
+        $('#del_search_filter').click(function() {
+            $('input[name="filter"]').val("");
+            $('#del_search_filter').parent('span').remove();
+        });
+        $('#del_search_group_price').click(function() {
+            $('input[name="group_price"]').val("");
+            $('#del_search_group_price').parent('span').remove();
         });
     });
     $("#reset").click(function() {
