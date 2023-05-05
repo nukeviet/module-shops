@@ -256,7 +256,7 @@ if ($nv_Request->isset_request('postorder', 'post')) {
             $sth->bindParam(':order_note', $data_order['order_note'], PDO::PARAM_STR);
             $sth->bindParam(':unit_total', $data_order['unit_total'], PDO::PARAM_STR);
             if ($sth->execute()) {
-                $order_id = 1;
+                $order_id = $order_info['order_id'];
             }
         } else {
             $result = $db->query("SHOW TABLE STATUS WHERE Name='" . $db_config['prefix'] . "_" . $module_data . "_orders'");
@@ -329,6 +329,13 @@ if ($nv_Request->isset_request('postorder', 'post')) {
                     $info['price'] = 0;
                 }
                 if ($_SESSION[$module_data . '_cart'][$proid]['order'] == 1 and $i > 0) {
+                    // Sắp xếp thứ tự của $info['group'] để tiện cho việc so sánh, select sản phẩm
+                    if (!empty($info['group'])) {
+                        preg_match_all("/\d+/", $info['group'], $matches);
+                        sort($matches[0]);
+                        $info['group'] = implode(',', $matches[0]);
+                    }
+
                     $price = nv_get_price($pro_id, $pro_config['money_unit'], $info['num'], true);
                     $info['price'] = $price['sale'];
 
@@ -342,7 +349,7 @@ if ($nv_Request->isset_request('postorder', 'post')) {
                     $data_insert['proid'] = $pro_id;
                     $data_insert['num'] = $info['num'];
                     $data_insert['price'] = $info['price'];
-                    $data_insert['discount_id'] = $info['discount_id'];
+                    $data_insert['discount_id'] = !empty($info['discount_id']) ? $info['discount_id'] : '0';
                     $data_insert['listgroupid'] = $info['group'];
                     $order_i = $db->insert_id($sql, 'id', $data_insert);
 
@@ -615,65 +622,64 @@ if ($action == 0) {
     foreach ($_SESSION[$module_data . '_cart'] as $pro_id => $pro_info) {
         $arrayid[] = $pro_id;
         $array = explode('_', $pro_id);
-        if (empty($array[1])) {
-            // Sản phẩm không có nhóm
-            $sql = "SELECT t1.id, t1.listcatid, t1.publtime, t1." . NV_LANG_DATA . "_title, t1." . NV_LANG_DATA . "_alias,
-            t1." . NV_LANG_DATA . "_hometext, t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_price, t1.product_number,
-            t1.money_unit, t1.product_weight, t1.weight_unit, t2." . NV_LANG_DATA . "_title
-            FROM " . $db_config['prefix'] . "_" . $module_data . "_rows AS t1,
-                " . $db_config['prefix'] . "_" . $module_data . "_units AS t2
-            WHERE t1.product_unit = t2.id AND t1.id IN ('" . $array[0] . "') AND t1.status =1";
-        } else {
-            // Sản phẩm theo nhóm
-            $sql = "SELECT t1.id, t1.listcatid, t1.publtime, t1." . NV_LANG_DATA . "_title, t1." . NV_LANG_DATA . "_alias,
-            t1." . NV_LANG_DATA . "_hometext, t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_price, t1.product_number,
-            t1.money_unit, t1.product_weight, t1.weight_unit, t2." . NV_LANG_DATA . "_title
-            FROM " . $db_config['prefix'] . "_" . $module_data . "_rows AS t1, " . $db_config['prefix'] . "_" . $module_data . "_units AS t2,
-                " . $db_config['prefix'] . "_" . $module_data . "_group_quantity t3
-            WHERE t1.product_unit = t2.id AND t1.id = t3.pro_id AND  t3.listgroup ='" . $array[1] . "' AND t1.id IN ('" . $array[0] . "') AND t1.status =1";
-        }
-        $result = $db->query($sql);
-        $weight_total = 0;
-      while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_price, $product_number, $money_unit, $product_weight, $weight_unit, $unit) = $result->fetch(3)) {
-            if ($homeimgthumb == 1) {
-                // image thumb
-                $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
-            } elseif ($homeimgthumb == 2) {
-                // image file
-                $thumb = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
-            } elseif ($homeimgthumb == 3) {
-                // image url
-                $thumb = $homeimgfile;
+        if (isset($array[1]) and (empty($array[1]) or preg_match('/^[0-9\,]+$/', $array[1]))) {
+            $array[0] = intval($array[0]);
+            if (empty($array[1]) || !empty($pro_config['active_order_number'])) {
+                // Sản phẩm không có nhóm hoặc ứng dụng đã được cấu hình đăng ký không giới hạn số lượng
+                $sql = "SELECT t1.id, t1.listcatid, t1.publtime, t1." . NV_LANG_DATA . "_title, t1." . NV_LANG_DATA . "_alias, t1." . NV_LANG_DATA . "_hometext, t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_number, t1.product_price, t2." . NV_LANG_DATA . "_title, t1.money_unit, t1.product_weight, t1.weight_unit
+                FROM " . $db_config['prefix'] . "_" . $module_data . "_rows AS t1, " . $db_config['prefix'] . "_" . $module_data . "_units AS t2
+                WHERE t1.product_unit = t2.id AND t1.id IN ('" . $array[0] . "') AND t1.status =1";
             } else {
-                // no image
-                $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                // Sản phẩm có theo nhóm
+                $sql = "SELECT t1.id, t1.listcatid, t1.publtime, t1." . NV_LANG_DATA . "_title, t1." . NV_LANG_DATA . "_alias, t1." . NV_LANG_DATA . "_hometext, t1.homeimgalt, t1.homeimgfile, t1.homeimgthumb, t1.product_number, t1.product_price, t2." . NV_LANG_DATA . "_title, t1.money_unit, t1.product_weight, t1.weight_unit
+                FROM " . $db_config['prefix'] . "_" . $module_data . "_rows AS t1,
+                " . $db_config['prefix'] . "_" . $module_data . "_units AS t2,
+                " . $db_config['prefix'] . "_" . $module_data . "_group_quantity t3
+                WHERE t1.product_unit = t2.id AND t1.id = t3.pro_id AND  t3.listgroup=" . $db->quote($array[1]) . " AND t1.id IN ('" . $array[0] . "') AND t1.status =1";
             }
+            $result = $db->query($sql);
+            $weight_total = 0;
+            while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_price, $product_number, $money_unit, $product_weight, $weight_unit, $unit) = $result->fetch(3)) {
+                if ($homeimgthumb == 1) {
+                    // image thumb
+                    $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
+                } elseif ($homeimgthumb == 2) {
+                    // image file
+                    $thumb = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $homeimgfile;
+                } elseif ($homeimgthumb == 3) {
+                    // image url
+                    $thumb = $homeimgfile;
+                } else {
+                    // no image
+                    $thumb = NV_STATIC_URL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/no-image.jpg';
+                }
 
-            if ($pro_config['active_price'] == '0') {
-                $product_price = 0;
+                if ($pro_config['active_price'] == '0') {
+                    $product_price = 0;
+                }
+
+                $num = $_SESSION[$module_data . '_cart'][$id . '_' . $array[1]]['num'];
+                $weight_total += nv_weight_conversion($product_weight, $weight_unit, $pro_config['weight_unit'], $num);
+
+                $group = $_SESSION[$module_data . '_cart'][$id . '_' . $array[1]]['group'];
+
+                $data_content[] = [
+                    'id' => $id,
+                    'publtime' => $publtime,
+                    'title' => $title,
+                    'alias' => $alias,
+                    'hometext' => $hometext,
+                    'homeimgalt' => $homeimgalt,
+                    'homeimgthumb' => $thumb,
+                    'product_price' => $product_price,
+                    'product_unit' => $unit,
+                    'money_unit' => $money_unit,
+                    'group' => $group,
+                    'link_pro' => $link . $global_array_shops_cat[$listcatid]['alias'] . '/' . $alias . $global_config['rewrite_exturl'],
+                    'num' => $num
+                ];
+                ++ $i;
             }
-
-            $num = $_SESSION[$module_data . '_cart'][$id . '_' . $array[1]]['num'];
-            $weight_total += nv_weight_conversion($product_weight, $weight_unit, $pro_config['weight_unit'], $num);
-
-            $group = $_SESSION[$module_data . '_cart'][$id . '_' . $array[1]]['group'];
-
-            $data_content[] = [
-                'id' => $id,
-                'publtime' => $publtime,
-                'title' => $title,
-                'alias' => $alias,
-                'hometext' => $hometext,
-                'homeimgalt' => $homeimgalt,
-                'homeimgthumb' => $thumb,
-                'product_price' => $product_price,
-                'product_unit' => $unit,
-                'money_unit' => $money_unit,
-                'group' => $group,
-                'link_pro' => $link . $global_array_shops_cat[$listcatid]['alias'] . '/' . $alias . $global_config['rewrite_exturl'],
-                'num' => $num
-            ];
-            ++ $i;
         }
     }
 
