@@ -26,7 +26,6 @@ $compare_id = unserialize($compare_id);
 $contents = '';
 $cache_file = '';
 
-$page = 1;
 $page_url = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
 
 if ($page > 1 and $pro_config['home_data'] == 'all') {
