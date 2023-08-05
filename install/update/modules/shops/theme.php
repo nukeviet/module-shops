@@ -179,29 +179,6 @@ function nv_template_view_blockcat($array_data, $data_content, $html_pages = '',
 }
 
 /**
- * view_search_all()
- *
- * @param mixed $data_content
- * @param string $html_pages
- * @return
- */
-function view_search_all($data_content, $compare_id, $html_pages = '', $viewtype = 'viewgrid')
-{
-    global $module_info, $lang_module, $module_file, $pro_config, $array_wishlist_id, $global_array_shops_cat, $global_array_group;
-
-    $xtpl = new XTemplate('search_all.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
-    $xtpl->assign('LANG', $lang_module);
-    $xtpl->assign('TEMPLATE', $module_info['template']);
-
-    if (function_exists('nv_template_' . $viewtype)) {
-        $xtpl->assign('CONTENT', call_user_func('nv_template_' . $viewtype, $data_content, $html_pages));
-    }
-
-    $xtpl->parse('main');
-    return $xtpl->text('main');
-}
-
-/**
  * @param array $data_content
  * @param array $data_unit
  * @param array $data_others
@@ -215,7 +192,7 @@ function view_search_all($data_content, $compare_id, $html_pages = '', $viewtype
  */
 function nv_template_detail($data_content, $data_unit, $data_others, $array_other_view, $content_comment, $compare_id, $popup, $idtemplates, $array_keyword)
 {
-    global $module_info, $lang_module, $module_file, $module_name, $module_upload, $pro_config, $global_config, $global_array_group, $array_wishlist_id, $client_info, $global_array_shops_cat, $meta_property, $pro_config, $user_info, $discounts_config, $my_head, $my_footer;
+    global $module_info, $lang_module, $module_file, $module_name, $module_upload, $pro_config, $global_config, $global_array_group, $array_wishlist_id, $client_info, $global_array_shops_cat, $meta_property, $user_info, $discounts_config, $my_head, $my_footer;
 
     $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
     $link2 = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=';
@@ -1271,9 +1248,9 @@ function history_order($data_content)
  * @param mixed $array_cat_search
  * @return
  */
-function search_theme($key, $check_num, $date_array, $array_cat_search, $array_price, $typemoney)
+function search_theme($key, $check_num, $date_array, $array_cat_search, $array_price, $typemoney, $groupid, $group_price)
 {
-    global $module_name, $module_info, $module_file, $lang_module, $module_name, $nv_Cache, $db_config, $module_data;
+    global $module_name, $module_info, $module_file, $lang_module, $module_name, $nv_Cache, $db_config, $module_data, $crypt;
 
     $xtpl = new XTemplate("search.tpl", NV_ROOTDIR . "/themes/" . $module_info['template'] . "/modules/" . $module_file);
 
@@ -1300,6 +1277,19 @@ function search_theme($key, $check_num, $date_array, $array_cat_search, $array_p
     foreach ($array_cat_search as $search_cat) {
         $xtpl->assign('SEARCH_CAT', $search_cat);
         $xtpl->parse('main.search_cat');
+    }
+
+    if (!empty($groupid) || !empty($group_price)) {
+        if (!empty($groupid)) {
+            $xtpl->assign('FILTER', $crypt->encrypt(json_encode($groupid)));
+            $xtpl->parse('main.filter_group_price.filter');
+        }
+        if (!empty($group_price)) {
+            $xtpl->assign('GROUP_PRICE', $crypt->encrypt(json_encode($group_price)));
+            $xtpl->parse('main.filter_group_price.group_price');
+        }
+        $xtpl->parse('main.filter_group_price');
+
     }
     for ($i = 0; $i <= 3; $i++) {
         if ($check_num == $i) {

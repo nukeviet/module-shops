@@ -682,3 +682,4 @@ $lang_module['ad_block_show'] = 'Show secondary blocks';
 $lang_module['ad_block_top'] = 'Block above the category';
 $lang_module['ad_block_bot'] = 'Block below the category';
 $lang_module['error_cat_update'] = 'The attribute <strong>%s</strong> of the product type is mandatory when entering, and can not be changed';
+$lang_module['error_unique_alias'] = 'Error: Alias is duplicated';

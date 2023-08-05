@@ -499,3 +499,5 @@ $lang_module['select_content_download'] = 'Download tài liệu';
 $lang_module['select_content_comment'] = 'Bình luận';
 $lang_module['select_content_rate'] = 'Đánh giá sản phẩm';
 $lang_module['select_content_customdata'] = 'Dữ liệu tùy biến';
+$lang_module['search_group'] = 'Tìm kiếm theo nhóm';
+$lang_module['search_price_space'] = 'Tìm kiếm theo khoảng giá';
