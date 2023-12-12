@@ -675,7 +675,7 @@ if ($action == 0) {
                     'product_unit' => $unit,
                     'money_unit' => $money_unit,
                     'group' => $group,
-                    'link_pro' => $link . $global_array_shops_cat[$listcatid]['alias'] . '/' . $alias . $global_config['rewrite_exturl'],
+                    'link_pro' => nv_url_rewrite(NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$listcatid]['alias'] . '/' . $alias . $global_config['rewrite_exturl'], true),
                     'num' => $num
                 ];
                 ++ $i;
