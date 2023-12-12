@@ -201,7 +201,7 @@ function nv_del_group($groupid)
         // Xoa chi tiet nhap kho, neu nhu chi tiet nhap kho co nhom nay, thi xoa luon chi tiet nhap kho
         $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_quantity');
         while ($row = $result->fetch()) {
-            if (in_array($groupid, explode(',', $listgroup))) {
+            if (in_array($groupid, explode(',', $row['listgroup']))) {
                 $db->query('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_quantity WHERE pro_id = ' . $row['pro_id'] . ' AND listgroup=' . $db->quote($row['listgroup']));
             }
         }
