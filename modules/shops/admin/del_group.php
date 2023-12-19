@@ -108,7 +108,7 @@ if ($groupid > 0) {
                         nv_del_group($groupid);
 
                         nv_fix_group_order();
-                        nv_fix_group_count($groupidnews);
+                        nv_fix_group_count([$groupidnews]);
                         $nv_Cache->delMod($module_name);
 
                         nv_redirect_location(NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=group&parentid=" . $parentid);
