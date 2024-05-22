@@ -1964,7 +1964,7 @@ function nv_template_viewcat($data_content, $compare_id, $pages, $sort = 0, $vie
         $xtpl->assign('PARENT_HTML', $content_parent['html']);
         $xtpl->parse('main.parent_html');
     }
-    if (!empty($content_parent['page'] > 1)) {
+    if (!empty($content_parent['page']) && $content_parent['page'] > 1) {
         $xtpl->parse('main');
         return $xtpl->text('main');
     }
