@@ -12,27 +12,19 @@ if (! defined('NV_IS_MOD_SHOPS')) {
     die('Stop!!!');
 }
 
-$page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name;
-$page = 1;
-if ($page > 1 and $pro_config['home_data'] == 'all') {
-    $page_url .= '&amp;' . NV_OP_VARIABLE . '=page-' . $page;
-}
-$canonicalUrl = getCanonicalUrl($page_url);
-
 // Chặn lập chỉ mục tìm kiếm
 $nv_BotManager->setPrivate();
 
 $id = $nv_Request->get_int('id', 'get,post', 0);
 
-$result = $db->query("SELECT * FROM " . $db_config['prefix'] . "_" . $module_data . "_rows WHERE id = " . $id);
+$result = $db->query("SELECT * FROM " . $db_config['prefix'] . "_" . $module_data . "_rows WHERE status=1 AND id = " . $id);
 $data_content = $result->fetch();
-
 if (empty($data_content)) {
-    include NV_ROOTDIR . '/includes/header.php';
-    echo "Error Access!!!";
-    include NV_ROOTDIR . '/includes/footer.php';
-    exit();
+    nv_info_die($lang_global['error_404_title'], $lang_global['error_404_title'], $lang_global['error_404_content'], 404);
 }
+
+$page_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;id=' . $id;
+$canonicalUrl = getCanonicalUrl($page_url);
 
 $catid = $data_content['listcatid'];
 
