@@ -477,11 +477,13 @@
         $("#catid").select2();
         $("#catid").trigger("change");
 
-        $('.submitform').click(function(e){
+        $('#frm-submit').on('submit', function(e){
             e.preventDefault();
 
-            for(var instanceName in CKEDITOR.instances){
-                CKEDITOR.instances[instanceName].updateElement();
+            if (typeof CKEDITOR !== 'undefined') {
+                for (var instanceName in CKEDITOR.instances) {
+                    CKEDITOR.instances[instanceName].updateElement();
+                }
             }
 
             $.ajax({

@@ -176,8 +176,10 @@
 
         $('#frm-cat-content').submit(function(e){
             e.preventDefault();
-            for (instance in CKEDITOR.instances) {
-                CKEDITOR.instances[instance].updateElement();
+            if (typeof CKEDITOR !== 'undefined') {
+                for (var instanceName in CKEDITOR.instances) {
+                    CKEDITOR.instances[instanceName].updateElement();
+                }
             }
             $.ajax({
                 type : 'POST',
