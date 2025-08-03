@@ -435,6 +435,7 @@
         </div>
     </div>
     <div class="text-center" style="margin-top: 10px">
+        <input type="hidden" name="status" value="0">
         <input type="hidden" name="copy" value="{IS_COPY}">
         <!-- BEGIN:status -->
         <input class="btn btn-primary submitform" name="sst1" data-status="1" type="submit" value="{LANG.save}" />
@@ -477,7 +478,12 @@
         $("#catid").select2();
         $("#catid").trigger("change");
 
-        $('#frm-submit').on('submit', function(e){
+        $('.submitform').on('click', function() {
+            const form = $(this).closest('form');
+            $('[name="status"]', form).val($(this).data('status'));
+        });
+
+        $('#frm-submit').on('submit', function(e) {
             e.preventDefault();
 
             if (typeof CKEDITOR !== 'undefined') {
@@ -489,7 +495,7 @@
             $.ajax({
                 type : 'POST',
                 url : script_name + '?' + nv_lang_variable + '=' + nv_lang_data + '&' + nv_name_variable + '=' + nv_module_name + '&' + nv_fc_variable + '=content&nocache=' + new Date().getTime(),
-                data : $('#frm-submit').serialize() + '&status=' + $(this).data('status'),
+                data : $('#frm-submit').serialize(),
                 success : function(json) {
                     if (json.error) {
                         alert(json.msg);
