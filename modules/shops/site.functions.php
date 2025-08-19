@@ -222,7 +222,7 @@ function nv_number_format($number, $decimals = 0)
     global $money_config, $pro_config;
 
     $number_format = explode('||', $money_config[$pro_config['money_unit']]['number_format']);
-    $str = number_format($number, $decimals, $number_format[0], $number_format[1]);
+    $str = number_format((int) $number, $decimals, $number_format[0], $number_format[1]);
 
     return $str;
 }

@@ -1013,7 +1013,9 @@ function payment($data_content, $data_pro, $data_shipping, $payment_supported, $
     if (!empty($data_content['order_note'])) {
         $xtpl->parse('main.order_note');
     }
-    $xtpl->assign('order_coupons', nv_number_format($data_content['coupons']['amount'], nv_get_decimals($pro_config['money_unit'])));
+
+    $coupons_amount = (!empty($data_content['coupons']) and isset($data_content['coupons']['amount'])) ? $data_content['coupons']['amount'] : 0;
+    $xtpl->assign('order_coupons', nv_number_format($coupons_amount, nv_get_decimals($pro_config['money_unit'])));
     $xtpl->assign('order_total', nv_number_format($data_content['order_total'], nv_get_decimals($pro_config['money_unit'])));
     $xtpl->assign('unit', $money_config[$data_content['unit_total']]['symbol']);
 
