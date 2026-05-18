@@ -19,14 +19,14 @@ $checkss = $nv_Request->get_string('checkss', 'get', '');
 $where = '';
 $search = array( );
 if ($checkss == md5(session_id())) {
-    $search['order_code'] = $nv_Request->get_string('order_code', 'get', '');
+    $search['order_code'] = $nv_Request->get_title('order_code', 'get', '');
     $search['date_from'] = $nv_Request->get_string('from', 'get', '');
     $search['date_to'] = $nv_Request->get_string('to', 'get', '');
-    $search['order_email'] = $nv_Request->get_string('order_email', 'get', '');
-    $search['order_payment'] = $nv_Request->get_string('order_payment', 'get', '');
+    $search['order_email'] = $nv_Request->get_title('order_email', 'get', '');
+    $search['order_payment'] = $nv_Request->get_int('order_payment', 'get', -99);
 
     if (!empty($search['order_code'])) {
-        $where .= ' AND order_code like "%' . $search['order_code'] . '%"';
+        $where .= ' AND order_code like "%' . $db->dblikeescape($search['order_code']) . '%"';
     }
 
     if (!empty($search['date_from'])) {
@@ -49,11 +49,11 @@ if ($checkss == md5(session_id())) {
     }
 
     if (!empty($search['order_email'])) {
-        $where .= ' AND order_email like "%' . $search['order_email'] . '%"';
+        $where .= ' AND order_email like "%' . $db->dblikeescape($search['order_email']) . '%"';
     }
 
-    if ($search['order_payment'] != '') {
-        $where .= ' AND transaction_status  = ' . $search['order_payment'] . '';
+    if ($search['order_payment'] > -99) {
+        $where .= ' AND transaction_status  = ' . $search['order_payment'];
     }
 }
 

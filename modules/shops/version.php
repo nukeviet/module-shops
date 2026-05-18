@@ -7,26 +7,27 @@
  * @License GNU/GPL version 2 or any later version
  * @Createdate 04/18/2017 09:47
  */
+
 if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
     die('Stop!!!');
 }
 
-$module_version = array(
-    'name' => 'Shops', // Tieu de module
+$module_version = [
+    'name' => 'Shops',
     'modfuncs' => 'main,viewcat,detail,search,cart,order,payment,complete,history,group,compare,wishlist,tag,point,shippingajax,download, blockcat,ajax',
-    'is_sysmod' => 0, // 1:0 => Co phai la module he thong hay khong
-    'virtual' => 1, // 1:0 => Co cho phep ao hao module hay khong
-    'version' => '4.5.04', // Module Shops 4 Release Candidate 1
-    'date' => 'Friday, April 21, 2023 15:00:00 GMT+07:00', // Ngay phat hanh phien ban
-    'author' => 'VINADES <contact@vinades.vn>', // Tac gia
-    'note' => '', // Ghi chu
-    'uploads_dir' => array(
+    'is_sysmod' => 0,
+    'virtual' => 1,
+    'version' => '4.5.08',
+    'date' => 'Monday, May 18, 2026 at 4:22:59 PM GMT+07:00',
+    'author' => 'VINADES <contact@vinades.vn>',
+    'note' => '',
+    'uploads_dir' => [
         $module_upload,
         $module_upload . '/temp_pic',
         $module_upload . '/' . date('Y_m'),
         $module_upload . '/files'
-    ),
-    'files_dir' => array(
+    ],
+    'files_dir' => [
         $module_upload . '/files_tpl'
-    )
-);
+    ]
+];

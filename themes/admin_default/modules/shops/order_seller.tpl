@@ -23,7 +23,7 @@
 		<div class="form-group">
 			<label class="sr-only">{LANG.order_payment}</label>
 			<select class="form-control" name="order_payment">
-				<option value="">{LANG.order_payment}</option>
+				<option value="-99">{LANG.order_payment}</option>
 				<!-- BEGIN: transaction_status -->
 				<option value="{TRAN_STATUS.key}" {TRAN_STATUS.selected}>{TRAN_STATUS.title}</option>
 				<!-- END: transaction_status -->
