@@ -490,6 +490,16 @@
                 for (var instanceName in CKEDITOR.instances) {
                     CKEDITOR.instances[instanceName].updateElement();
                 }
+            } else if (typeof window.nveditor !== 'undefined') {
+                const editorKey = [
+                    '{MODULE_DATA}_hometext',
+                    '{MODULE_DATA}_bodytext',
+                ];
+                editorKey.forEach(function(key) {
+                    if (typeof window.nveditor[key] !== 'undefined') {
+                        $('#' + key).val(window.nveditor[key].getData());
+                    }
+                });
             }
 
             $.ajax({

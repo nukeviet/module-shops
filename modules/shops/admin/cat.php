@@ -352,6 +352,7 @@ $xtpl->assign('DATA', $data);
 $xtpl->assign('UPLOAD_CURRENT', $currentpath);
 $xtpl->assign('FORM_ACTION', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;catid=' . $data['catid'] . '&amp;parentid=' . $data['parentid']);
 $xtpl->assign('CAT_LIST', shops_show_cat_list($data['parentid']));
+$xtpl->assign('MODULE_DATA', $module_data);
 
 if (empty($data['alias'])) {
     $xtpl->parse('main.getalias');

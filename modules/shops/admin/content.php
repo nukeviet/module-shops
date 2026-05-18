@@ -289,7 +289,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     $rowcontent['saleprice'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['saleprice']));
 
     $rowcontent['discount_id'] = $nv_Request->get_int('discount_id', 'post', 0);
-    
+
     $rowcontent['product_weight'] = $nv_Request->get_string('product_weight', 'post', '');
     $rowcontent['product_weight'] = floatval(preg_replace('/[^0-9\.]/', '', $rowcontent['product_weight']));
     $rowcontent['weight_unit'] = $nv_Request->get_string('weight_unit', 'post', '');
@@ -1014,6 +1014,7 @@ $xtpl->assign('NV_NAME_VARIABLE', NV_NAME_VARIABLE);
 $xtpl->assign('NV_OP_VARIABLE', NV_OP_VARIABLE);
 $xtpl->assign('MODULE_NAME', $module_name);
 $xtpl->assign('MODULE_UPLOAD', $module_upload);
+$xtpl->assign('MODULE_DATA', $module_data);
 $xtpl->assign('CURRENT', $currentpath);
 $xtpl->assign('IS_COPY', $is_copy);
 

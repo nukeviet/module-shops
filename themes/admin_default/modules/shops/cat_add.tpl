@@ -180,6 +180,9 @@
                 for (var instanceName in CKEDITOR.instances) {
                     CKEDITOR.instances[instanceName].updateElement();
                 }
+            } else if (typeof window.nveditor !== 'undefined') {
+                const editorKey = '{MODULE_DATA}_descriptionhtml';
+                $('#' + editorKey).val(window.nveditor[editorKey].getData());
             }
             $.ajax({
                 type : 'POST',
