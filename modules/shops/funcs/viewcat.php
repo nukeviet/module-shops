@@ -30,7 +30,7 @@ if (empty($catid)) {
 }
 
 $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-$compare_id = unserialize($compare_id);
+$compare_id = unserialize($compare_id, NV_UNSERIALIZE_SAFE);
 
 /*
  * Xem theo loại sản phẩm trên URL

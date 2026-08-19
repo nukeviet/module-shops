@@ -42,7 +42,7 @@ $inrow = $nv_Request->get_string('inrow', 'get', '');
 $array_groupid_in_row = array();
 if (!empty($inrow)) {
     $inrow = nv_base64_decode($inrow);
-    $array_groupid_in_row = unserialize($inrow);
+    $array_groupid_in_row = unserialize($inrow, NV_UNSERIALIZE_SAFE);
 } else if (!empty($id)) {
     $_result = $db->query('SELECT group_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items WHERE pro_id = ' . $id);
     while ($_row = $_result->fetch()) {

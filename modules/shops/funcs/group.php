@@ -41,7 +41,7 @@ if (!empty($viewtype)) {
 }
 
 $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-$compare_id = unserialize($compare_id);
+$compare_id = unserialize($compare_id, NV_UNSERIALIZE_SAFE);
 
 $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 $page_url = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=group/' . $global_array_group[$groupid]['alias'];

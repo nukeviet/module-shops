@@ -61,7 +61,7 @@ if ($nv_Request->isset_request('check_quantity', 'post')) {
 }
 
 $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-$compare_id = unserialize($compare_id);
+$compare_id = unserialize($compare_id, NV_UNSERIALIZE_SAFE);
 
 // Thiet lap quyen xem chi tiet
 $contents = '';

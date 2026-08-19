@@ -22,7 +22,7 @@ $pid = $nv_Request->get_int('pid', 'get', 0);
 if ($pid >= 0) {
     $cateid = $nv_Request->get_string('cid', 'get', '');
     $cateid = nv_base64_decode($cateid);
-    $cateid = unserialize($cateid);
+    $cateid = unserialize($cateid, NV_UNSERIALIZE_SAFE);
     $cateid = $cateid ? $cateid : array();
     $list_cat = '';
     if ($pid > 0) {

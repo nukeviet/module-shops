@@ -21,7 +21,7 @@ $sorts_old = $nv_Request->get_int('sorts', 'session', $pro_config['sortdefault']
 $sorts = $nv_Request->get_int('sorts', 'post', $sorts_old);
 
 $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-$compare_id = unserialize($compare_id);
+$compare_id = unserialize($compare_id, NV_UNSERIALIZE_SAFE);
 
 $contents = '';
 $cache_file = '';

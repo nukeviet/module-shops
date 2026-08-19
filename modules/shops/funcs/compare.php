@@ -14,12 +14,12 @@ if (! defined('NV_IS_MOD_SHOPS')) {
 
 $page_title = $module_info['custom_title'];
 $key_words = $module_info['keywords'];
-$array_id = unserialize($nv_Request->get_string($module_data . '_compare_id', 'session', ''));
+$array_id = unserialize($nv_Request->get_string($module_data . '_compare_id', 'session', ''), NV_UNSERIALIZE_SAFE);
 
 if ($nv_Request->isset_request('compare', 'post')) {
     $idss = $nv_Request->get_int('id', 'post', 0);
     $array_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-    $array_id = unserialize($array_id);
+    $array_id = unserialize($array_id, NV_UNSERIALIZE_SAFE);
 
     if (in_array($idss, $array_id)) {
         unset($array_id[$idss]);
@@ -42,7 +42,7 @@ if ($nv_Request->isset_request('compare', 'post')) {
 
 if ($nv_Request->isset_request('compareresult', 'post')) {
     $array_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-    $array_id = unserialize($array_id);
+    $array_id = unserialize($array_id, NV_UNSERIALIZE_SAFE);
 
     if (count($array_id) < 2) {
         die($lang_module['num0']);
@@ -55,7 +55,7 @@ if ($nv_Request->isset_request('compare_del', 'post') and $nv_Request->isset_req
     $action = $nv_Request->get_int('all', 'post', 0);
 
     $array_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-    $array_id = unserialize($array_id);
+    $array_id = unserialize($array_id, NV_UNSERIALIZE_SAFE);
 
     if ($action) {
         unset($array_id);
@@ -78,7 +78,7 @@ if ($page > 1) {
 $canonicalUrl = getCanonicalUrl($page_url);
 
 $array_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-$array_id = unserialize($array_id);
+$array_id = unserialize($array_id, NV_UNSERIALIZE_SAFE);
 $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=';
 
 if (! empty($array_id)) {

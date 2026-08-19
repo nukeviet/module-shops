@@ -37,7 +37,7 @@ $data_content = array();
 $array_wishlist_id = implode(',', $array_wishlist_id);
 
 $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-$compare_id = unserialize($compare_id);
+$compare_id = unserialize($compare_id, NV_UNSERIALIZE_SAFE);
 
 // Fetch Limit
 $db->sqlreset()

@@ -16,7 +16,7 @@ $array_op = explode('/', $alias);
 $alias = $array_op[0];
 
 $compare_id = $nv_Request->get_string($module_data . '_compare_id', 'session', '');
-$compare_id = unserialize($compare_id);
+$compare_id = unserialize($compare_id, NV_UNSERIALIZE_SAFE);
 
 $nv_Request->get_int('sorts', 'session', 0);
 $sorts = $nv_Request->get_int('sort', 'post', 0);
