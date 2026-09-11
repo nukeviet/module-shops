@@ -89,7 +89,7 @@ $data['parentid'] = $nv_Request->get_int('parentid', 'get,post', 0);
 $data['id'] = $nv_Request->get_int('id', 'get', 0);
 
 if ($data['id'] > 0) {
-    list($data['id'], $data['parentid'], $data['title']) = $db->query('SELECT id, parentid, title FROM ' . $table_name . ' where id=' . $data['id'])->fetch(3);
+    list($data['id'], $data['parentid'], $data['title']) = $db->query('SELECT id, parentid, title FROM ' . $table_name . ' where id=' . $data['id'])->fetch(3) ?: [null, null, null];
     $caption = $lang_module['location_edit'];
 } else {
     $caption = $lang_module['location_add'];
@@ -100,7 +100,9 @@ $result = $db->query($sql);
 $array_location_list = array();
 $array_location_list[0] = array( '0', $lang_module['location_not_in'] );
 
-while (list($id_i, $title_i, $lev_i) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($id_i, $title_i, $lev_i) = $_scratch;
+    unset($_scratch);
     $xtitle_i = '';
     if ($lev_i > 0) {
         $xtitle_i .= '&nbsp;';

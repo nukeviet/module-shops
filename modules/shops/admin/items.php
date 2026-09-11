@@ -103,7 +103,9 @@ if ($checkss == md5(session_id())) {
         $sql = "SELECT userid FROM " . NV_USERS_GLOBALTABLE . " WHERE userid IN (SELECT admin_id FROM " . NV_AUTHORS_GLOBALTABLE . ") AND username LIKE '%" . $db->dblikeescape($q) . "%' OR first_name LIKE '%" . $db->dblikeescape($q) . "%' OR last_name LIKE '%" . $db->dblikeescape($q) . "%'";
         $result = $db->query($sql);
         $array_admin_id = array( );
-        while (list($admin_id) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($admin_id) = $_scratch;
+            unset($_scratch);
             $array_admin_id[] = $admin_id;
         }
         $from .= " WHERE admin_id IN (0," . implode(",", $array_admin_id) . ",0)";
@@ -112,7 +114,9 @@ if ($checkss == md5(session_id())) {
         $result = $db->query($sql);
 
         $array_admin_id = array( );
-        while (list($admin_id) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($admin_id) = $_scratch;
+            unset($_scratch);
             $array_admin_id[] = $admin_id;
         }
 
@@ -301,7 +305,9 @@ $result = $db->query($db->sql());
 $theme = $site_mods[$module_name]['theme'] ? $site_mods[$module_name]['theme'] : $global_config['site_theme'];
 $a = 0;
 
-while (list($id, $listcatid, $admin_id, $homeimgfile, $homeimgthumb, $title, $alias, $hitstotal, $status, $edittime, $publtime, $exptime, $product_number, $product_price, $money_unit, $product_unit, $num_sell, $username) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($id, $listcatid, $admin_id, $homeimgfile, $homeimgthumb, $title, $alias, $hitstotal, $status, $edittime, $publtime, $exptime, $product_number, $product_price, $money_unit, $product_unit, $num_sell, $username) = $_scratch;
+    unset($_scratch);
     $publtime = nv_date('H:i d/m/y', $publtime);
     $edittime = nv_date('H:i d/m/y', $edittime);
     $title = nv_clean60($title);

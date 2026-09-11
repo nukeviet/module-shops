@@ -30,7 +30,9 @@ if ($page > 1) {
 }
 $canonicalUrl = getCanonicalUrl($page_url);
 
-while (list($order_id, $order_code, $order_note, $user_id, $unit_total, $order_total, $order_time, $transaction_status, $transaction_id, $transaction_count) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($order_id, $order_code, $order_note, $user_id, $unit_total, $order_total, $order_time, $transaction_status, $transaction_id, $transaction_count) = $_scratch;
+    unset($_scratch);
     $checkss = md5($order_id . $global_config['sitekey'] . session_id());
     $data_content[] = array(
         "checkss" => $checkss,

@@ -32,7 +32,9 @@ $tmp_re = $db->query($db->sql());
 if ($num_items) {
     $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $m_values['module_name'] . '&amp;' . NV_OP_VARIABLE . '=group/';
 
-    while (list($groupid, $tilterow, $alias, $description) = $tmp_re->fetch(3)) {
+    while ($_scratch = $tmp_re->fetch(3)) {
+        list($groupid, $tilterow, $alias, $description) = $_scratch;
+        unset($_scratch);
         $content = $description;
         $url = $link . $alias. $global_config['rewrite_exturl'];
 
@@ -71,7 +73,9 @@ if ($num_items) {
 
     $link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $m_values['module_name'] . '&amp;' . NV_OP_VARIABLE . '=';
 
-    while (list($id, $tilterow, $alias, $listcatid, $hometext, $bodytext) = $tmp_re->fetch(3)) {
+    while ($_scratch = $tmp_re->fetch(3)) {
+        list($id, $tilterow, $alias, $listcatid, $hometext, $bodytext) = $_scratch;
+        unset($_scratch);
         $content = $hometext . $bodytext;
         $catid = explode(',', $listcatid);
         $catid = end($catid);

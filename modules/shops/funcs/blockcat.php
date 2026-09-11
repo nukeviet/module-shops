@@ -21,7 +21,7 @@ if (isset($array_op[1])) {
     $stmt->bindParam(':alias', $alias, PDO::PARAM_STR);
     $stmt->execute();
 
-    list ($bid, $page_title, $alias, $image_group, $description, $bodytext, $key_words, $tag_title, $tag_description) = $stmt->fetch(3);
+    list ($bid, $page_title, $alias, $image_group, $description, $bodytext, $key_words, $tag_title, $tag_description) = $stmt->fetch(3) ?: array_fill(0, 9, null);
     if ($bid > 0) {
         $page_url = $base_url = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $module_info['alias']['blockcat'] . '/' . $alias;
         $page = 1;

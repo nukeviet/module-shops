@@ -270,7 +270,7 @@ function shops_show_cat_list($parentid = 0)
         $a = 0;
 
         while ($parentid_i > 0) {
-            list ($catid_i, $parentid_i, $title_i) = $db->query('SELECT catid, parentid, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid=' . intval($parentid_i))->fetch(3);
+            list ($catid_i, $parentid_i, $title_i) = $db->query('SELECT catid, parentid, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid=' . intval($parentid_i))->fetch(3) ?: [null, null, null];
 
             $array_cat_title[] = "<a href=\"" . NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=cat&amp;parentid=" . $catid_i . "\"><strong>" . $title_i . "</strong></a>";
 
@@ -296,7 +296,9 @@ function shops_show_cat_list($parentid = 0)
             $lang_global['yes']
         );
 
-        while (list ($catid, $parentid, $title, $weight, $viewcat, $numsubcat, $inhome, $numlinks, $newday) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($catid, $parentid, $title, $weight, $viewcat, $numsubcat, $inhome, $numlinks, $newday) = $_scratch;
+            unset($_scratch);
             $array_viewcat = ($numsubcat > 0) ? $array_viewcat_full : $array_viewcat_nosub;
             if (!array_key_exists($viewcat, $array_viewcat)) {
                 $viewcat = 'viewlist';
@@ -448,7 +450,7 @@ function shops_show_group_list($parentid = 0)
         $array_group_title = array();
         $a = 0;
         while ($parentid_i > 0) {
-            list ($groupid_i, $parentid_i, $title_i) = $db->query("SELECT groupid, parentid, " . NV_LANG_DATA . "_title FROM " . $db_config['prefix'] . "_" . $module_data . "_group WHERE groupid=" . intval($parentid_i))->fetch(3);
+            list ($groupid_i, $parentid_i, $title_i) = $db->query("SELECT groupid, parentid, " . NV_LANG_DATA . "_title FROM " . $db_config['prefix'] . "_" . $module_data . "_group WHERE groupid=" . intval($parentid_i))->fetch(3) ?: [null, null, null];
 
             $array_group_title[] = "<a href=\"" . NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=group&amp;parentid=" . $groupid_i . "\"><strong>" . $title_i . "</strong></a>";
             ++$a;
@@ -472,7 +474,9 @@ function shops_show_group_list($parentid = 0)
             $lang_global['yes']
         );
 
-        while (list ($groupid, $parentid, $title, $description, $weight, $viewgroup, $numsubgroup, $inhome, $indetail, $in_order) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($groupid, $parentid, $title, $description, $weight, $viewgroup, $numsubgroup, $inhome, $indetail, $in_order) = $_scratch;
+            unset($_scratch);
             $array_viewgroup = $array_viewcat_nosub;
             if (!array_key_exists($viewgroup, $array_viewgroup)) {
                 $viewgroup = "viewgrid";
@@ -572,7 +576,7 @@ function shops_show_location_list($parentid, $page, $per_page, $base_url)
 
         $a = 0;
         while ($parentid_i > 0) {
-            list ($id_i, $parentid_i, $title_i) = $db->query("SELECT id, parentid, title FROM " . $db_config['prefix'] . "_" . $module_data . "_location WHERE id=" . intval($parentid_i))->fetch(3);
+            list ($id_i, $parentid_i, $title_i) = $db->query("SELECT id, parentid, title FROM " . $db_config['prefix'] . "_" . $module_data . "_location WHERE id=" . intval($parentid_i))->fetch(3) ?: [null, null, null];
 
             $array_location_title[] = "<a href=\"" . NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&" . NV_NAME_VARIABLE . "=" . $module_name . "&" . NV_OP_VARIABLE . "=location&amp;parentid=" . $id_i . "\"><strong>" . $title_i . "</strong></a>";
             ++$a;
@@ -602,7 +606,9 @@ function shops_show_location_list($parentid, $page, $per_page, $base_url)
 
     $result = $db->query($db->sql());
     if ($result->rowCount()) {
-        while (list ($id, $parentid, $title, $weight, $numsub) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($id, $parentid, $title, $weight, $numsub) = $_scratch;
+            unset($_scratch);
             $xtpl->assign('ROW', array(
                 "id" => $id,
                 "location_link" => NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=" . NV_LANG_DATA . "&amp;" . NV_NAME_VARIABLE . "=" . $module_name . "&amp;" . NV_OP_VARIABLE . "=location&amp;parentid=" . $id,
@@ -853,7 +859,9 @@ function nv_show_block_list($bid)
     $num = $result->rowCount();
     $a = 0;
 
-    while (list ($id, $listcatid, $title, $alias, $weight, $status) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $listcatid, $title, $alias, $weight, $status) = $_scratch;
+        unset($_scratch);
         $xtpl->assign('ROW', array(
             'id' => $id,
             'title' => $title,
@@ -1014,7 +1022,7 @@ function nv_show_custom_form($is_edit, $form, $array_custom)
     }
 
     $array_custom_lang = array();
-    list($idtemplate, $titletemplate) = $db->query('SELECT id, ' . NV_LANG_DATA . '_title title FROM ' . $db_config['prefix'] . '_' . $module_data . '_template WHERE alias = "' . preg_replace("/[\_]/", "-", $form) . '"')->fetch(3);
+    list($idtemplate, $titletemplate) = $db->query('SELECT id, ' . NV_LANG_DATA . '_title title FROM ' . $db_config['prefix'] . '_' . $module_data . '_template WHERE alias = "' . preg_replace("/[\_]/", "-", $form) . '"')->fetch(3) ?: [null, null];
     if ($idtemplate) {
         $array_tmp = array();
         $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_field WHERE FIND_IN_SET(' . $idtemplate . ', listtemplate)');
@@ -1038,7 +1046,9 @@ function nv_show_custom_form($is_edit, $form, $array_custom)
                 $query = 'SELECT ' . $row['sql_choices'][2] . ', ' . $row['sql_choices'][3] . ' FROM ' . $row['sql_choices'][1];
                 $result_sql = $db->query($query);
                 $weight = 0;
-                while (list ($key, $val) = $result_sql->fetch(3)) {
+                while ($_scratch = $result_sql->fetch(3)) {
+                    list($key, $val) = $_scratch;
+                    unset($_scratch);
                     $row['field_choices'][$key] = $val;
                 }
             }

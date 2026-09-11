@@ -35,7 +35,9 @@ if ($nv_Request->isset_request('get_product', 'get')) {
     $sth->execute();
 
     $array_data = [];
-    while (list($id, $title) = $sth->fetch(3)) {
+    while ($_scratch = $sth->fetch(3)) {
+        list($id, $title) = $_scratch;
+        unset($_scratch);
         $array_data[] = array(
             'key' => $id,
             'value' => $title
@@ -56,7 +58,9 @@ $row['id'] = $nv_Request->get_int('id', 'post,get', 0);
 
 if ($row['id'] > 0) {
     $result = $db->query('SELECT pid FROM ' . $db_config['prefix'] . '_' . $module_data . '_coupons_product WHERE cid=' . $row['id']);
-    while (list($pid) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($pid) = $_scratch;
+        unset($_scratch);
         $product_old[] = $pid;
     }
 }
@@ -290,7 +294,9 @@ foreach ($array_select_type as $key => $title) {
 if (!empty($row['product'])) {
     $array_pro = [];
     $result = $db->query('SELECT id, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE id IN (' . implode(',', $row['product']) . ')');
-    while (list($id, $title) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $title) = $_scratch;
+        unset($_scratch);
         $array_pro[$id] = array(
             'id' => $id,
             'title' => $title

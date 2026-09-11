@@ -68,13 +68,15 @@ if ($nv_Request->isset_request('delete_id', 'get') and $nv_Request->isset_reques
         $weight = 0;
         $sql = 'SELECT weight FROM ' . $table_name . ' WHERE id =' . $db->quote($id);
         $result = $db->query($sql);
-        list($weight) = $result->fetch(3);
+        list($weight) = $result->fetch(3) ?: [null];
 
         $db->query('DELETE FROM ' . $table_name . '  WHERE id = ' . $db->quote($id));
         if ($weight > 0) {
             $sql = 'SELECT id, weight FROM ' . $table_name . ' WHERE weight >' . $weight;
             $result = $db->query($sql);
-            while (list($id, $weight) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($id, $weight) = $_scratch;
+                unset($_scratch);
                 $weight--;
                 $db->query('UPDATE ' . $table_name . ' SET weight=' . $weight . ' WHERE id=' . intval($id));
             }

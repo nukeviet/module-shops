@@ -266,7 +266,9 @@ foreach ($groups_list as $_group_id => $_title) {
 
 // Tien te
 $result = $db->query("SELECT code, currency FROM " . $db_config['prefix'] . "_" . $module_data . "_money_" . NV_LANG_DATA . " ORDER BY code DESC");
-while (list ($code, $currency) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($code, $currency) = $_scratch;
+    unset($_scratch);
     $array_temp = array();
     $array_temp['value'] = $code;
     $array_temp['title'] = $code . " - " . $currency;
@@ -277,7 +279,9 @@ while (list ($code, $currency) = $result->fetch(3)) {
 
 // Don vi khoi luong
 $result = $db->query("SELECT code, title FROM " . $db_config['prefix'] . "_" . $module_data . "_weight_" . NV_LANG_DATA . " ORDER BY code DESC");
-while (list ($code, $title) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($code, $title) = $_scratch;
+    unset($_scratch);
     $array_temp = array();
     $array_temp['value'] = $code;
     $array_temp['title'] = $code . " - " . $title;

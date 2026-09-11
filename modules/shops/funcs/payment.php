@@ -86,7 +86,9 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
 
         $result_group = $db->query('SELECT group_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_orders_id_group WHERE order_i=' . $row['id'] . ' ORDER BY group_id');
         $group = [];
-        while (list($group_id) = $result_group->fetch(3)) {
+        while ($_scratch = $result_group->fetch(3)) {
+            list($group_id) = $_scratch;
+            unset($_scratch);
             $group[] = $group_id;
         }
         $listgroup[] = $group;
@@ -115,7 +117,9 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
             WHERE t1.product_unit = t2.id AND t1.id = t3.proid AND t1.id=' . $_proid . ' AND
             listgroupid=' . $db->quote($slistgroup[$_dbkey]) . ' AND t3.order_id=' . $order_id . ' AND t1.status =1';
             $result = $db->query($sql);
-            while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $unit, $money_unit) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($id, $listcatid, $publtime, $title, $alias, $hometext, $unit, $money_unit) = $_scratch;
+                unset($_scratch);
                 $price = nv_get_price($id, $pro_config['money_unit'], $temppro[$id]['num'], true);
                 $data_pro[] = [
                     'id' => $id,
@@ -214,7 +218,9 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
 
         $result_group = $db->query('SELECT group_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_orders_id_group WHERE order_i=' . $row['id']);
         $group = [];
-        while (list($group_id) = $result_group->fetch(3)) {
+        while ($_scratch = $result_group->fetch(3)) {
+            list($group_id) = $_scratch;
+            unset($_scratch);
             $group[] = $group_id;
         }
         $listgroup[] = $group;

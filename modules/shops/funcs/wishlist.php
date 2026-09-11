@@ -55,7 +55,9 @@ $db->select('t1.id, t1.listcatid, t1.publtime, t1.' . NV_LANG_DATA . '_title, t1
 
 $result = $db->query($db->sql());
 
-while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $newday) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $newday) = $_scratch;
+    unset($_scratch);
     if ($homeimgthumb == 1) {
         //image thumb
 

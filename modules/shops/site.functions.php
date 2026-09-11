@@ -304,12 +304,12 @@ function nv_shipping_price($weight, $weight_unit, $location_id, $shops_id, $carr
 
     $sql = 'SELECT config_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_shops_carrier WHERE shops_id = ' . $shops_id . ' AND carrier_id = ' . $carrier_id;
     $result = $db->query($sql);
-    list ($config_id) = $result->fetch(3);
+    list ($config_id) = $result->fetch(3) ?: [null];
 
     if ($config_id) {
         $sql = 'SELECT iid FROM ' . $db_config['prefix'] . '_' . $module_data . '_carrier_config_location WHERE cid = ' . $config_id . ' AND lid = ' . $location_id;
         $result = $db->query($sql);
-        list ($iid) = $result->fetch(3);
+        list ($iid) = $result->fetch(3) ?: [null];
 
         if ($iid) {
             // Weight config

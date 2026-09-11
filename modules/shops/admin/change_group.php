@@ -17,7 +17,7 @@ $mod = $nv_Request->get_string('mod', 'post', '');
 $new_vid = $nv_Request->get_int('new_vid', 'post', 0);
 $content = 'NO_' . $groupid;
 
-list($groupid, $parentid, $numsubgroup) = $db->query('SELECT groupid, parentid, numsubgroup FROM ' . $db_config['prefix'] . '_' . $module_data . '_group WHERE groupid=' . $groupid)->fetch(3);
+list($groupid, $parentid, $numsubgroup) = $db->query('SELECT groupid, parentid, numsubgroup FROM ' . $db_config['prefix'] . '_' . $module_data . '_group WHERE groupid=' . $groupid)->fetch(3) ?: [null, null, null];
 
 if ($groupid > 0) {
     if ($mod == 'weight' and $new_vid > 0) {

@@ -31,7 +31,7 @@ list($data['groupid'], $data['parentid'], $data['title'], $data['alias'], $data[
 $data['parentid'] = $nv_Request->get_int('parentid', 'get,post', 0);
 $data['groupid'] = $nv_Request->get_int('groupid', 'get', 0);
 if ($data['groupid'] > 0) {
-    list($data['groupid'], $data['parentid'], $data['title'], $data['alias'], $data['description'], $data['keywords'], $data['image'], $data['require']) = $db->query('SELECT groupid, parentid, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_description, ' . NV_LANG_DATA . '_keywords, image, is_require FROM ' . $table_name . ' where groupid=' . $data['groupid'])->fetch(3);
+    list($data['groupid'], $data['parentid'], $data['title'], $data['alias'], $data['description'], $data['keywords'], $data['image'], $data['require']) = $db->query('SELECT groupid, parentid, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_description, ' . NV_LANG_DATA . '_keywords, image, is_require FROM ' . $table_name . ' where groupid=' . $data['groupid'])->fetch(3) ?: array_fill(0, 8, null);
     $result = $db->query('SELECT cateid FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_cateid WHERE groupid = ' . $data['groupid'] . ' ORDER BY cateid');
     if ($result) {
         while ($row = $result->fetchColumn()) {
@@ -181,7 +181,9 @@ $result = $db->query($sql);
 $array_group_list = [];
 $array_group_list[0] = array( '0', $lang_module['group_sub_sl'] );
 
-while (list($groupid_i, $title_i, $lev_i) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($groupid_i, $title_i, $lev_i) = $_scratch;
+    unset($_scratch);
     if ($lev_i == 0) {
         $array_group_list[] = array( $groupid_i, $title_i );
     }

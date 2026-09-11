@@ -15,7 +15,7 @@ if (! defined('NV_IS_FILE_SITEINFO')) {
 $lang_siteinfo = nv_get_lang_module($mod);
 
 if ($data['type'] == 'review_new') {
-    list($id, $listcatid, $title, $alias) = $db->query('SELECT id, listcatid, ' . NV_LANG_DATA . '_title title, ' . NV_LANG_DATA . '_alias alias FROM ' . $db_config['prefix'] . '_' . $site_mods[$mod]['module_data'] . '_rows WHERE id=' . $data['content']['product_id'])->fetch(3);
+    list($id, $listcatid, $title, $alias) = $db->query('SELECT id, listcatid, ' . NV_LANG_DATA . '_title title, ' . NV_LANG_DATA . '_alias alias FROM ' . $db_config['prefix'] . '_' . $site_mods[$mod]['module_data'] . '_rows WHERE id=' . $data['content']['product_id'])->fetch(3) ?: [null, null, null, null];
     if ($mod != $module_name) {
         $sql = 'SELECT ' . NV_LANG_DATA . '_alias AS alias FROM ' . $db_config['prefix'] . '_' . $site_mods[$mod]['module_data'] . '_catalogs ORDER BY sort ASC';
         $global_array_shops_cat = $nv_Cache->db($sql, 'catid', $module_name);

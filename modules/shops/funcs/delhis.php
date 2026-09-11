@@ -37,7 +37,9 @@ if ($order_id > 0 and $checkss == md5($order_id . $global_config['sitekey'] . se
                 $list = '';
                 $result_group = $db->query('SELECT group_id FROM ' . $table_name . '_id_group WHERE order_i=' . $row['id']);
                 $group = array();
-                while (list($group_id) = $result_group->fetch(3)) {
+                while ($_scratch = $result_group->fetch(3)) {
+                    list($group_id) = $_scratch;
+                    unset($_scratch);
                     $group[] = $group_id;
                 }
                 asort($group);

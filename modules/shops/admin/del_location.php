@@ -15,7 +15,7 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $locationid = $nv_Request->get_int('locationid', 'post, get', 0);
 $contents = "NO_" . $locationid;
 
-list($locationid, $parentid, $title) = $db->query("SELECT id, parentid FROM " . $db_config['prefix'] . "_" . $module_data . "_location WHERE id=" . $locationid)->fetch(3);
+list($locationid, $parentid, $title) = $db->query("SELECT id, parentid FROM " . $db_config['prefix'] . "_" . $module_data . "_location WHERE id=" . $locationid)->fetch(3) ?: [null, null, null];
 
 if ($locationid > 0) {
     $result = $db->query("DELETE FROM " . $db_config['prefix'] . "_" . $module_data . "_location WHERE parentid=" . $locationid);

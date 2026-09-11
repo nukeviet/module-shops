@@ -19,7 +19,7 @@ $catid = $nv_Request->get_int('catid', 'post,get', 0);
 $sql = 'SELECT id, title, alias, hometext, allowed_send FROM ' . NV_PREFIXLANG . '_' . $module_data . '_' . $catid . ' WHERE id =' . $id . ' AND status =1';
 $result = $db->query($sql);
 
-list($id, $title, $alias, $hometext, $allowed_send) = $result->fetch(3);
+list($id, $title, $alias, $hometext, $allowed_send) = $result->fetch(3) ?: [null, null, null, null, null];
 if ($id > 0) {
     unset($sql, $result);
     $result = '';

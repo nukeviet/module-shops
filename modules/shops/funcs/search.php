@@ -177,7 +177,9 @@ $result = $db->query($db->sql());
 $array_content = array();
 $url_link = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=';
 
-while (list($id, $title, $alias, $listcatid, $hometext, $publtime, $homeimgfile, $homeimgthumb) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($id, $title, $alias, $listcatid, $hometext, $publtime, $homeimgfile, $homeimgthumb) = $_scratch;
+    unset($_scratch);
     if ($homeimgthumb == 1) {
         //image thumb
 

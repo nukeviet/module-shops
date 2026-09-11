@@ -46,7 +46,7 @@ if ($nv_Request->isset_request('delete_id', 'get') and $nv_Request->isset_reques
         $weight=0;
         $sql = 'SELECT weight FROM ' . $db_config['prefix'] . '_' . $module_data . '_shops WHERE id =' . $db->quote($id);
         $result = $db->query($sql);
-        list($weight) = $result->fetch(3);
+        list($weight) = $result->fetch(3) ?: [null];
 
         $db->query('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . '_shops  WHERE id = ' . $db->quote($id));
 
@@ -56,7 +56,9 @@ if ($nv_Request->isset_request('delete_id', 'get') and $nv_Request->isset_reques
         if ($weight > 0) {
             $sql = 'SELECT id, weight FROM ' . $db_config['prefix'] . '_' . $module_data . '_shops WHERE weight >' . $weight;
             $result = $db->query($sql);
-            while (list($id, $weight) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($id, $weight) = $_scratch;
+                unset($_scratch);
                 $weight--;
                 $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_shops SET weight=' . $weight . ' WHERE id=' . intval($id));
             }
@@ -237,7 +239,9 @@ $result = $db->query($sql);
 $array_location_list = array();
 $array_location = array();
 $array_location_list[0] = array( '0', $lang_module['location_chose'] );
-while (list($id_i, $parentid_i, $title_i, $lev_i) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($id_i, $parentid_i, $title_i, $lev_i) = $_scratch;
+    unset($_scratch);
     $array_location[$id_i] = array( 'id' => $id_i, 'parentid'=> $parentid_i, 'title' => $title_i, 'lev' => $lev_i );
     $xtitle_i = '';
     if ($lev_i > 0) {

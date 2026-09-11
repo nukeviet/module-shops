@@ -51,7 +51,7 @@ if (!empty($page_title) and $page_title == strip_punctuation($page_title)) {
     $stmt = $db->prepare('SELECT tid, image, description, bodytext, keywords FROM ' . $db_config['prefix'] . '_' . $module_data . '_tags_' . NV_LANG_DATA . ' WHERE alias= :alias');
     $stmt->bindParam(':alias', $alias, PDO::PARAM_STR);
     $stmt->execute();
-    list ($tid, $image_tag, $description, $bodytext, $key_words) = $stmt->fetch(3);
+    list ($tid, $image_tag, $description, $bodytext, $key_words) = $stmt->fetch(3) ?: [null, null, null, null, null];
 
     if ($tid > 0) {
         // Fetch Limit
@@ -70,7 +70,9 @@ if (!empty($page_title) and $page_title == strip_punctuation($page_title)) {
 
         $result = $db->query($db->sql());
 
-        while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $newday, $gift_content, $gift_from, $gift_to) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $newday, $gift_content, $gift_from, $gift_to) = $_scratch;
+            unset($_scratch);
             if ($homeimgthumb == 1) {
                 //image thumb
 

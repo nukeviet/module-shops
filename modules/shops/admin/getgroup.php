@@ -57,7 +57,9 @@ if ($cid > 0) {
     $arr = array();
     $arr_groupid = array();
     $result = $db->query('SELECT t1.groupid FROM ' . $db_config['prefix'] . '_' . $module_data . '_group t1 INNER JOIN ' . $db_config['prefix'] . '_' . $module_data . '_group_cateid t2 ON t1.groupid = t2.groupid WHERE t2.cateid = ' . $cid);
-    while (list ($groupid) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($groupid) = $_scratch;
+        unset($_scratch);
         if ($global_array_group[$groupid]['parentid'] == 0) {
             $arr_groupid[$groupid] = GetGroupidInParentGroup($groupid, 0, 1, $cid);
         } else {

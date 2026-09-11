@@ -37,7 +37,9 @@ if ($nv_Request->isset_request('check_quantity', 'post')) {
         }
 
         $result = $db->query('SELECT listgroup, quantity FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_quantity WHERE pro_id = ' . $id_pro);
-        while (list ($listgroup, $quantity) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($listgroup, $quantity) = $_scratch;
+            unset($_scratch);
             $listgroup = explode(',', $listgroup);
             $_t = 0;
             foreach ($listgroup as $_idgroup) {
@@ -182,7 +184,9 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
     $result = $db->query('SELECT rating FROM ' . $db_config['prefix'] . '_' . $module_data . '_review WHERE product_id = ' . $data_content['id'] . ' AND status=1');
     $rating_count = $result->rowCount();
     if ($rating_count > 0) {
-        while (list ($rating) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($rating) = $_scratch;
+            unset($_scratch);
             $rating_total += $rating;
         }
     }
@@ -231,7 +235,9 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
     $result = $db->query($db->sql());
 
     $data_others = [];
-    while (list ($_id, $listcatid, $title, $alias, $homeimgfile, $homeimgthumb, $addtime, $publtime, $product_code, $product_number, $product_price, $price_config, $money_unit, $showprice, $hometext, $gift_content, $gift_from, $gift_to) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($_id, $listcatid, $title, $alias, $homeimgfile, $homeimgthumb, $addtime, $publtime, $product_code, $product_number, $product_price, $price_config, $money_unit, $showprice, $hometext, $gift_content, $gift_from, $gift_to) = $_scratch;
+        unset($_scratch);
         if ($homeimgthumb == 1) {
             // image thumb
             $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
@@ -288,7 +294,9 @@ if (nv_user_in_groups($global_array_shops_cat[$catid]['groups_view'])) {
                 ->order('id DESC')
                 ->limit($pro_config['per_row'] * 2);
             $result = $db->query($db->sql());
-            while (list ($_id, $listcatid, $title, $alias, $homeimgfile, $homeimgthumb, $addtime, $publtime, $product_code, $product_number, $product_price, $money_unit, $showprice, $hometext, $gift_content, $gift_from, $gift_to) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($_id, $listcatid, $title, $alias, $homeimgfile, $homeimgthumb, $addtime, $publtime, $product_code, $product_number, $product_price, $money_unit, $showprice, $hometext, $gift_content, $gift_from, $gift_to) = $_scratch;
+                unset($_scratch);
                 if ($homeimgthumb == 1) {
                     // image thumb
                     $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;

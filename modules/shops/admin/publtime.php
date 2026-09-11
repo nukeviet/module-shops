@@ -19,7 +19,9 @@ if ($nv_Request->isset_request('checkss', 'get') and $nv_Request->get_string('ch
     $sql = "SELECT id, listcatid, status , publtime, exptime FROM " . $db_config['prefix'] . "_" . $module_data . "_rows WHERE id IN (" . implode(",", $id_array) . ")";
     $result = $db->query($sql);
 
-    while (list($id, $listcatid, $status, $publtime, $exptime) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $listcatid, $status, $publtime, $exptime) = $_scratch;
+        unset($_scratch);
         $data_save = array();
         $data_save['exptime'] = ( int )$exptime;
         $data_save['publtime'] = ( int )$publtime;

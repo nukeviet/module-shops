@@ -60,7 +60,9 @@ while ($row = $result->fetch()) {
 
     $result_group = $db->query('SELECT group_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_orders_id_group WHERE order_i=' . $row['id'] . ' ORDER BY group_id');
     $group = [];
-    while (list($group_id) = $result_group->fetch(3)) {
+    while ($_scratch = $result_group->fetch(3)) {
+        list($group_id) = $_scratch;
+        unset($_scratch);
         $group[] = $group_id;
     }
     $listgroup[] = $group;
@@ -88,7 +90,7 @@ foreach ($listid as $dbkey => $proid) {
     $result = $db->query($sql);
 
     if ($result->rowCount()) {
-        list($id, $_catid, $product_code, $publtime, $title, $alias, $product_price, $unit) = $result->fetch(3);
+        list($id, $_catid, $product_code, $publtime, $title, $alias, $product_price, $unit) = $result->fetch(3) ?: array_fill(0, 8, null);
           $data_pro[] = [
             'id' => $id,
             'publtime' => $publtime,

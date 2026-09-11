@@ -424,7 +424,7 @@ if ($nv_Request->isset_request('del', 'post')) {
 
     $fid = $nv_Request->get_int('fid', 'post,get', 0);
 
-    list ($fid, $listtemplate, $field, $weight) = $db->query('SELECT fid,listtemplate, field, weight FROM ' . $db_config['prefix'] . '_' . $module_data . '_field WHERE fid=' . $fid)->fetch(3);
+    list ($fid, $listtemplate, $field, $weight) = $db->query('SELECT fid,listtemplate, field, weight FROM ' . $db_config['prefix'] . '_' . $module_data . '_field WHERE fid=' . $fid)->fetch(3) ?: [null, null, null, null];
     if ($fid and !empty($field)) {
         $query1 = 'DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . '_field WHERE fid=' . $fid;
         if ($db->query($query1)) {

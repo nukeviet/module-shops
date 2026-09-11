@@ -94,7 +94,9 @@ if (! empty($array_counpons['code']) and $array_counpons['check']) {
     $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . $module_data . '_coupons WHERE code = ' . $db->quote($array_counpons['code']));
     $counpons = $result->fetch();
     $result = $db->query('SELECT pid FROM ' . $db_config['prefix'] . '_' . $module_data . '_coupons_product WHERE cid = ' . $counpons['id']);
-    while (list ($pid) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($pid) = $_scratch;
+        unset($_scratch);
         $counpons['product'][] = $pid;
     }
 }
@@ -129,7 +131,7 @@ if ($nv_Request->isset_request('postorder', 'post')) {
             if ($pro_config['point_active'] and defined('NV_IS_USER')) {
                 $result = $db->query('SELECT listcatid FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE id=' . $pro_id);
                 if ($result->rowCount() > 0) {
-                    list ($listcatid) = $result->fetch(3);
+                    list ($listcatid) = $result->fetch(3) ?: [null];
                     if ($global_array_shops_cat[$listcatid]['cat_allow_point'] and ($global_array_shops_cat[$listcatid]['cat_number_product'] == 0 or $info['num'] >= $global_array_shops_cat[$listcatid]['cat_number_product'])) {
                         $total_point += intval($global_array_shops_cat[$listcatid]['cat_number_point']);
                     }
@@ -137,8 +139,8 @@ if ($nv_Request->isset_request('postorder', 'post')) {
             }
 
             $info['price'] = $price['sale'];
-            $total = $total + (double) $info['price'];
-            $total_weight = $total_weight + nv_weight_conversion((double) $info['weight'], $info['weight_unit'], $pro_config['weight_unit'], (int) $info['num']);
+            $total = $total + (float) $info['price'];
+            $total_weight = $total_weight + nv_weight_conversion((float) $info['weight'], $info['weight_unit'], $pro_config['weight_unit'], (int) $info['num']);
 
             $i ++;
         }
@@ -494,7 +496,9 @@ if ($nv_Request->isset_request('postorder', 'post')) {
                 $sql = 'SELECT t1.id, t1.listcatid, t1.publtime, t1.' . NV_LANG_DATA . '_title, t1.' . NV_LANG_DATA . '_alias, t1.' . NV_LANG_DATA . '_hometext, t2.' . NV_LANG_DATA . '_title, t1.money_unit FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows AS t1 LEFT JOIN ' . $db_config['prefix'] . '_' . $module_data . '_units AS t2 ON t1.product_unit = t2.id WHERE t1.id IN (' . $templistid . ') AND t1.status =1';
                 $result = $db->query($sql);
 
-                while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $unit, $money_unit) = $result->fetch(3)) {
+                while ($_scratch = $result->fetch(3)) {
+                    list($id, $listcatid, $publtime, $title, $alias, $hometext, $unit, $money_unit) = $_scratch;
+                    unset($_scratch);
                     $data_pro[] = [
                         'id' => $id,
                         'publtime' => $publtime,
@@ -595,7 +599,9 @@ if ($nv_Request->isset_request('postorder', 'post')) {
 // Lay dia diem
 $sql = "SELECT id, parentid, title, lev FROM " . $db_config['prefix'] . '_' . $module_data . "_location ORDER BY sort ASC";
 $result = $db->query($sql);
-while (list ($id_i, $parentid_i, $title_i, $lev_i) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($id_i, $parentid_i, $title_i, $lev_i) = $_scratch;
+    unset($_scratch);
     $xtitle_i = '';
     if ($lev_i > 0) {
         $xtitle_i .= '&nbsp;';
@@ -639,7 +645,9 @@ if ($action == 0) {
             }
             $result = $db->query($sql);
             $weight_total = 0;
-            while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_number, $product_price, $unit, $money_unit, $product_weight, $weight_unit) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_number, $product_price, $unit, $money_unit, $product_weight, $weight_unit) = $_scratch;
+                unset($_scratch);
                 if ($homeimgthumb == 1) {
                     // image thumb
                     $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;

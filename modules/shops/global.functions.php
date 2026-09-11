@@ -40,7 +40,9 @@ if (empty($pro_config['timecheckstatus'])) {
 // Tu dong xoa don hang sau tgian khong duoc xac nhan
 if (!empty($pro_config['order_day']) and $pro_config['order_nexttime'] < NV_CURRENTTIME) {
     $result = $db->query('SELECT order_id, order_time FROM ' . $db_config['prefix'] . '_' . $module_data . '_orders WHERE transaction_status=0 AND order_time < ' . (NV_CURRENTTIME - (int) $pro_config['order_day'] * 86400));
-    while (list ($order_id, $order_time) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($order_id, $order_time) = $_scratch;
+        unset($_scratch);
         $result_del = $db->query('DELETE FROM ' . $db_config['prefix'] . '_' . $module_data . '_orders WHERE order_id=' . $order_id);
         if ($result_del) {
             // Thong tin dat hang chi tiet
@@ -95,13 +97,17 @@ function nv_set_status_module()
 
     // Dang cac san pham cho kich hoat theo thoi gian
     $result = $db->query('SELECT id FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE status =2 AND publtime < ' . NV_CURRENTTIME . ' ORDER BY publtime ASC');
-    while (list ($id) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id) = $_scratch;
+        unset($_scratch);
         $db->query('UPDATE ' . $db_config['prefix'] . '_' . $module_data . '_rows SET status =1 WHERE id=' . $id);
     }
 
     // Ngung hieu luc cac san pham da het han
     $result = $db->query('SELECT id, archive FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE status =1 AND exptime > 0 AND exptime <= ' . NV_CURRENTTIME . ' ORDER BY exptime ASC');
-    while (list ($id, $archive) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $archive) = $_scratch;
+        unset($_scratch);
         if (intval($archive) == 0) {
             nv_del_content_module($id);
         } else {
@@ -140,7 +146,7 @@ function nv_del_content_module($id)
     $content_del = 'NO_' . $id;
     $title = '';
 
-    list ($id, $listcatid, $title) = $db->query('SELECT id, listcatid, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE id=' . intval($id))->fetch(3);
+    list ($id, $listcatid, $title) = $db->query('SELECT id, listcatid, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE id=' . intval($id))->fetch(3) ?: [null, null, null];
     if ($id > 0) {
         $number_no_del = 0;
         $array_catid = explode(',', $listcatid);
@@ -259,7 +265,9 @@ function nv_file_table($table)
     $lang_value = nv_list_lang();
     $arrfield = array();
     $result = $db->query('SHOW COLUMNS FROM ' . $table);
-    while (list ($field) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($field) = $_scratch;
+        unset($_scratch);
         $tmp = explode('_', $field, 2);
         foreach ($lang_value as $lang_i) {
             if (!empty($tmp[0]) && !empty($tmp[1])) {
@@ -286,7 +294,9 @@ function nv_list_lang()
     global $db_config, $db;
     $re = $db->query('SELECT lang FROM ' . $db_config['prefix'] . '_setup_language WHERE setup=1');
     $lang_value = array();
-    while (list ($lang_i) = $re->fetch(3)) {
+    while ($_scratch = $re->fetch(3)) {
+        list($lang_i) = $_scratch;
+        unset($_scratch);
         $lang_value[] = $lang_i;
     }
     return $lang_value;
@@ -552,7 +562,7 @@ function UpdatePoint($data_content, $add = true)
     global $db, $db_config, $module_data;
 
     $result = $db->query('SELECT point FROM ' . $db_config['prefix'] . "_" . $module_data . '_point_queue WHERE order_id=' . $data_content['order_id']);
-    list ($point) = $result->fetch(3);
+    list ($point) = $result->fetch(3) ?: [null];
     if (!empty($point)) {
         if ($add) {
             $result = $db->query('SELECT * FROM ' . $db_config['prefix'] . "_" . $module_data . '_point WHERE userid=' . $data_content['user_id']);
@@ -586,19 +596,25 @@ function nv_listmail_notify()
                 ->fetchColumn();
             if (!empty($lis_adminid)) {
                 $result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN (' . $lis_adminid . ')');
-                while (list ($email) = $result->fetch(3)) {
+                while ($_scratch = $result->fetch(3)) {
+                    list($email) = $_scratch;
+                    unset($_scratch);
                     $array_mail[] = $email;
                 }
             }
             if (sizeof($arr_groups_notify) > 1) {
                 $result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN ( SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN ( ' . $pro_config['groups_notify'] . ' ) and group_id != 3 )');
-                while (list ($email) = $result->fetch(3)) {
+                while ($_scratch = $result->fetch(3)) {
+                    list($email) = $_scratch;
+                    unset($_scratch);
                     $array_mail[] = $email;
                 }
             }
         } else {
             $result = $db->query('SELECT email FROM ' . NV_USERS_GLOBALTABLE . ' WHERE userid IN ( SELECT userid FROM ' . NV_GROUPS_GLOBALTABLE . '_users WHERE group_id IN ( ' . $pro_config['groups_notify'] . ' ) )');
-            while (list ($email) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($email) = $_scratch;
+                unset($_scratch);
                 $array_mail[] = $email;
             }
         }

@@ -17,7 +17,7 @@ $mod = $nv_Request->get_string('mod', 'post', '');
 $new_vid = $nv_Request->get_int('new_vid', 'post', 0);
 $content = 'NO_' . $locationid;
 
-list($locationid, $parentid, $numsub) = $db->query('SELECT id, parentid, numsub FROM ' . $db_config['prefix'] . '_' . $module_data . '_location WHERE id=' . $locationid)->fetch(3);
+list($locationid, $parentid, $numsub) = $db->query('SELECT id, parentid, numsub FROM ' . $db_config['prefix'] . '_' . $module_data . '_location WHERE id=' . $locationid)->fetch(3) ?: [null, null, null];
 
 if ($locationid > 0) {
     if ($mod == 'weight' and $new_vid > 0) {

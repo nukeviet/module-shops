@@ -31,7 +31,7 @@ if ($bid > 0 and $del_list != "") {
     nv_news_fix_block($bid);
     $content = "OK_" . $bid;
 } elseif ($bid > 0 and $id > 0) {
-    list($bid, $id) = $db->query("SELECT bid, id FROM " . $db_config['prefix'] . "_" . $module_data . "_block WHERE bid=" . intval($bid) . " AND id=" . intval($id))->fetch(3);
+    list($bid, $id) = $db->query("SELECT bid, id FROM " . $db_config['prefix'] . "_" . $module_data . "_block WHERE bid=" . intval($bid) . " AND id=" . intval($id))->fetch(3) ?: [null, null];
 
     if ($bid > 0 and $id > 0) {
         if ($mod == "weight" and $new_vid > 0) {

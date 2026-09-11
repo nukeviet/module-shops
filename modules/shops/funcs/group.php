@@ -54,7 +54,9 @@ $canonicalUrl = getCanonicalUrl($page_url);
 $array_pro_id = array();
 $_sql = 'SELECT pro_id FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_items WHERE group_id IN (' . implode(',', $chirld_groupid) . ')';
 $_query = $db->query($_sql);
-while (list ($pro_id) = $_query->fetch(3)) {
+while ($_scratch = $_query->fetch(3)) {
+    list($pro_id) = $_scratch;
+    unset($_scratch);
     $array_pro_id[] = $pro_id;
 }
 $array_pro_id = array_unique($array_pro_id);

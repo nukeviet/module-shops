@@ -17,7 +17,7 @@ $mod = $nv_Request->get_string('mod', 'post', '');
 $new_vid = $nv_Request->get_int('new_vid', 'post', 0);
 $content = 'NO_' . $catid;
 
-list($catid, $parentid, $numsubcat) = $db->query('SELECT catid, parentid, numsubcat FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid=' . $catid)->fetch(3);
+list($catid, $parentid, $numsubcat) = $db->query('SELECT catid, parentid, numsubcat FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid=' . $catid)->fetch(3) ?: [null, null, null];
 if ($catid > 0) {
     if ($mod == 'weight' and $new_vid > 0) {
         $sql = 'SELECT catid FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid!=' . $catid . ' AND parentid=' . $parentid . ' ORDER BY weight ASC';

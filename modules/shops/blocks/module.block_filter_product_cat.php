@@ -107,7 +107,9 @@ if (!function_exists('nv_filter_product_cat')) {
         $catid = GetParentCatFilter($catid);
         $result = $db->query('SELECT groupid FROM ' . $db_config['prefix'] . '_' . $site_mods[$module]['module_data'] . '_group_cateid WHERE cateid = ' . $catid);
         $i = 0;
-        while (list ($groupid) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($groupid) = $_scratch;
+            unset($_scratch);
             $groupinfo = $global_array_group[$groupid];
 
             $groupinfo['key'] = str_replace('-', '_', $groupinfo['alias']);

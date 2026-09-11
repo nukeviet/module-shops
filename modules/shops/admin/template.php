@@ -155,7 +155,9 @@ $xtpl->assign('TEM_ADD', NV_BASE_ADMINURL . "index.php?" . NV_LANG_VARIABLE . "=
 $result = $db->query("SELECT id, " . NV_LANG_DATA . "_title, alias, status, weight FROM " . $table_name . " ORDER BY weight ASC");
 $num = $result->rowCount();
 
-while (list($id, $title, $alias, $status, $weight) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($id, $title, $alias, $status, $weight) = $_scratch;
+    unset($_scratch);
     $xtpl->assign('title', $title);
     $xtpl->assign('alias', $alias);
     $xtpl->assign('active', $status ? 'checked="checked"' : '');

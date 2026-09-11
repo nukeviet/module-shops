@@ -44,7 +44,9 @@ if (! empty($catid)) {
 
 if ($module_info['rss']) {
     $result = $db->query($sql);
-    while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgfile, $homeimgthumb) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgfile, $homeimgthumb) = $_scratch;
+        unset($_scratch);
         $catalias = $global_array_shops_cat[$listcatid]['alias'];
 
         if ($homeimgthumb == 1) {

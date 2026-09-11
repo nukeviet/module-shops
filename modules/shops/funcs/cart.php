@@ -83,7 +83,9 @@ if (isset($_SESSION[$module_data . '_order_info']) and !empty($_SESSION[$module_
             $array_group = [];
             $data_content = $db->query("SELECT * FROM " . $db_config['prefix'] . "_" . $module_data . "_rows WHERE id = " . $row['id'])->fetch();
             $result_group = $db->query("SELECT group_id FROM " . $db_config['prefix'] . "_" . $module_data . "_orders_id_group WHERE order_i = " . $row['id']);
-            while (list ($group_id) = $result_group->fetch(3)) {
+            while ($_scratch = $result_group->fetch(3)) {
+                list($group_id) = $_scratch;
+                unset($_scratch);
                 $array_group[] = $group_id;
             }
             $array_group = !empty($array_group) ? implode(',', $array_group) : '';
@@ -167,7 +169,9 @@ if (!empty($_SESSION[$module_data . '_cart'])) {
                 unset($_SESSION[$module_data . '_cart'][$pro_id]);
             }
 
-            while (list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_number, $product_price, $unit, $money_unit) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_number, $product_price, $unit, $money_unit) = $_scratch;
+                unset($_scratch);
                 if ($homeimgthumb == 1) {
                     //image thumb
                     $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;

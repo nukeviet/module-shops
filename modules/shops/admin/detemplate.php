@@ -20,7 +20,9 @@ if ($id > 0) {
 
     $result = $db->query('SELECT fid, listtemplate, field FROM ' . $db_config['prefix'] . '_' . $module_data . '_field');
     if ($result->rowCount()) {
-        while (list($fid, $listtemplate, $field) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($fid, $listtemplate, $field) = $_scratch;
+            unset($_scratch);
             $listtemplate = explode('|', $listtemplate);
             if (in_array($id, $listtemplate)) {
                 if (count($listtemplate) > 1) {
@@ -62,7 +64,9 @@ if ($id > 0) {
 
             $result = $db->query('SELECT fid, listtemplate, field FROM ' . $db_config['prefix'] . '_' . $module_data . '_field');
             if ($result->rowCount()) {
-                while (list($fid, $listtemplate, $field) = $result->fetch(3)) {
+                while ($_scratch = $result->fetch(3)) {
+                    list($fid, $listtemplate, $field) = $_scratch;
+                    unset($_scratch);
                     $listtemplate = explode('|', $listtemplate);
                     if (in_array($id, $listtemplate)) {
                         if (count($listtemplate) > 1) {

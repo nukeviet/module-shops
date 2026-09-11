@@ -35,7 +35,9 @@ if ($wid > 0) {
     while ($row = $result->fetch()) {
         $row['group_info'] = array();
         $result1 = $db->query('SELECT listgroup, quantity, price, money_unit FROM ' . $db_config['prefix'] . '_' . $module_data . '_warehouse_logs_group WHERE logid=' . $row['logid']);
-        while (list($listgroup, $quantity, $price, $money_unit) = $result1->fetch(3)) {
+        while ($_scratch = $result1->fetch(3)) {
+            list($listgroup, $quantity, $price, $money_unit) = $_scratch;
+            unset($_scratch);
             $row['group_info'][] = array( 'listgroup' => $listgroup, 'quantity' => $quantity, 'price' => $price, 'money_unit' => $money_unit ) ;
         }
         $array_warehouse['logs'][$row['logid']] = $row;

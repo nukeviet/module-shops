@@ -15,7 +15,9 @@ $template_ids = [];
 $template_alias = explode(',', preg_replace("/[\_]/", "-", $global_array_shops_cat[$rowcontent['listcatid']]['form']));
 if (!empty($template_alias)) {
     $result = $db->query('SELECT id FROM ' . $db_config['prefix'] . '_' . $module_data . '_template where alias IN ("' . implode('", "', $template_alias) . '")');
-    while (list($template_id) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($template_id) = $_scratch;
+        unset($_scratch);
         $template_ids[] = $template_id;
     }
 }
@@ -51,7 +53,9 @@ if ($template_ids) {
             $query = 'SELECT ' . $row['sql_choices'][2] . ', ' . $row['sql_choices'][3] . ' FROM ' . $row['sql_choices'][1];
             $result_sql = $db->query($query);
             $weight = 0;
-            while (list($key, $val) = $result_sql->fetch(3)) {
+            while ($_scratch = $result_sql->fetch(3)) {
+                list($key, $val) = $_scratch;
+                unset($_scratch);
                 $row['field_choices'][$key] = $val;
             }
         }

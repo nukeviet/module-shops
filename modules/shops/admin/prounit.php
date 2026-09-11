@@ -81,7 +81,9 @@ $xtpl->assign('caption', $lang_module['prounit_info']);
 
 $count = 0;
 $result = $db->query("SELECT id, " . NV_LANG_DATA . "_title, " . NV_LANG_DATA . "_note FROM " . $table_name . " ORDER BY id DESC");
-while (list($id, $title, $note) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($id, $title, $note) = $_scratch;
+    unset($_scratch);
     $xtpl->assign('title', $title);
     $xtpl->assign('note', $note);
     $xtpl->assign('id', $id);

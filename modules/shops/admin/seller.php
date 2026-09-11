@@ -31,7 +31,7 @@ $pro_info = $db->query($sql)->fetch();
 
 // Product unit
 $sql = 'SELECT ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_units WHERE id = ' . $pro_info['product_unit'];
-list($pro_info['product_unit']) = $db->query($sql)->fetch(3);
+list($pro_info['product_unit']) = $db->query($sql)->fetch(3) ?: [null];
 
 $page_title = sprintf($lang_module['seller_list'], $pro_info['title']);
 
@@ -60,7 +60,9 @@ $sth->execute();
 
 $i = $page == 1 ? 0 : $page;
 $array_total = array( 'price' => 0, 'num' => 0, 'pro_unit' => $pro_config['money_unit'], 'product_unit' => $pro_info['product_unit'] );
-while (list($order_name, $order_email, $order_phone, $order_address, $unit_total, $order_time, $num, $price) = $sth->fetch(3)) {
+while ($_scratch = $sth->fetch(3)) {
+    list($order_name, $order_email, $order_phone, $order_address, $unit_total, $order_time, $num, $price) = $_scratch;
+    unset($_scratch);
     $i++;
     $price = $price * $num;
     $array_total['price'] += $price;

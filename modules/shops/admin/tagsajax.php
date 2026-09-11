@@ -30,7 +30,9 @@ $sth->bindValue(':keywords', '%' . $q . '%', PDO::PARAM_STR);
 $sth->execute();
 
 $array_data = array();
-while (list($keywords) = $sth->fetch(3)) {
+while ($_scratch = $sth->fetch(3)) {
+    list($keywords) = $_scratch;
+    unset($_scratch);
     $keywords = explode(',', $keywords);
     foreach ($keywords as $_keyword) {
         $array_data[] = str_replace('-', ' ', $_keyword) ;

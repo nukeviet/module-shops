@@ -20,7 +20,7 @@ if (empty($id_files) or empty($id_rows)) {
 }
 
 $result = $db->query('SELECT path, download_groups FROM ' . $db_config['prefix'] . '_' . $module_data . '_files WHERE id=' . $id_files);
-list($path, $download_groups) = $result->fetch(3);
+list($path, $download_groups) = $result->fetch(3) ?: [null, null];
 
 if ($download_groups == '-1') {
     $download_groups = $pro_config['download_groups'];

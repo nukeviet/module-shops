@@ -28,7 +28,9 @@ if ($pid >= 0) {
     if ($pid > 0) {
         $sql = "SELECT cateid FROM " . $db_config['prefix'] . "_" . $module_data . "_group_cateid WHERE groupid=" . $pid;
         $result_cat = $db->query($sql);
-        while (list ($catid_i) = $result_cat->fetch(3)) {
+        while ($_scratch = $result_cat->fetch(3)) {
+            list($catid_i) = $_scratch;
+            unset($_scratch);
             if (empty($list_cat)) {
                 $list_cat .= $catid_i;
             } else {
@@ -45,7 +47,9 @@ if ($pid >= 0) {
     $result_cat = $db->query($sql);
 
     $contents .= '<select class="form-control" style="width: 500px; min-height: 150px" name="cateid[]" multiple="multiple">';
-    while (list ($catid_i, $parentid_i, $title_i, $lev_i, $numsubcat_i) = $result_cat->fetch(3)) {
+    while ($_scratch = $result_cat->fetch(3)) {
+        list($catid_i, $parentid_i, $title_i, $lev_i, $numsubcat_i) = $_scratch;
+        unset($_scratch);
         $xtitle_i = "";
         if ($lev_i > 0) {
             for ($i = 1; $i <= $lev_i; $i ++) {

@@ -258,7 +258,9 @@ if (!$popup) {
         $view['download_hits'] = 0;
         $result = $db->query('SELECT download_hits FROM ' . $table_name . '_rows WHERE id_files=' . $view['id']);
         if ($result->rowCount() > 0) {
-            while (list($download_hits) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($download_hits) = $_scratch;
+                unset($_scratch);
                 $view['download_hits'] += $download_hits;
             }
         }

@@ -45,7 +45,9 @@ $custom = [];
 
 $sql = 'SELECT bid, adddefault, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '_' . $module_data . '_block_cat ORDER BY weight ASC';
 $result = $db->query($sql);
-while (list ($bid_i, $adddefault_i, $title_i) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($bid_i, $adddefault_i, $title_i) = $_scratch;
+    unset($_scratch);
     $array_block_cat_module[$bid_i] = $title_i;
     if ($adddefault_i) {
         $id_block_content[] = $bid_i;
@@ -136,7 +138,9 @@ if (!empty($rowcontent['id'])) {
     $sql = 'SELECT bid FROM ' . $db_config['prefix'] . '_' . $module_data . '_block WHERE id=' . $rowcontent['id'];
     $result = $db->query($sql);
 
-    while (list ($bid_i) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($bid_i) = $_scratch;
+        unset($_scratch);
         $id_block_content[] = $bid_i;
     }
 
@@ -159,7 +163,9 @@ if (!empty($rowcontent['id'])) {
     $rowcontent['files'] = $rowcontent['files_old'] = [];
     $result = $db->query("SELECT id_files FROM " . $db_config['prefix'] . "_" . $module_data . "_files_rows WHERE id_rows=" . $rowcontent['id']);
     if ($result->rowCount() > 0) {
-        while (list ($id_files) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($id_files) = $_scratch;
+            unset($_scratch);
             $rowcontent['files'][] = $id_files;
         }
         $rowcontent['files_old'] = $rowcontent['files'];
@@ -454,7 +460,9 @@ if ($nv_Request->get_int('save', 'post') == 1) {
     $group_cat = [];
     $result = $db->query('SELECT groupid FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_cateid WHERE cateid = ' . $rowcontent['listcatid']);
     if ($result->rowCount() > 0) {
-        while (list ($groupid) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($groupid) = $_scratch;
+            unset($_scratch);
             if ($global_array_group[$groupid]['is_require']) {
                 $group_cat[] = $groupid;
             }
@@ -897,7 +905,7 @@ if ($nv_Request->get_int('save', 'post') == 1) {
                 $sth->bindParam(':keyword', $keyword, PDO::PARAM_STR);
                 $sth->execute();
 
-                list ($tid, $alias, $keywords_i) = $sth->fetch(3);
+                list ($tid, $alias, $keywords_i) = $sth->fetch(3) ?: [null, null, null];
                 if (empty($tid)) {
                     $array_insert = [];
                     $array_insert['alias'] = $alias_i;
@@ -1205,7 +1213,9 @@ if ($result_unit->rowCount() == 0) {
     include NV_ROOTDIR . '/includes/footer.php';
 }
 
-while (list ($unitid_i, $title_i) = $result_unit->fetch(3)) {
+while ($_scratch = $result_unit->fetch(3)) {
+    list($unitid_i, $title_i) = $_scratch;
+    unset($_scratch);
     $xtpl->assign('utitle', $title_i);
     $xtpl->assign('uid', $unitid_i);
     $uch = ($rowcontent['product_unit'] == $unitid_i) ? "selected=\"selected\"" : "";

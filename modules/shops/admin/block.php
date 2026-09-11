@@ -19,7 +19,9 @@ $sql = 'SELECT bid, ' . NV_LANG_DATA . '_title FROM ' . $db_config['prefix'] . '
 $result = $db->query($sql);
 
 $array_block = [];
-while (list($bid_i, $title_i) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($bid_i, $title_i) = $_scratch;
+    unset($_scratch);
     $array_block[$bid_i] = $title_i;
 }
 if (empty($array_block)) {
@@ -78,7 +80,9 @@ if ($listid == '') {
 $result = $db->query($sql);
 if ($result->rowCount()) {
     $a = 0;
-    while (list($id, $title) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $title) = $_scratch;
+        unset($_scratch);
         $xtpl->assign('ROW', array(
             'id' => $id,
             'checked' => in_array($id, $id_array) ? ' checked="checked"' : '',

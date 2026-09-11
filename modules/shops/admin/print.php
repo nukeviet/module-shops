@@ -46,7 +46,7 @@ $i = 0;
 foreach ($listid as $id) {
     $sql = 'SELECT id, ' . NV_LANG_DATA . '_title, product_price,money_unit FROM ' . $db_config['prefix'] . '_' . $module_data . '_rows WHERE id = ' . $id . ' AND status =1 AND publtime < ' . NV_CURRENTTIME . ' AND (exptime=0 OR exptime>' . NV_CURRENTTIME . ')';
     $result = $db->query($sql);
-    list($id, $title, $product_price, $money_unit) = $result->fetch(3);
+    list($id, $title, $product_price, $money_unit) = $result->fetch(3) ?: [null, null, null, null];
 
     $xtpl->assign('product_name', $title);
     $xtpl->assign('product_number', $listnum[$i]);

@@ -37,7 +37,9 @@ if (!empty($coupons_code)) {
     $counpons = $result->fetch();
     if (!empty($counpons)) {
         $result = $db->query('SELECT pid FROM ' . $db_config['prefix'] . '_' . $module_data . '_coupons_product WHERE cid = ' . $counpons['id']);
-        while (list ($pid) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($pid) = $_scratch;
+            unset($_scratch);
             $counpons['product'][] = $pid;
         }
     }

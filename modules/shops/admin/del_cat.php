@@ -15,7 +15,7 @@ if (! defined('NV_IS_FILE_ADMIN')) {
 $catid = $nv_Request->get_int('catid', 'post', 0);
 $contents = "NO_" . $catid;
 
-list($catid, $parentid, $title) = $db->query("SELECT catid, parentid, " . NV_LANG_DATA . "_title FROM " . $db_config['prefix'] . "_" . $module_data . "_catalogs WHERE catid=" . $catid)->fetch(3);
+list($catid, $parentid, $title) = $db->query("SELECT catid, parentid, " . NV_LANG_DATA . "_title FROM " . $db_config['prefix'] . "_" . $module_data . "_catalogs WHERE catid=" . $catid)->fetch(3) ?: [null, null, null];
 
 if ($catid > 0) {
     $delallcheckss = $nv_Request->get_string('delallcheckss', 'post', "");
@@ -45,7 +45,9 @@ if ($catid > 0) {
                     $array_cat_list = array();
                     $array_cat_list[0] = "&nbsp;";
 
-                    while (list($catid_i, $title_i, $lev_i) = $result->fetch(3)) {
+                    while ($_scratch = $result->fetch(3)) {
+                        list($catid_i, $title_i, $lev_i) = $_scratch;
+                        unset($_scratch);
                         $xtitle_i = "";
                         if ($lev_i > 0) {
                             $xtitle_i .= "&nbsp;&nbsp;&nbsp;|";
@@ -71,7 +73,7 @@ if ($catid > 0) {
                     $xtpl->assign('DELALLCHECKSS', $delallcheckss);
                     $xtpl->assign('INFO', sprintf($lang_module['delcat_msg_rows_select'], $title, $check_rows));
 
-                    while (list($catid_i, $title_i) = each($array_cat_list)) {
+                    foreach ($array_cat_list as $catid_i => $title_i) {
                         $xtpl->assign('CAT_ID', $catid_i);
                         $xtpl->assign('CAT_TITLE', $title_i);
                         $xtpl->parse('main.catloop');

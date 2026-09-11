@@ -131,7 +131,7 @@ if (!empty($savecat)) {
 
 $data['bid'] = $nv_Request->get_int('bid', 'get', 0);
 if ($data['bid'] > 0) {
-    list ($data['bid'], $data['title'], $data['alias'], $data['description'], $data['bodytext'], $data['keywords'], $data['tag_title'], $data['tag_description'], $data['image']) = $db->query('SELECT bid, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_description, ' . NV_LANG_DATA . '_bodytext, ' . NV_LANG_DATA . '_keywords, ' . NV_LANG_DATA . '_tag_title, ' . NV_LANG_DATA . '_tag_description, image FROM ' . $db_config['prefix'] . '_' . $module_data . '_block_cat where bid=' . $data['bid'])->fetch(3);
+    list ($data['bid'], $data['title'], $data['alias'], $data['description'], $data['bodytext'], $data['keywords'], $data['tag_title'], $data['tag_description'], $data['image']) = $db->query('SELECT bid, ' . NV_LANG_DATA . '_title, ' . NV_LANG_DATA . '_alias, ' . NV_LANG_DATA . '_description, ' . NV_LANG_DATA . '_bodytext, ' . NV_LANG_DATA . '_keywords, ' . NV_LANG_DATA . '_tag_title, ' . NV_LANG_DATA . '_tag_description, image FROM ' . $db_config['prefix'] . '_' . $module_data . '_block_cat where bid=' . $data['bid'])->fetch(3) ?: array_fill(0, 9, null);
     $lang_module['add_block_cat'] = $lang_module['edit_block_cat'];
 }
 

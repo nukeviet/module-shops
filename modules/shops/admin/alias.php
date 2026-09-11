@@ -37,7 +37,7 @@ if ($mod == 'content') {
 }
 
 if ($mod == 'cat') {
-    list($parentid) = $db->query('SELECT parentid FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid = ' . $id)->fetch(3);
+    list($parentid) = $db->query('SELECT parentid FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid = ' . $id)->fetch(3) ?: [null];
 
     $stmt = $db->prepare('SELECT count(*) FROM ' . $db_config['prefix'] . '_' . $module_data . '_catalogs WHERE catid!=' . $id . ' AND ' . NV_LANG_DATA . '_alias= :alias');
     $stmt->bindParam(':alias', $alias, PDO::PARAM_STR);

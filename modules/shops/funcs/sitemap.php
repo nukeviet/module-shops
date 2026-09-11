@@ -24,7 +24,9 @@ if (($cache = $nv_Cache->getItem($module_name, $cacheFile)) != false and filemti
     $result = $db->query($db->sql());
     $url = array();
 
-    while (list($id, $catid_i, $edittime, $alias) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $catid_i, $edittime, $alias) = $_scratch;
+        unset($_scratch);
         $url[] = array( 'link' => NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $global_array_shops_cat[$catid_i]['alias'] . '/' . $alias . $global_config['rewrite_exturl'], 'publtime' => $edittime );
     }
 

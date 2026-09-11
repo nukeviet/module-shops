@@ -168,7 +168,7 @@ if (!empty($savecat)) {
 $tid = $nv_Request->get_int('tid', 'get', 0);
 
 if ($tid > 0) {
-    list ($tid, $alias, $description, $bodytext, $image, $keywords) = $db->query('SELECT tid, alias, description, bodytext, image, keywords FROM ' . $db_config['prefix'] . '_' . $module_data . '_tags_' . NV_LANG_DATA . ' where tid=' . $tid)->fetch(3);
+    list ($tid, $alias, $description, $bodytext, $image, $keywords) = $db->query('SELECT tid, alias, description, bodytext, image, keywords FROM ' . $db_config['prefix'] . '_' . $module_data . '_tags_' . NV_LANG_DATA . ' where tid=' . $tid)->fetch(3) ?: [null, null, null, null, null, null];
     $lang_module['add_tags'] = $lang_module['edit_tags'];
 }
 

@@ -42,7 +42,9 @@ if (! function_exists('nv_others_product')) {
             $result = $db->query($db->sql());
 
             $i = 1;
-            while (list($id_i, $listcatid_i, $title_i, $alias_i, $addtime_i, $homeimgfile_i, $homeimgthumb_i, $product_price_i, $money_unit_i, $showprice_i) = $result->fetch(3)) {
+            while ($_scratch = $result->fetch(3)) {
+                list($id_i, $listcatid_i, $title_i, $alias_i, $addtime_i, $homeimgfile_i, $homeimgthumb_i, $product_price_i, $money_unit_i, $showprice_i) = $_scratch;
+                unset($_scratch);
                 if ($homeimgthumb_i == 1) {
                     //image thumb
 

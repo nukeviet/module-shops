@@ -111,11 +111,13 @@ function GetDataIn($result, $catid)
 
     $data_content = [];
     $data = [];
-    while (list (
-        $id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile,
-        $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $discount_id,
-        $showprice, $gift_content, $gift_from, $gift_to, $newday, $cat_image
-    ) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list(
+            $id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile,
+            $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $discount_id,
+            $showprice, $gift_content, $gift_from, $gift_to, $newday, $cat_image
+        ) = $_scratch;
+        unset($_scratch);
         if ($homeimgthumb == 1) {
             $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
         } elseif ($homeimgthumb == 2) {
@@ -173,7 +175,9 @@ function GetDataInGroups($result, $array_g)
     $data_content = [];
     $data = [];
 
-    while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $showprice, $gift_content, $newday) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $showprice, $gift_content, $newday) = $_scratch;
+        unset($_scratch);
         if ($homeimgthumb == 1) {
             // image thumb
 
@@ -236,7 +240,9 @@ function GetDataInGroup($result, $groupid)
     $data_content = [];
     $data = [];
 
-    while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_to, $gift_from) = $result->fetch(3)) {
+    while ($_scratch = $result->fetch(3)) {
+        list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_to, $gift_from) = $_scratch;
+        unset($_scratch);
         if ($homeimgthumb == 1) {
             // image thumb
 

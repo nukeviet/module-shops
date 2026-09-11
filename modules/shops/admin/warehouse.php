@@ -108,7 +108,9 @@ if ($nv_Request->isset_request('checkss', 'get') and $nv_Request->get_string('ch
     while ($row = $_query->fetch()) {
         $array_group = [];
         $result = $db->query('SELECT listgroup FROM ' . $db_config['prefix'] . '_' . $module_data . '_group_quantity WHERE pro_id=' . $row['id']);
-        while (list($listgroup) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($listgroup) = $_scratch;
+            unset($_scratch);
             $array_group[] = $listgroup;
         }
         $row['listgroup'] = $array_group;

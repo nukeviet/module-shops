@@ -285,7 +285,7 @@ if (!empty($savecat)) {
     }
     if ($data['parentid']) {
         $data['form'] = $db->query('SELECT form FROM ' . $table_name . ' where catid=' . $data['parentid'])->fetchColumn();
-        list ($parent_title, $group_price) = $db->query('SELECT ' . NV_LANG_DATA . '_title, group_price FROM ' . $table_name . ' where catid=' . $data['parentid'])->fetch(3);
+        list ($parent_title, $group_price) = $db->query('SELECT ' . NV_LANG_DATA . '_title, group_price FROM ' . $table_name . ' where catid=' . $data['parentid'])->fetch(3) ?: [null, null];
         $data['group_price'] = $group_price;
         $data['parent_title'] = $parent_title;
     }
@@ -300,7 +300,9 @@ $array_cat_list[0] = array(
     $lang_module['cat_sub_sl']
 );
 
-while (list ($catid_i, $title_i, $lev_i) = $result->fetch(3)) {
+while ($_scratch = $result->fetch(3)) {
+    list($catid_i, $title_i, $lev_i) = $_scratch;
+    unset($_scratch);
     $xtitle_i = '';
     if ($lev_i > 0) {
         $xtitle_i .= '&nbsp;';

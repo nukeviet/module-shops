@@ -71,7 +71,9 @@ if (empty($contents)) {
 
         $result = $db->query($db->sql());
 
-        while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_from, $gift_to) = $result->fetch(3)) {
+        while ($_scratch = $result->fetch(3)) {
+            list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_from, $gift_to) = $_scratch;
+            unset($_scratch);
             if ($homeimgthumb == 1) {
                 //image thumb
 
@@ -143,7 +145,9 @@ if (empty($contents)) {
                 $result = $db->query($db->sql());
                 $data_pro = array();
 
-                while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_from, $gift_to) = $result->fetch(3)) {
+                while ($_scratch = $result->fetch(3)) {
+                    list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_from, $gift_to) = $_scratch;
+                    unset($_scratch);
                     if ($homeimgthumb == 1) {
                         //image thumb
 
@@ -232,7 +236,9 @@ if (empty($contents)) {
 
                 $data_pro = array();
 
-                while (list ($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_from, $gift_to) = $result->fetch(3)) {
+                while ($_scratch = $result->fetch(3)) {
+                    list($id, $listcatid, $publtime, $title, $alias, $hometext, $homeimgalt, $homeimgfile, $homeimgthumb, $product_code, $product_number, $product_price, $money_unit, $showprice, $gift_content, $gift_from, $gift_to) = $_scratch;
+                    unset($_scratch);
                     if ($homeimgthumb == 1) {
                         $thumb = NV_BASE_SITEURL . NV_FILES_DIR . '/' . $module_upload . '/' . $homeimgfile;
                     } elseif ($homeimgthumb == 2) {

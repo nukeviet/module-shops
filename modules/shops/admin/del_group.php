@@ -15,7 +15,7 @@ if (! defined('NV_IS_FILE_ADMIN')) {
 $groupid = $nv_Request->get_int('groupid', 'post, get', 0);
 $contents = "NO_" . $groupid;
 
-list($groupid, $parentid, $title) = $db->query("SELECT groupid, parentid, " . NV_LANG_DATA . "_title FROM " . $db_config['prefix'] . "_" . $module_data . "_group WHERE groupid=" . $groupid)->fetch(3);
+list($groupid, $parentid, $title) = $db->query("SELECT groupid, parentid, " . NV_LANG_DATA . "_title FROM " . $db_config['prefix'] . "_" . $module_data . "_group WHERE groupid=" . $groupid)->fetch(3) ?: [null, null, null];
 
 if ($groupid > 0) {
     $delallcheckss = $nv_Request->get_string('delallcheckss', 'post', "");
@@ -38,7 +38,9 @@ if ($groupid > 0) {
                     $result = $db->query($sql);
                     $array_group_list = array();
                     $array_group_list[0] = $lang_module['delgroup_no_group'];
-                    while (list($groupid_i, $title_i, $lev_i) = $result->fetch(3)) {
+                    while ($_scratch = $result->fetch(3)) {
+                        list($groupid_i, $title_i, $lev_i) = $_scratch;
+                        unset($_scratch);
                         $xtitle_i = "";
                         if ($lev_i > 0) {
                             $xtitle_i .= "&nbsp;&nbsp;&nbsp;|";
@@ -64,7 +66,7 @@ if ($groupid > 0) {
                     $xtpl->assign('DELALLCHECKSS', $delallcheckss);
                     $xtpl->assign('INFO', sprintf($lang_module['delgroup_msg_rows_select'], $title, $check_rows));
 
-                    while (list($groupid_i, $title_i) = each($array_group_list)) {
+                    foreach ($array_group_list as $groupid_i => $title_i) {
                         $xtpl->assign('GROUP_ID', $groupid_i);
                         $xtpl->assign('GROUP_TITLE', $title_i);
                         $xtpl->parse('main.grouploop');
